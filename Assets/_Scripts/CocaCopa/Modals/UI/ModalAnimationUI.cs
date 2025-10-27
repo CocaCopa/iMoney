@@ -39,7 +39,6 @@ namespace CocaCopa.Modal.UI {
         }
 
         private void FindPositions() {
-            Canvas.willRenderCanvases -= FindPositions;
             var modalVisible = modalRect.anchoredPosition;
             var vkVisible = vkRect.anchoredPosition;
 

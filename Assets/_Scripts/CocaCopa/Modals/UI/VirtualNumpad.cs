@@ -23,41 +23,53 @@ namespace CocaCopa.Modal.UI {
         [SerializeField] private Button numpadDot;
         [SerializeField] private Button numpad0;
 
-        public event Action<NumpadData> OnVirtualStringChanged;
+        internal event Action<InputFieldParams> OnVirtualStringChanged;
 
-        private VKStringConstructor stringCtor;
-        private NumpadData numpadData;
+        private VKStringConstructor strCtor;
 
         private void Awake() {
-            stringCtor = new VKStringConstructor();
-            numpadData = new NumpadData();
+            strCtor = new VKStringConstructor();
             AddListeners();
         }
 
         private void AddListeners() {
-            numpad1.onClick.AddListener(() => AddCharacter('1'));
-            numpad2.onClick.AddListener(() => AddCharacter('2'));
-            numpad3.onClick.AddListener(() => AddCharacter('3'));
-            numpad4.onClick.AddListener(() => AddCharacter('4'));
-            numpad5.onClick.AddListener(() => AddCharacter('5'));
-            numpad6.onClick.AddListener(() => AddCharacter('6'));
-            numpad7.onClick.AddListener(() => AddCharacter('7'));
-            numpad8.onClick.AddListener(() => AddCharacter('8'));
-            numpad9.onClick.AddListener(() => AddCharacter('9'));
-            numpad0.onClick.AddListener(() => AddCharacter('0'));
-            numpadDot.onClick.AddListener(() => AddCharacter('.'));
-            numpadBackspace.onClick.AddListener(() => EraseLastChar());
+            numpad1.onClick.AddListener(() => AddCharacter(NumpadInput.Digit1));
+            numpad2.onClick.AddListener(() => AddCharacter(NumpadInput.Digit2));
+            numpad3.onClick.AddListener(() => AddCharacter(NumpadInput.Digit3));
+            numpad4.onClick.AddListener(() => AddCharacter(NumpadInput.Digit4));
+            numpad5.onClick.AddListener(() => AddCharacter(NumpadInput.Digit5));
+            numpad6.onClick.AddListener(() => AddCharacter(NumpadInput.Digit6));
+            numpad7.onClick.AddListener(() => AddCharacter(NumpadInput.Digit7));
+            numpad8.onClick.AddListener(() => AddCharacter(NumpadInput.Digit8));
+            numpad9.onClick.AddListener(() => AddCharacter(NumpadInput.Digit9));
+            numpad0.onClick.AddListener(() => AddCharacter(NumpadInput.Digit0));
+            numpadDot.onClick.AddListener(() => AddCharacter(NumpadInput.DecimalPoint));
+            numpadBackspace.onClick.AddListener(() => AddCharacter(NumpadInput.Backspace));
         }
 
-        private void AddCharacter(char character) {
-            numpadData = stringCtor.VirtualString(character, ConstructionMode.New);
-            OnVirtualStringChanged?.SafeInvoke(numpadData, nameof(OnVirtualStringChanged));
+        private void AddCharacter(NumpadInput input) {
+            var data = strCtor.Apply(input);
+            var IFParams = new InputFieldParams(data.VirtualString, data.VirtualValue, data.DecimalCount, strCtor.CaretIndex);
+            OnVirtualStringChanged?.SafeInvoke(IFParams, nameof(OnVirtualStringChanged));
         }
 
-        private void EraseLastChar() {
-            if (numpadData.VirtualString.Length == 0) { return; }
-            numpadData = stringCtor.EraseLastChar();
-            OnVirtualStringChanged?.SafeInvoke(numpadData, nameof(OnVirtualStringChanged));
+        internal class InputFieldParams {
+            private string text;
+            private int intVal;
+            private int decCount;
+            private int caretIdx;
+
+            internal string Text => text;
+            internal int IntValue => intVal;
+            internal int DecimalCount => decCount;
+            internal int CaretIndex => caretIdx;
+
+            internal InputFieldParams(string text, int intVal, int decCount, int caretIdx) {
+                this.text = text;
+                this.intVal = intVal;
+                this.decCount = decCount;
+                this.caretIdx = caretIdx;
+            }
         }
     }
 }
