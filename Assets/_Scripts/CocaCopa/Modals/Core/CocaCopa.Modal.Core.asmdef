@@ -1,0 +1,16 @@
+{
+    "name": "CocaCopa.Modal.Core",
+    "rootNamespace": "CocaCopa.Modal.Core",
+    "references": [
+        "GUID:c5d9a7d9a24beb84e918a6b2b82e2d0a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

@@ -1,0 +1,20 @@
+{
+    "name": "CocaCopa.Modal.UI",
+    "rootNamespace": "CocaCopa.UI.Modal",
+    "references": [
+        "UnityEngine.UI",
+        "CocaCopa.Modal.Core",
+        "CocaCopa.Extensions.Runtime",
+        "Unity.TextMeshPro",
+        "CocaCopa.Logger.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

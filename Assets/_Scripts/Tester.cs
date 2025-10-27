@@ -1,8 +1,9 @@
+using CocaCopa.Modal.UI;
 using UnityEngine;
 
 public class Tester : MonoBehaviour {
     [Header("Input Modal")]
-    [SerializeField] private ModalAnimation inputModal;
+    [SerializeField] private ModalAnimationUI inputModal;
     [SerializeField] private bool visible;
     [SerializeField] private bool hidden;
 
