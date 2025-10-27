@@ -1,13 +1,11 @@
 {
-    "name": "CocaCopa.Modal.Core",
-    "rootNamespace": "CocaCopa.Modal.Core",
-    "references": [
-        "GUID:002228c465eec3043b2440600d03dd29"
-    ],
+    "name": "CocaCopa.Modal.Contracts",
+    "rootNamespace": "CocaCopa.Modal.Contracts",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

@@ -3,10 +3,11 @@
     "rootNamespace": "CocaCopa.UI.Modal",
     "references": [
         "UnityEngine.UI",
-        "CocaCopa.Modal.Core",
-        "CocaCopa.Extensions.Runtime",
         "Unity.TextMeshPro",
-        "CocaCopa.Logger.Runtime"
+        "CocaCopa.Extensions.Runtime",
+        "CocaCopa.Logger.Runtime",
+        "CocaCopa.Modal.Core",
+        "CocaCopa.Modal.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

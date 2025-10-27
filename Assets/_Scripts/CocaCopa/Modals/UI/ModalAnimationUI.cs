@@ -1,7 +1,8 @@
+using CocaCopa.Modal.Contracts;
 using UnityEngine;
 
 namespace CocaCopa.Modal.UI {
-    public class ModalAnimationUI : MonoBehaviour {
+    internal class ModalAnimationUI : MonoBehaviour {
         [Header("References")]
         [SerializeField] private RectTransform modalRect;
         [SerializeField] private RectTransform vkRect;
@@ -11,7 +12,6 @@ namespace CocaCopa.Modal.UI {
         [SerializeField] private float visibilitySpeed = 1f;
         [SerializeField] private float delayTime;
 
-        public enum AppearFrom { Left, Right };
         public bool IsAnimating {
             get; private set;
         }
@@ -57,11 +57,11 @@ namespace CocaCopa.Modal.UI {
             PlaySequence();
         }
 
-        public void SetActive(bool active) {
-            SetActive(active, AppearFrom.Left);
+        internal void SetActive(bool active) {
+            SetActive(active, ModalOptions.AppearFrom.Left);
         }
-        public void SetActive(bool active, AppearFrom appearFrom) {
-            if (active) { modalPositions = appearFrom == AppearFrom.Left ? modalPositionsLeft : modalPositionsRight; }
+        internal void SetActive(bool active, ModalOptions.AppearFrom appearFrom) {
+            if (active) { modalPositions = appearFrom == ModalOptions.AppearFrom.Left ? modalPositionsLeft : modalPositionsRight; }
             IsAnimating = true;
             enabled = true;
             delayTimer = delayTime;

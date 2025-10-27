@@ -1,3 +1,5 @@
+using CocaCopa.Modal.Contracts;
+
 namespace CocaCopa.Modal.Core {
     public class NumpadRules {
         internal static NumpadData ExtractData(string text) {

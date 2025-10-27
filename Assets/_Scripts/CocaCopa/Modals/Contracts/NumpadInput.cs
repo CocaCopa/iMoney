@@ -1,4 +1,4 @@
-namespace CocaCopa.Modal.Core {
+namespace CocaCopa.Modal.Contracts {
     public enum NumpadInput {
         Digit0,
         Digit1,

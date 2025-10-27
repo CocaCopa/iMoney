@@ -1,3 +1,5 @@
+using CocaCopa.Modal.Contracts;
+
 namespace CocaCopa.Modal.Core {
     public class VKStringConstructor {
         private const int MaxDecimal = 2;

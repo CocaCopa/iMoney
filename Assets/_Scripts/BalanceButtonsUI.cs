@@ -49,26 +49,24 @@ public class BalanceButtonsUI : MonoBehaviour {
     }
 
     private void AddListeners() {
-        addBtn.onClick.AddListener(AddOnClick);
-        spendBtn.onClick.AddListener(SpendOnClick);
+        addBtn.onClick.AddListener(() => OnAddPressed?.SafeInvoke(nameof(OnAddPressed)));
+        spendBtn.onClick.AddListener(() => OnSpendPressed?.SafeInvoke(nameof(OnSpendPressed)));
     }
 
-    private void AddOnClick() {
+    public void HideSpendButton() {
         AddActive = true;
         SpendActive = false;
         addImage.raycastTarget = true;
         spendImage.raycastTarget = true;
         enabled = true;
-        OnAddPressed?.SafeInvoke(nameof(OnAddPressed));
     }
 
-    private void SpendOnClick() {
+    public void HideActiveButton() {
         AddActive = false;
         SpendActive = true;
         addImage.raycastTarget = true;
         spendImage.raycastTarget = true;
         enabled = true;
-        OnSpendPressed?.SafeInvoke(nameof(OnSpendPressed));
     }
 
     private void Update() {

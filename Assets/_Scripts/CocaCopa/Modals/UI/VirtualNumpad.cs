@@ -1,6 +1,6 @@
 using System;
 using CocaCopa.Extensions;
-using CocaCopa.Logger;
+using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +23,7 @@ namespace CocaCopa.Modal.UI {
         [SerializeField] private Button numpadDot;
         [SerializeField] private Button numpad0;
 
-        internal event Action<InputFieldParams> OnVirtualStringChanged;
+        internal event Action<InputFieldInfo> OnVirtualStringChanged;
 
         private VKStringConstructor strCtor;
 
@@ -49,22 +49,22 @@ namespace CocaCopa.Modal.UI {
 
         private void AddCharacter(NumpadInput input) {
             var data = strCtor.Apply(input);
-            var IFParams = new InputFieldParams(data.VirtualString, data.VirtualValue, data.DecimalCount, strCtor.CaretIndex);
+            var IFParams = new InputFieldInfo(data.VirtualString, data.VirtualValue, data.DecimalCount, strCtor.CaretIndex);
             OnVirtualStringChanged?.SafeInvoke(IFParams, nameof(OnVirtualStringChanged));
         }
 
-        internal class InputFieldParams {
-            private string text;
-            private int intVal;
-            private int decCount;
-            private int caretIdx;
+        internal class InputFieldInfo {
+            private readonly string text;
+            private readonly int intVal;
+            private readonly int decCount;
+            private readonly int caretIdx;
 
             internal string Text => text;
             internal int IntValue => intVal;
             internal int DecimalCount => decCount;
             internal int CaretIndex => caretIdx;
 
-            internal InputFieldParams(string text, int intVal, int decCount, int caretIdx) {
+            internal InputFieldInfo(string text, int intVal, int decCount, int caretIdx) {
                 this.text = text;
                 this.intVal = intVal;
                 this.decCount = decCount;

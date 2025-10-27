@@ -1,21 +1,42 @@
-using System;
+using System.Threading;
+using CocaCopa.Logger;
+using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.UI;
 using UnityEngine;
 
 public class BalanceButtons : MonoBehaviour {
     [SerializeField] private BalanceButtonsUI buttonsUi;
-    [SerializeField] private ModalAnimationUI modalAnim;
+    [SerializeField] private ModalUI numpadModal;
+
+    private CancellationTokenSource lifetimeCts;
+
+    private ModalOptions addModalOptions = new ModalOptions(ModalOptions.AppearFrom.Left);
+    private ModalOptions spendModalOptions = new ModalOptions(ModalOptions.AppearFrom.Right);
+
+    private void Awake() {
+        lifetimeCts = new CancellationTokenSource();
+    }
+
+    private void OnDestroy() {
+        lifetimeCts.Cancel();
+    }
 
     private void Start() {
         buttonsUi.OnAddPressed += Buttons_OnAddPressed;
         buttonsUi.OnSpendPressed += Buttons_OnSpendPressed;
     }
 
-    private void Buttons_OnAddPressed() {
-        modalAnim.SetActive(true, ModalAnimationUI.AppearFrom.Left);
+    private async void Buttons_OnAddPressed() {
+        var modalResult = await numpadModal.ShowAsync(addModalOptions, lifetimeCts.Token);
+        if (modalResult.Confirmed) {
+            CustomDebug.Log($"Value: {modalResult.Value.Value} | Multiplier: {modalResult.Value.Multiplier}", LogColor.Blue);
+        }
+        else {
+            numpadModal.Hide();
+        }
     }
 
-    private void Buttons_OnSpendPressed() {
-        modalAnim.SetActive(true, ModalAnimationUI.AppearFrom.Right);
+    private async void Buttons_OnSpendPressed() {
+        var modalResult = await numpadModal.ShowAsync(spendModalOptions, lifetimeCts.Token);
     }
 }
