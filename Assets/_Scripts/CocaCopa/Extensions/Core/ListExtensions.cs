@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace CocaCopa.Extensions {
+namespace CocaCopa.Extensions.Core {
     public static class ListExtensions {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static List<T> EntriesFromRight<T>(this List<T> list, int count) {

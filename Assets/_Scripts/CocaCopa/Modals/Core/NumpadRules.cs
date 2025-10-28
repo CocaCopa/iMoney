@@ -1,6 +1,6 @@
 using CocaCopa.Modal.Contracts;
 
-namespace CocaCopa.Modal.Core {
+namespace CocaCopa.Modal.Domain {
     public class NumpadRules {
         internal static NumpadData ExtractData(string text) {
             if (string.IsNullOrEmpty(text) || text == ".") return new NumpadData(string.Empty, 0, 0);

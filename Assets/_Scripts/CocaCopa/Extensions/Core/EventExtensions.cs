@@ -1,7 +1,6 @@
 using System;
-using CocaCopa.Logger;
 
-namespace CocaCopa.Extensions {
+namespace CocaCopa.Extensions.Core {
     public static class EventExtensions {
         public static void SafeInvoke<T>(this Action<T> evt, T arg, string evtName) {
             if (evt == null) return;
@@ -14,9 +13,7 @@ namespace CocaCopa.Extensions {
                 catch (Exception ex) {
                     var targetType = handler.Target?.GetType().Name ?? "<static>";
                     var methodName = handler.Method.Name;
-                    CustomDebug.LogError(
-                        $"[{evtName}] listener threw in {targetType}.{methodName}: {ex}"
-                    );
+                    throw new Exception($"[{evtName}] listener threw in {targetType}.{methodName}: {ex}");
                 }
             }
         }
@@ -29,7 +26,7 @@ namespace CocaCopa.Extensions {
                 catch (Exception ex) {
                     var targetType = handler.Target?.GetType().Name ?? "<static>";
                     var methodName = handler.Method.Name;
-                    CustomDebug.LogError($"[{evtName}] listener threw in {targetType}.{methodName}: {ex}");
+                    throw new Exception($"[{evtName}] listener threw in {targetType}.{methodName}: {ex}");
                 }
             }
         }
@@ -43,7 +40,7 @@ namespace CocaCopa.Extensions {
                 catch (Exception ex) {
                     var tgt = h.Target?.GetType().Name ?? "<static>";
                     var method = h.Method.Name;
-                    CustomDebug.LogError($"[{evtName}] {tgt}.{method} threw: {ex}");
+                    throw new Exception($"[{evtName}] {tgt}.{method} threw: {ex}");
                 }
             }
         }

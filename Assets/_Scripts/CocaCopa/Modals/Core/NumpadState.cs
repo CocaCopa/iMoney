@@ -1,4 +1,4 @@
-namespace CocaCopa.Modal.Core {
+namespace CocaCopa.Modal.Domain {
     public readonly struct NumpadState {
         public string Text { get; }
         public int Caret { get; }

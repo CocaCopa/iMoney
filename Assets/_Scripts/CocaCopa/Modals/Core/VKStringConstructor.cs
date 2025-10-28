@@ -1,6 +1,6 @@
 using CocaCopa.Modal.Contracts;
 
-namespace CocaCopa.Modal.Core {
+namespace CocaCopa.Modal.Domain {
     public class VKStringConstructor {
         private const int MaxDecimal = 2;
         private NumpadState state;

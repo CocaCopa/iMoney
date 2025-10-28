@@ -2,7 +2,9 @@
     "name": "Megatetra.HierarchyColoring.Editor",
     "rootNamespace": "Megatetra.HierarchyColoring",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

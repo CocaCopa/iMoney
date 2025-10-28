@@ -1,6 +1,6 @@
 {
-    "name": "CocaCopa.Modal.Core",
-    "rootNamespace": "CocaCopa.Modal.Core",
+    "name": "CocaCopa.Modal.Domain",
+    "rootNamespace": "CocaCopa.Modal.Domain",
     "references": [
         "GUID:002228c465eec3043b2440600d03dd29"
     ],

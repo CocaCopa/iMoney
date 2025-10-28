@@ -1,6 +1,6 @@
 {
-    "name": "CocaCopa.Modal.Contracts",
-    "rootNamespace": "CocaCopa.Modal.Contracts",
+    "name": "CocaCopa.Extensions.Core",
+    "rootNamespace": "CocaCopa.Extensions.Core",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

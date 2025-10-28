@@ -1,4 +1,4 @@
-namespace CocaCopa.Modal.Core {
+namespace CocaCopa.Modal.Domain {
     public class VirtualCaret {
         private enum StringType {
             DecimalNumpad,

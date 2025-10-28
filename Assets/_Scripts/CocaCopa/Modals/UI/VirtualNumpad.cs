@@ -1,7 +1,7 @@
 using System;
-using CocaCopa.Extensions;
+using CocaCopa.Extensions.Core;
 using CocaCopa.Modal.Contracts;
-using CocaCopa.Modal.Core;
+using CocaCopa.Modal.Domain;
 using UnityEngine;
 using UnityEngine.UI;
 

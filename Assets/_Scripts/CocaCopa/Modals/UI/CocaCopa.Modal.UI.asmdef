@@ -1,18 +1,18 @@
 {
     "name": "CocaCopa.Modal.UI",
-    "rootNamespace": "CocaCopa.UI.Modal",
+    "rootNamespace": "CocaCopa.Modal.UI",
     "references": [
         "UnityEngine.UI",
         "Unity.TextMeshPro",
-        "CocaCopa.Extensions.Runtime",
+        "CocaCopa.Extensions.Core",
         "CocaCopa.Logger.Runtime",
-        "CocaCopa.Modal.Core",
+        "CocaCopa.Modal.Domain",
         "CocaCopa.Modal.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

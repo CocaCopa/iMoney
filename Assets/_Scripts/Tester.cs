@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CocaCopa.Logger;
-using CocaCopa.Modal.Core;
+using CocaCopa.Modal.Domain;
 using CocaCopa.Modal.UI;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class Tester : MonoBehaviour {
         InputModal();
     }
 
-    private async void InputModal() {
+    private void InputModal() {
         if (visible) {
             visible = false;
 

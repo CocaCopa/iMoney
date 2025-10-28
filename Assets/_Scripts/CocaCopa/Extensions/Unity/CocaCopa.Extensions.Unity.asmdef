@@ -1,13 +1,11 @@
 {
-    "name": "CocaCopa.Extensions.Runtime",
-    "rootNamespace": "CocaCopa.Extensions",
-    "references": [
-        "GUID:c5d9a7d9a24beb84e918a6b2b82e2d0a"
-    ],
+    "name": "CocaCopa.Extensions.Unity",
+    "rootNamespace": "CocaCopa.Extensions.Unity",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

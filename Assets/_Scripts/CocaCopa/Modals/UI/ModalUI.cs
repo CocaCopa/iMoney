@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CocaCopa.Extensions;
+using CocaCopa.Extensions.Core;
 using CocaCopa.Modal.Contracts;
-using CocaCopa.Modal.Core;
+using CocaCopa.Modal.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
