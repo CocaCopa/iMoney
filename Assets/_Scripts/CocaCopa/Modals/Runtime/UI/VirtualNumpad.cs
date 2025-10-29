@@ -1,11 +1,11 @@
 using System;
 using CocaCopa.Extensions.Core;
-using CocaCopa.Modal.Contracts;
-using CocaCopa.Modal.Domain;
+using CocaCopa.Modal.Runtime.Domain;
+using CocaCopa.Modal.Runtime.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CocaCopa.Modal.UI {
+namespace CocaCopa.Modal.Runtime.UI {
     internal class VirtualNumpad : MonoBehaviour {
         [Header("Digit Rows")]
         [SerializeField] private Button numpad1;

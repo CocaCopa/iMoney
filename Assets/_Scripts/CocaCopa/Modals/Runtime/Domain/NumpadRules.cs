@@ -1,7 +1,7 @@
-using CocaCopa.Modal.Contracts;
+using CocaCopa.Modal.Runtime.Internal;
 
-namespace CocaCopa.Modal.Domain {
-    public class NumpadRules {
+namespace CocaCopa.Modal.Runtime.Domain {
+    internal class NumpadRules {
         internal static NumpadData ExtractData(string text) {
             if (string.IsNullOrEmpty(text) || text == ".") return new NumpadData(string.Empty, 0, 0);
             var dot = text.IndexOf('.');
@@ -43,7 +43,7 @@ namespace CocaCopa.Modal.Domain {
             }
         }
 
-        public static NumpadState Input_Backspace(NumpadState s) {
+        internal static NumpadState Input_Backspace(NumpadState s) {
             if (s.Caret == 0) { return s; }
             int caretIndex = s.Caret - 1;
             bool onDecimals = s.OnDecimals;

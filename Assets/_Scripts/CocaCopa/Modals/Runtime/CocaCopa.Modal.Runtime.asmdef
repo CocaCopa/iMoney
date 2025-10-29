@@ -1,8 +1,10 @@
 {
-    "name": "CocaCopa.Modal.Animation",
-    "rootNamespace": "CocaCopa.Modal.Animation",
+    "name": "CocaCopa.Modal.Runtime",
+    "rootNamespace": "CocaCopa.Modal.Runtime",
     "references": [
-        "GUID:002228c465eec3043b2440600d03dd29"
+        "GUID:002228c465eec3043b2440600d03dd29",
+        "GUID:17de7ff8546469b4aac5a2aae898c495",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

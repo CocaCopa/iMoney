@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using CocaCopa.Extensions.Core;
 using CocaCopa.Modal.Contracts;
-using CocaCopa.Modal.Domain;
+using CocaCopa.Modal.Runtime.Animation;
+using CocaCopa.Modal.Runtime.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CocaCopa.Modal.UI {
+namespace CocaCopa.Modal.Runtime.UI {
     internal class ModalUI : MonoBehaviour, IModalService {
         [Header("References")]
         [SerializeField] private VirtualNumpad vNumpad;

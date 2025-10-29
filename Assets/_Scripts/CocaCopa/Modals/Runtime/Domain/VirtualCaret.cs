@@ -1,5 +1,5 @@
-namespace CocaCopa.Modal.Domain {
-    public class VirtualCaret {
+namespace CocaCopa.Modal.Runtime.Domain {
+    internal class VirtualCaret {
         private enum StringType {
             DecimalNumpad,
         }
@@ -7,14 +7,14 @@ namespace CocaCopa.Modal.Domain {
         private readonly StringType stringType;
         private readonly string caretColor;
 
-        public static VirtualCaret NumpadCaret(string caretColor) => new VirtualCaret(StringType.DecimalNumpad, caretColor);
+        internal static VirtualCaret NumpadCaret(string caretColor) => new VirtualCaret(StringType.DecimalNumpad, caretColor);
 
         private VirtualCaret(StringType stringType, string caretColor) {
             this.stringType = stringType;
             this.caretColor = caretColor;
         }
 
-        public string ApplyCaret(string targetString, int index) {
+        internal string ApplyCaret(string targetString, int index) {
             return stringType switch {
                 StringType.DecimalNumpad => ColorizeAtIndex(targetString, index, caretColor),
                 _ => throw new System.ArgumentOutOfRangeException()

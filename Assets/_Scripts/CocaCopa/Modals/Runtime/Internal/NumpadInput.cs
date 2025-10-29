@@ -1,5 +1,5 @@
-namespace CocaCopa.Modal.Contracts {
-    public enum NumpadInput {
+namespace CocaCopa.Modal.Runtime.Internal {
+    internal enum NumpadInput {
         Digit0,
         Digit1,
         Digit2,

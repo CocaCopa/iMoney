@@ -1,12 +1,12 @@
-namespace CocaCopa.Modal.Domain {
-    public class NumpadData {
+namespace CocaCopa.Modal.Runtime.Internal {
+    internal class NumpadData {
         internal string virtualString;
         internal int virtualValue;
         internal int decimalCount;
 
-        public string VirtualString => virtualString;
-        public int VirtualValue => virtualValue;
-        public int DecimalCount => decimalCount;
+        internal string VirtualString => virtualString;
+        internal int VirtualValue => virtualValue;
+        internal int DecimalCount => decimalCount;
 
         internal NumpadData(string virtualString, int virtualValue, int decimalCount) {
             this.virtualString = virtualString;
