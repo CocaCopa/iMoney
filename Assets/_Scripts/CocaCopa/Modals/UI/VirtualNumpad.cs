@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace CocaCopa.Modal.UI {
-    public class VirtualNumpad : MonoBehaviour {
+    internal class VirtualNumpad : MonoBehaviour {
         [Header("Digit Rows")]
         [SerializeField] private Button numpad1;
         [SerializeField] private Button numpad2;
@@ -51,6 +51,10 @@ namespace CocaCopa.Modal.UI {
             var data = strCtor.Apply(input);
             var IFParams = new InputFieldInfo(data.VirtualString, data.VirtualValue, data.DecimalCount, strCtor.CaretIndex);
             OnVirtualStringChanged?.SafeInvoke(IFParams, nameof(OnVirtualStringChanged));
+        }
+
+        internal static void ClearCahcedStr(VirtualNumpad numpad) {
+            numpad.strCtor.ResetStr();
         }
 
         internal class InputFieldInfo {

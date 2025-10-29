@@ -1,0 +1,16 @@
+{
+    "name": "CocaCopa.Modal.Animation",
+    "rootNamespace": "CocaCopa.Modal.Animation",
+    "references": [
+        "GUID:002228c465eec3043b2440600d03dd29"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

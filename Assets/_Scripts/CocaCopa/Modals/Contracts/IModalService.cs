@@ -23,11 +23,20 @@ namespace CocaCopa.Modal.Contracts {
     }
 
     public readonly struct ModalOptions {
-        public enum AppearFrom { Left, Right };
         public readonly AppearFrom appearFrom;
-        public ModalOptions(AppearFrom appearFrom) {
+        public readonly CachedInputValue cachedInputValue;
+        public ModalOptions(AppearFrom appearFrom, CachedInputValue cachedInputValue) {
             this.appearFrom = appearFrom;
+            this.cachedInputValue = cachedInputValue;
         }
+    }
+
+    public enum AppearFrom {
+        Left, Right
+    }
+
+    public enum CachedInputValue {
+        Erase, Keep
     }
 
     public interface IModalService {

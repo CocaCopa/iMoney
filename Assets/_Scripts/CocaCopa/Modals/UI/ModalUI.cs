@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace CocaCopa.Modal.UI {
-    public class ModalUI : MonoBehaviour, IModalService {
+    internal class ModalUI : MonoBehaviour, IModalService {
         [Header("References")]
         [SerializeField] private VirtualNumpad vNumpad;
         [SerializeField] private TMP_InputField inputField;
@@ -20,7 +20,7 @@ namespace CocaCopa.Modal.UI {
         [SerializeField] private Color caretColor = Color.white;
         [SerializeField] private CaretInterval caretInterval;
 
-        private ModalAnimationUI modalAnim;
+        private ModalAnimation modalAnim;
         private VirtualCaret vCaret;
         private ModalValue inputValue;
         private string normalTxt;
@@ -38,7 +38,7 @@ namespace CocaCopa.Modal.UI {
         internal event Action OnCancelIntent;
 
         private void Awake() {
-            modalAnim = GetComponentInParent<ModalAnimationUI>();
+            modalAnim = GetComponentInParent<ModalAnimation>();
             if (modalAnim == null) { throw new Exception("ModalAnimationUI not found in parent"); }
             inputField.DeactivateInputField();
             inputField.richText = true;
@@ -68,6 +68,11 @@ namespace CocaCopa.Modal.UI {
 
         public Task<ModalResult> ShowAsync(ModalOptions options, CancellationToken ct) {
             if (IsActive) { throw new InvalidOperationException("Modal already active"); }
+            if (options.cachedInputValue == CachedInputValue.Erase) {
+                normalTxt = colorizedTxt = string.Empty;
+                inputField.text = string.Empty;
+                VirtualNumpad.ClearCahcedStr(vNumpad);
+            }
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 

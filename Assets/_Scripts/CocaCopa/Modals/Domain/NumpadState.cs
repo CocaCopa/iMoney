@@ -7,5 +7,6 @@ namespace CocaCopa.Modal.Domain {
         public NumpadState(string text, int caret, bool onDecimals, int maxDecimals) {
             Text = text; Caret = caret; OnDecimals = onDecimals; MaxDecimals = maxDecimals;
         }
+        public static NumpadState EmptyState(int decimals) => new NumpadState(string.Empty, 0, false, decimals);
     }
 }

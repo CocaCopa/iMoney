@@ -1,17 +1,17 @@
 using System.Threading;
-using CocaCopa.Logger;
 using CocaCopa.Modal.Contracts;
-using CocaCopa.Modal.UI;
 using UnityEngine;
 
 public class BalanceButtons : MonoBehaviour {
     [SerializeField] private BalanceButtonsUI buttonsUi;
-    [SerializeField] private ModalUI numpadModal;
+    [SerializeField] private MonoBehaviour numpadModal;
+
+    private IModalService NumpadModal => numpadModal as IModalService;
 
     private CancellationTokenSource lifetimeCts;
 
-    private ModalOptions addModalOptions = new ModalOptions(ModalOptions.AppearFrom.Left);
-    private ModalOptions spendModalOptions = new ModalOptions(ModalOptions.AppearFrom.Right);
+    private ModalOptions addModalOptions = new ModalOptions(AppearFrom.Left, CachedInputValue.Erase);
+    private ModalOptions spendModalOptions = new ModalOptions(AppearFrom.Right, CachedInputValue.Erase);
 
     private void Awake() {
         lifetimeCts = new CancellationTokenSource();
@@ -26,17 +26,21 @@ public class BalanceButtons : MonoBehaviour {
         buttonsUi.OnSpendPressed += Buttons_OnSpendPressed;
     }
 
-    private async void Buttons_OnAddPressed() {
-        var modalResult = await numpadModal.ShowAsync(addModalOptions, lifetimeCts.Token);
-        if (modalResult.Confirmed) {
-            CustomDebug.Log($"Value: {modalResult.Value.Value} | Multiplier: {modalResult.Value.Multiplier}", LogColor.Blue);
-        }
-        else {
-            numpadModal.Hide();
-        }
+    private void Buttons_OnAddPressed() {
+        ActivateModal(addModalOptions);
     }
 
-    private async void Buttons_OnSpendPressed() {
-        var modalResult = await numpadModal.ShowAsync(spendModalOptions, lifetimeCts.Token);
+    private void Buttons_OnSpendPressed() {
+        ActivateModal(spendModalOptions);
+    }
+
+    private async void ActivateModal(ModalOptions options) {
+        var modalResult = await NumpadModal.ShowAsync(options, lifetimeCts.Token);
+        if (modalResult.Confirmed) {
+            NumpadModal.Hide();
+        }
+        else {
+            NumpadModal.Hide();
+        }
     }
 }

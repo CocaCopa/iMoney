@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CocaCopa.Modal.UI {
+namespace CocaCopa.Modal.Animation {
     internal class RectPositions {
         public Vector2 visible;
         public Vector2 hidden;
