@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Animation;
 using CocaCopa.Modal.Runtime.Domain;
+using CocaCopa.Modal.Runtime.Internal;
 using CocaCopa.Modal.Runtime.UI;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace CocaCopa.Modal.Runtime {
         private ModalUI modalUI;
         private VirtualNumpad vNumpad;
 
+        private VKStringConstructor strCtor;
         private VirtualCaret vCaret;
         private ModalValue inputValue;
         private string normalTxt;
@@ -34,6 +36,7 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void Awake() {
+            strCtor = new VKStringConstructor();
             vCaret = VirtualCaret.NumpadCaret(ColorUtility.ToHtmlStringRGBA(caretColor));
             CacheComponents();
         }
@@ -57,18 +60,20 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void SubscribeToEvents() {
-            vNumpad.OnVirtualStringChanged += Numpad_OnStringChanged;
+            vNumpad.OnVirtualKeyPressed += Numpad_OnKeyPressed;
             modalUI.OnConfirmIntent += ModalUI_OnConfirmIntent;
             modalUI.OnCancelIntent += ModalUI_OnCancelIntent;
         }
 
-        private void Numpad_OnStringChanged(VirtualNumpad.InputFieldInfo info) {
-            inputValue = new ModalValue(info.IntValue, info.DecimalCount);
-            string IFtext = info.Text.Length > 0 ? $"{info.Text}€" : string.Empty;
-            normalTxt = IFtext;
-            colorizedTxt = vCaret.ApplyCaret(normalTxt, info.CaretIndex);
+        private void Numpad_OnKeyPressed(NumpadInput input) {
+            var data = strCtor.Apply(input);
 
-            bool validInput = info.Text != string.Empty && info.IntValue != 0;
+            inputValue = new ModalValue(data.virtualValue, data.DecimalCount);
+            string IFtext = data.virtualString.Length > 0 ? $"{data.virtualString}€" : string.Empty;
+            normalTxt = IFtext;
+            colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
+
+            bool validInput = data.virtualString != string.Empty && data.virtualValue != 0;
             modalUI.SetInputFieldStr(colorizedTxt, validInput);
 
             caretIsOn = false;
@@ -114,7 +119,7 @@ namespace CocaCopa.Modal.Runtime {
             if (IsActive) { throw new InvalidOperationException("Modal already active"); }
             if (options.cachedInputValue == CachedInputValue.Erase) {
                 normalTxt = colorizedTxt = string.Empty;
-                VirtualNumpad.ClearCahcedStr(vNumpad);
+                strCtor.ResetStr();
                 modalUI.SetInputFieldStr(string.Empty);
             }
             IsActive = true;
