@@ -2,6 +2,7 @@ using System;
 
 namespace CocaCopa.Extensions.Core {
     public static class EventExtensions {
+        public static void SafeInvoke<T>(this Action<T> evt, T arg) => SafeInvoke(evt, arg, "");
         public static void SafeInvoke<T>(this Action<T> evt, T arg, string evtName) {
             if (evt == null) return;
 
