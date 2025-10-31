@@ -2,7 +2,7 @@ using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace CocaCopa.Extensions.Unity {
+namespace CocaCopa.Unity.Extensions {
     public static class TaskExtensions {
         /// <summary>
         /// Allows yielding a Task inside a Unity coroutine.

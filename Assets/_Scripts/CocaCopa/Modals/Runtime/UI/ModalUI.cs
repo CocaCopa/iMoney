@@ -1,10 +1,7 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using CocaCopa.Extensions.Core;
+using CocaCopa.Core.Extensions;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Animation;
-using CocaCopa.Modal.Runtime.Domain;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +9,7 @@ using UnityEngine.UI;
 namespace CocaCopa.Modal.Runtime.UI {
     internal class ModalUI : MonoBehaviour {
         [Header("References")]
+        [SerializeField] private ModalAnimation modalAnim;
         [SerializeField] private VirtualNumpad vNumpad;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private Button confirmButton;
@@ -41,5 +39,8 @@ namespace CocaCopa.Modal.Runtime.UI {
         private void OnCancelClicked() {
             OnCancelIntent?.SafeInvoke(nameof(OnCancelIntent));
         }
+
+        internal void ShowModal(AppearFrom appearFrom) => modalAnim.SetActive(true, appearFrom);
+        internal void HideModal() => modalAnim.SetActive(false);
     }
 }

@@ -28,7 +28,11 @@ namespace CocaCopa.Modal.Runtime.Animation {
         private float animationSpeed;
         private float delayTimer;
 
-        private void Start() {
+        private bool isInitialized = false;
+
+        internal void Init_Start() {
+            if (isInitialized) { return; }
+            isInitialized = true;
             Canvas.ForceUpdateCanvases();
             FindPositions();
             modalRect.anchoredPosition = modalPositionsLeft.hidden;

@@ -1,6 +1,6 @@
 {
-    "name": "CocaCopa.Extensions.Unity",
-    "rootNamespace": "CocaCopa.Extensions.Unity",
+    "name": "CocaCopa.Core.Extensions",
+    "rootNamespace": "CocaCopa.Core.Extensions",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -10,5 +10,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }

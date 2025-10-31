@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CocaCopa.Extensions.Unity {
+namespace CocaCopa.Unity.Extensions {
     /// <summary>
     /// UI coordinate conversion and positioning utilities for RectTransforms.
     /// Provides clean conversions between world, anchored, and parent-local coordinates,

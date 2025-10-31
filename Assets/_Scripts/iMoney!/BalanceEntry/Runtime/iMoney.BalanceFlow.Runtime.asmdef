@@ -1,0 +1,19 @@
+{
+    "name": "iMoney.BalanceEntry.Runtime",
+    "rootNamespace": "iMoney.BalanceEntry.Runtime",
+    "references": [
+        "GUID:002228c465eec3043b2440600d03dd29",
+        "GUID:17de7ff8546469b4aac5a2aae898c495",
+        "GUID:6d2633f54b6dcff469c8454bf7f7016d",
+        "GUID:c5d9a7d9a24beb84e918a6b2b82e2d0a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

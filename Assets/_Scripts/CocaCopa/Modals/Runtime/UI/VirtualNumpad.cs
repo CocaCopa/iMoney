@@ -1,5 +1,5 @@
 using System;
-using CocaCopa.Extensions.Core;
+using CocaCopa.Core.Extensions;
 using CocaCopa.Modal.Runtime.Internal;
 using UnityEngine;
 using UnityEngine.UI;

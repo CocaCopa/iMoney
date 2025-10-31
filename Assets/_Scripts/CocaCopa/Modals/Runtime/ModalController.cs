@@ -3,30 +3,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Animation;
-using CocaCopa.Modal.Runtime.Domain;
 using CocaCopa.Modal.Runtime.Internal;
 using CocaCopa.Modal.Runtime.UI;
 using UnityEngine;
 
 namespace CocaCopa.Modal.Runtime {
     internal class ModalController : MonoBehaviour, IModalService {
+        [Header("References")]
+        [SerializeField] private ModalAnimation modalAnim;
+        [SerializeField] private ModalUI modalUI;
+        [SerializeField] private VirtualNumpad vNumpad;
+
         [Header("Caret")]
         [SerializeField] private Color caretColor = Color.white;
         [SerializeField] private CaretInterval caretInterval;
 
-        private ModalAnimation modalAnim;
-        private ModalUI modalUI;
-        private VirtualNumpad vNumpad;
-
-        private VKStringConstructor strCtor;
-        private VirtualCaret vCaret;
-        private ModalValue inputValue;
-        private string normalTxt;
-        private string colorizedTxt;
-
-        private CaretState caretState;
-        private float caretTimer;
-        private bool caretIsOn;
+        private ModalFlow modalFlow;
 
         private TaskCompletionSource<ModalResult> tcs;
         private CancellationTokenRegistration ctr;
@@ -36,27 +28,23 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void Awake() {
-            strCtor = new VKStringConstructor();
-            vCaret = VirtualCaret.NumpadCaret(ColorUtility.ToHtmlStringRGBA(caretColor));
-            CacheComponents();
-        }
-
-        private void CacheComponents() {
-            modalAnim = GetComponentInChildren<ModalAnimation>();
-            modalUI = GetComponentInChildren<ModalUI>();
-            vNumpad = GetComponentInChildren<VirtualNumpad>();
-
-            if (modalAnim == null) { throw new Exception("[ModalController] ModalAnimationUI not found in children"); }
-            if (modalUI == null) { throw new Exception("[ModalController] ModalUI not found in children"); }
-            if (vNumpad == null) { throw new Exception("[ModalController] VirtualNumpad not found in children"); }
+            modalFlow = new ModalFlow(ColorUtility.ToHtmlStringRGBA(caretColor), caretInterval.onDuration, caretInterval.offDuration);
+            CheckComponents();
         }
 
         private void Start() {
             SubscribeToEvents();
+            modalAnim.Init_Start();
         }
 
         private void Update() {
-            ManageCaret();
+            CaretManagement();
+        }
+
+        private void CheckComponents() {
+            if (modalAnim == null) { throw new Exception("[ModalController] ModalAnimation not serialized"); }
+            if (modalUI == null) { throw new Exception("[ModalController] ModalUI not serialized"); }
+            if (vNumpad == null) { throw new Exception("[ModalController] VirtualNumpad not serialized"); }
         }
 
         private void SubscribeToEvents() {
@@ -65,24 +53,24 @@ namespace CocaCopa.Modal.Runtime {
             modalUI.OnCancelIntent += ModalUI_OnCancelIntent;
         }
 
+        private void CaretManagement() {
+            var caretResult = modalFlow.TickCaret(Time.unscaledDeltaTime);
+
+            if (caretResult.updateText) {
+                modalUI.SetInputFieldStr(caretResult.text);
+            }
+        }
+
         private void Numpad_OnKeyPressed(NumpadInput input) {
-            var data = strCtor.Apply(input);
-
-            inputValue = new ModalValue(data.virtualValue, data.DecimalCount);
-            string IFtext = data.virtualString.Length > 0 ? $"{data.virtualString}€" : string.Empty;
-            normalTxt = IFtext;
-            colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
-
-            bool validInput = data.virtualString != string.Empty && data.virtualValue != 0;
-            modalUI.SetInputFieldStr(colorizedTxt, validInput);
-
-            caretIsOn = false;
-            caretState = CaretState.ValidateState;
+            var stateResult = modalFlow.OnVirtualKeyPressed(input);
+            if (stateResult.isValid) {
+                modalUI.SetInputFieldStr(stateResult.displayedText);
+            }
         }
 
         private void ModalUI_OnConfirmIntent() {
             if (!IsActive) { return; }
-            Complete(ModalResult.Confirm(inputValue));
+            Complete(ModalResult.Confirm(modalFlow.CurrentValue));
         }
 
         private void ModalUI_OnCancelIntent() {
@@ -90,42 +78,16 @@ namespace CocaCopa.Modal.Runtime {
             Complete(ModalResult.Cancel());
         }
 
-        private void ManageCaret() {
-            switch (caretState) {
-                case CaretState.OnTimer:
-                    caretTimer -= Time.unscaledDeltaTime;
-                    caretTimer = Mathf.Max(0f, caretTimer);
-                    if (caretTimer == 0f) {
-                        caretState = CaretState.ValidateState;
-                    }
-                    break;
-
-                case CaretState.ValidateState:
-                    if (caretIsOn) {
-                        caretTimer = caretInterval.onDuration;
-                        modalUI.SetInputFieldStr(normalTxt);
-                    }
-                    else {
-                        caretTimer = caretInterval.offDuration;
-                        modalUI.SetInputFieldStr(colorizedTxt);
-                    }
-                    caretIsOn = !caretIsOn;
-                    caretState = CaretState.OnTimer;
-                    break;
-            }
-        }
-
         public Task<ModalResult> ShowAsync(ModalOptions options, CancellationToken ct) {
             if (IsActive) { throw new InvalidOperationException("Modal already active"); }
             if (options.cachedInputValue == CachedInputValue.Erase) {
-                normalTxt = colorizedTxt = string.Empty;
-                strCtor.ResetStr();
+                modalFlow.ResetInput();
                 modalUI.SetInputFieldStr(string.Empty);
             }
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            modalAnim.SetActive(true, options.appearFrom);
+            modalUI.ShowModal(options.appearFrom);
 
             if (ct.CanBeCanceled) {
                 ctr = ct.Register(() => { Complete(ModalResult.Cancel()); });
@@ -145,7 +107,7 @@ namespace CocaCopa.Modal.Runtime {
 
         public void Hide() {
             if (IsActive) { throw new Exception("Cannot hide modal before result"); }
-            modalAnim.SetActive(false);
+            modalUI.HideModal();
         }
 
         #region Class Data
@@ -153,10 +115,6 @@ namespace CocaCopa.Modal.Runtime {
         private struct CaretInterval {
             public float onDuration;
             public float offDuration;
-        };
-
-        private enum CaretState {
-            OnTimer, ValidateState
         };
     }
     #endregion

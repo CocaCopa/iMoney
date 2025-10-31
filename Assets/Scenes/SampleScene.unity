@@ -156,10 +156,10 @@ RectTransform:
   - {fileID: 109991574}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -603.49664}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &16117143
 MonoBehaviour:
@@ -1934,10 +1934,10 @@ RectTransform:
   - {fileID: 919161170}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -331.40924}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &178421380
 MonoBehaviour:
@@ -2654,10 +2654,10 @@ RectTransform:
   - {fileID: 203441554}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -1011.62775}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &275761262
 MonoBehaviour:
@@ -2850,6 +2850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13a9ceaacb90f046b4d2f73f6a12da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.UI.Modal.Runtime::CocaCopa.UI.Modal.NumpadModalUI
+  modalAnim: {fileID: 1383000106}
   vNumpad: {fileID: 1792450233}
   inputField: {fileID: 551428901}
   confirmButton: {fileID: 723951335}
@@ -3456,12 +3457,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e20a9f44cbb15a1408e9dfc8308d72ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.Modal.Runtime::CocaCopa.Modal.Runtime.ModalController
+  modalAnim: {fileID: 1383000106}
   modalUI: {fileID: 321236131}
   vNumpad: {fileID: 1792450233}
+  caretColor: {r: 1, g: 1, b: 1, a: 0.5686275}
   caretInterval:
     onDuration: 0.75
     offDuration: 0.4
-  caretColor: {r: 1, g: 1, b: 1, a: 0.5686275}
 --- !u!1 &490545793
 GameObject:
   m_ObjectHideFlags: 0
@@ -3574,10 +3576,10 @@ RectTransform:
   - {fileID: 1665372257}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -739.54034}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &505627440
 MonoBehaviour:
@@ -4564,52 +4566,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 618771189}
   m_CullTransparentMesh: 1
---- !u!1 &636177711
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 636177713}
-  - component: {fileID: 636177712}
-  m_Layer: 0
-  m_Name: Tester
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &636177712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636177711}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed3bbe91e68cc5948a7420110e2cd294, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tester
-  visible: 0
-  hidden: 0
---- !u!4 &636177713
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 636177711}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 152.93974, y: 1054.7688, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &639083054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6722,10 +6678,10 @@ RectTransform:
   - {fileID: 1284272884}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -467.45294}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &947660807
 MonoBehaviour:
@@ -6915,10 +6871,10 @@ RectTransform:
   - {fileID: 1950605514}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -59.32185}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &984154589
 MonoBehaviour:
@@ -7397,6 +7353,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057696503}
   - component: {fileID: 1057696504}
+  - component: {fileID: 1057696505}
   m_Layer: 5
   m_Name: Masks
   m_TagString: Untagged
@@ -7451,6 +7408,47 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1057696505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057696502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c356339e98224584dacf4b5eed10d4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: iMoney.BalanceFlow.Runtime::iMoney.BalanceFlow.Runtime.Animation.BalanceButtonsAnimation
+  addMask: {fileID: 618771191}
+  spendMask: {fileID: 1878082792}
+  visibilityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  visibilitySpeed: 1.75
+  addAlpha: 235
+  spendAlpa: 235
 --- !u!1001 &1078116919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8023,6 +8021,52 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1196867864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1196867866}
+  - component: {fileID: 1196867865}
+  m_Layer: 0
+  m_Name: BalanceFlow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1196867865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196867864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba11784014df7c44bc0a4fc3209371c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: iMoney.BalanceFlow.Runtime::iMoney.BalanceFlow.Runtime.BalanceFlowController
+  buttonsUI: {fileID: 2083313223}
+  modalService: {fileID: 480278721}
+--- !u!4 &1196867866
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196867864}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 504.38043, y: 1168.118, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1284272883
 GameObject:
   m_ObjectHideFlags: 0
@@ -8249,52 +8293,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305463309}
   m_CullTransparentMesh: 1
---- !u!1 &1307368676
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1307368678}
-  - component: {fileID: 1307368677}
-  m_Layer: 0
-  m_Name: BalanceButtons
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1307368677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307368676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 542c45739f002894386abb2cc82140e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BalanceButtons
-  buttonsUi: {fileID: 2083313223}
-  numpadModal: {fileID: 480278721}
---- !u!4 &1307368678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307368676}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 152.93974, y: 1054.7688, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1317912438
 GameObject:
   m_ObjectHideFlags: 0
@@ -9415,10 +9413,10 @@ RectTransform:
   - {fileID: 123102789}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -195.36555}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511256507
 MonoBehaviour:
@@ -10305,10 +10303,10 @@ RectTransform:
   - {fileID: 1903305794}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -1147.6715}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648685618
 MonoBehaviour:
@@ -12350,10 +12348,10 @@ RectTransform:
   - {fileID: 275486149}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 449.14365, y: -875.58405}
+  m_SizeDelta: {x: 898.2873, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922129697
 MonoBehaviour:
@@ -13663,40 +13661,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2083313219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37af2a02f4b0984a94805e0d04f750e, type: 3}
+  m_Script: {fileID: 11500000, guid: 620372ef35047a2408d4ac6964f300be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BalanceButtonsUI
   addBtn: {fileID: 64630878}
   spendBtn: {fileID: 114204144}
-  addMask: {fileID: 618771190}
-  spendMask: {fileID: 1878082791}
-  addAlpha: 235
-  spendAlpa: 235
-  visibilityCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  visibilitySpeed: 2
+  buttonsAnim: {fileID: 1057696505}
 --- !u!1 &2103425902
 GameObject:
   m_ObjectHideFlags: 0
@@ -15045,6 +15015,5 @@ SceneRoots:
   - {fileID: 2114555070}
   - {fileID: 556247878}
   - {fileID: 1114444436}
-  - {fileID: 1307368678}
-  - {fileID: 636177713}
+  - {fileID: 1196867866}
   - {fileID: 1636646480}
