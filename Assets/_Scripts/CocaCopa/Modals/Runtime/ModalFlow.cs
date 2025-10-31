@@ -24,7 +24,6 @@ namespace CocaCopa.Modal.Runtime {
             strCtor = new VKStringConstructor();
             vCaret = VirtualCaret.NumpadCaret(htmlStrRGBA);
 
-
             this.caretOnDuration = caretOnDuration;
             this.caretOffDuration = caretOffDuration;
             caretState = CaretState.OnTimer;

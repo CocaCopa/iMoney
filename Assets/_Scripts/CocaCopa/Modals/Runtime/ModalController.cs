@@ -41,6 +41,16 @@ namespace CocaCopa.Modal.Runtime {
             CaretManagement();
         }
 
+        private void OnDestroy() {
+            vNumpad.OnVirtualKeyPressed -= Numpad_OnKeyPressed;
+            modalUI.OnConfirmIntent -= ModalUI_OnConfirmIntent;
+            modalUI.OnCancelIntent -= ModalUI_OnCancelIntent;
+
+            if (IsActive && tcs != null) {
+                Complete(ModalResult.Cancel());
+            }
+        }
+
         private void CheckComponents() {
             if (modalAnim == null) { throw new Exception("[ModalController] ModalAnimation not serialized"); }
             if (modalUI == null) { throw new Exception("[ModalController] ModalUI not serialized"); }
