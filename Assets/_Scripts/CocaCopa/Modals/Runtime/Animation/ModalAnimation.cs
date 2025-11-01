@@ -39,6 +39,7 @@ namespace CocaCopa.Modal.Runtime.Animation {
             vkRect.anchoredPosition = vkPositions.hidden;
             delayTimer = delayTime;
             animationSpeed = visibilitySpeed;
+            gameObject.SetActive(true);
             enabled = false;
         }
 
@@ -62,10 +63,10 @@ namespace CocaCopa.Modal.Runtime.Animation {
         }
 
         internal void SetActive(bool active) {
-            SetActive(active, AppearFrom.Left);
+            SetActive(active, Appear.Left);
         }
-        internal void SetActive(bool active, AppearFrom appearFrom) {
-            if (active) { modalPositions = appearFrom == AppearFrom.Left ? modalPositionsLeft : modalPositionsRight; }
+        internal void SetActive(bool active, Appear appearFrom) {
+            if (active) { modalPositions = appearFrom == Appear.Left ? modalPositionsLeft : modalPositionsRight; }
             IsAnimating = true;
             enabled = true;
             delayTimer = delayTime;

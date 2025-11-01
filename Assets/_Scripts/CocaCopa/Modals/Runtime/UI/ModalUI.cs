@@ -40,7 +40,7 @@ namespace CocaCopa.Modal.Runtime.UI {
             OnCancelIntent?.SafeInvoke(nameof(OnCancelIntent));
         }
 
-        internal void ShowModal(AppearFrom appearFrom) => modalAnim.SetActive(true, appearFrom);
+        internal void ShowModal(Appear appearFrom) => modalAnim.SetActive(true, appearFrom);
         internal void HideModal() => modalAnim.SetActive(false);
     }
 }

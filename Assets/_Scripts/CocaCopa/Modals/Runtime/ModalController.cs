@@ -97,7 +97,7 @@ namespace CocaCopa.Modal.Runtime {
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            modalUI.ShowModal(options.appearFrom);
+            modalUI.ShowModal(options.inputAnimOpt.appear);
 
             if (ct.CanBeCanceled) {
                 ctr = ct.Register(() => { Complete(ModalResult.Cancel()); });

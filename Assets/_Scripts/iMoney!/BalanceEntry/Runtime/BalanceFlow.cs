@@ -10,6 +10,13 @@ namespace iMoney.BalanceEntry.Runtime {
         private readonly IModalService modalService;
         private readonly CancellationToken ct;
 
+        private readonly static AnimOptions inputAnimAdd = new AnimOptions(Appear.Left, Disappear.Left);
+        private readonly static AnimOptions vkAnimAdd = new AnimOptions(Appear.Bottom, Disappear.Bottom);
+        private readonly static AnimOptions inputAnimSpend = new AnimOptions(Appear.Right, Disappear.Left);
+        private readonly static AnimOptions vkAnimSpend = new AnimOptions(Appear.Bottom, Disappear.Bottom);
+        private readonly ModalOptions addOptions = new ModalOptions(CachedInputValue.Erase, inputAnimAdd, vkAnimAdd);
+        private readonly ModalOptions spendOptions = new ModalOptions(CachedInputValue.Erase, inputAnimSpend, vkAnimSpend);
+
         internal BalanceFlow(BalanceButtonsUI buttonsUI, IModalService modalService, CancellationToken ct) {
             this.buttonsUI = buttonsUI;
             this.modalService = modalService;
@@ -25,15 +32,13 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private void HandleAddIntent() {
-            ModalOptions options = new ModalOptions(AppearFrom.Left, CachedInputValue.Erase);
             buttonsUI.HideSpendButton();
-            _ = HandleButtonPress(options, HandleButton.Add);
+            _ = HandleButtonPress(addOptions, HandleButton.Add);
         }
 
         private void HandleSpendIntent() {
-            ModalOptions options = new ModalOptions(AppearFrom.Right, CachedInputValue.Erase);
             buttonsUI.HideAddButton();
-            _ = HandleButtonPress(options, HandleButton.Spend);
+            _ = HandleButtonPress(spendOptions, HandleButton.Spend);
         }
 
         private async Task HandleButtonPress(ModalOptions options, HandleButton btn) {

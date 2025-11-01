@@ -1,10 +1,16 @@
 namespace CocaCopa.Modal.Contracts {
     public readonly struct ModalOptions {
-        public readonly AppearFrom appearFrom;
         public readonly CachedInputValue cachedInputValue;
-        public ModalOptions(AppearFrom appearFrom, CachedInputValue cachedInputValue) {
-            this.appearFrom = appearFrom;
+        public readonly AnimOptions inputAnimOpt;
+        public readonly AnimOptions vkAnimOpt;
+        public ModalOptions(CachedInputValue cachedInputValue, AnimOptions inputAnimOpt, AnimOptions vkAnimOpt) {
             this.cachedInputValue = cachedInputValue;
+            this.inputAnimOpt = inputAnimOpt;
+            this.vkAnimOpt = vkAnimOpt;
         }
+    }
+
+    public enum CachedInputValue {
+        Erase, Keep
     }
 }
