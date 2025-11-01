@@ -97,7 +97,9 @@ namespace CocaCopa.Modal.Runtime {
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            modalUI.ShowModal(options.inputAnimOpt.appear);
+            modalAnim.SetInputAnimOptions(options.inputAnimOpt);
+            modalAnim.SetInputAnimOptions(options.vkAnimOpt);
+            modalAnim.SetActive(true);
 
             if (ct.CanBeCanceled) {
                 ctr = ct.Register(() => { Complete(ModalResult.Cancel()); });
@@ -117,7 +119,7 @@ namespace CocaCopa.Modal.Runtime {
 
         public void Hide() {
             if (IsActive) { throw new Exception("Cannot hide modal before result"); }
-            modalUI.HideModal();
+            modalAnim.SetActive(false);
         }
 
         #region Class Data

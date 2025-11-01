@@ -9,8 +9,6 @@ using UnityEngine.UI;
 namespace CocaCopa.Modal.Runtime.UI {
     internal class ModalUI : MonoBehaviour {
         [Header("References")]
-        [SerializeField] private ModalAnimation modalAnim;
-        [SerializeField] private VirtualNumpad vNumpad;
         [SerializeField] private TMP_InputField inputField;
         [SerializeField] private Button confirmButton;
         [SerializeField] private Button cancelButton;
@@ -39,8 +37,5 @@ namespace CocaCopa.Modal.Runtime.UI {
         private void OnCancelClicked() {
             OnCancelIntent?.SafeInvoke(nameof(OnCancelIntent));
         }
-
-        internal void ShowModal(Appear appearFrom) => modalAnim.SetActive(true, appearFrom);
-        internal void HideModal() => modalAnim.SetActive(false);
     }
 }

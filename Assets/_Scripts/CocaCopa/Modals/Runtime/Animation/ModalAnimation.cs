@@ -16,11 +16,17 @@ namespace CocaCopa.Modal.Runtime.Animation {
             get; private set;
         }
 
+        private AnimOptions inputAnimOpt = AnimOptions.Left;
+        private AnimOptions vkAnimOpt = AnimOptions.Bottom;
+
         private RectPositions modalPositionsLeft;
         private RectPositions modalPositionsRight;
-        private RectPositions vkPositions;
+        private RectPositions vkPositionsLeft;
+        private RectPositions vkPositionsRight;
+        private RectPositions vkPositionsBottom;
 
         private RectPositions modalPositions;
+        private RectPositions vkPositions;
 
         private float modalAnimPoints;
         private float vkAnimPoints;
@@ -34,7 +40,6 @@ namespace CocaCopa.Modal.Runtime.Animation {
             if (isInitialized) { return; }
             isInitialized = true;
             Canvas.ForceUpdateCanvases();
-            FindPositions();
             modalRect.anchoredPosition = modalPositionsLeft.hidden;
             vkRect.anchoredPosition = vkPositions.hidden;
             delayTimer = delayTime;
@@ -43,30 +48,17 @@ namespace CocaCopa.Modal.Runtime.Animation {
             enabled = false;
         }
 
-        private void FindPositions() {
-            var modalVisible = modalRect.anchoredPosition;
-            var vkVisible = vkRect.anchoredPosition;
-
-            var modalWidth = modalRect.rect.width;
-            var vkHeight = vkRect.rect.height;
-            var modalHiddenLeft = modalVisible + Vector2.left * modalWidth;
-            var modalHiddenRight = modalVisible + Vector2.right * modalWidth;
-            var vkHidden = vkVisible + Vector2.down * vkHeight;
-
-            modalPositionsLeft = new RectPositions(modalVisible, modalHiddenLeft);
-            modalPositionsRight = new RectPositions(modalVisible, modalHiddenRight);
-            vkPositions = new RectPositions(vkVisible, vkHidden);
-        }
-
         private void Update() {
             PlaySequence();
         }
 
+        internal void SetInputAnimOptions(AnimOptions opt) => inputAnimOpt = opt;
+        internal void SetVkAnimOptions(AnimOptions opt) => vkAnimOpt = opt;
         internal void SetActive(bool active) {
-            SetActive(active, Appear.Left);
-        }
-        internal void SetActive(bool active, Appear appearFrom) {
-            if (active) { modalPositions = appearFrom == Appear.Left ? modalPositionsLeft : modalPositionsRight; }
+            if (active) {
+                modalPositions = GetInputShowPositions(inputAnimOpt.appear);
+                vkPositions = GetVkShowPositions(vkAnimOpt.appear);
+            }
             IsAnimating = true;
             enabled = true;
             delayTimer = delayTime;
@@ -88,6 +80,24 @@ namespace CocaCopa.Modal.Runtime.Animation {
                 enabled = false;
                 IsAnimating = false;
             }
+        }
+
+        private RectPositions GetInputShowPositions(Appear appear) {
+            return appear switch {
+                Appear.Left => modalPositionsLeft,
+                Appear.Right => modalPositionsRight,
+                Appear.Bottom => throw new System.NotImplementedException(),
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
+        }
+
+        private RectPositions GetVkShowPositions(Appear appear) {
+            return appear switch {
+                Appear.Left => vkPositionsLeft,
+                Appear.Right => vkPositionsRight,
+                Appear.Bottom => vkPositionsBottom,
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
         }
 
         private void LerpRectTransform(RectTransform rectTransform, ref float animPoints, RectPositions positions) {

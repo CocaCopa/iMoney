@@ -6,6 +6,9 @@ namespace CocaCopa.Modal.Contracts {
             this.appear = appear;
             this.disappear = disappear;
         }
+        public static AnimOptions Left => new AnimOptions(Appear.Left, Disappear.Left);
+        public static AnimOptions Right => new AnimOptions(Appear.Right, Disappear.Right);
+        public static AnimOptions Bottom => new AnimOptions(Appear.Bottom, Disappear.Bottom);
     }
 
     public enum Appear {
