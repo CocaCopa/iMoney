@@ -7,20 +7,22 @@ namespace CocaCopa.Modal.Runtime.Animation {
         [SerializeField] private RectTransform inputRect;
         [SerializeField] private RectTransform vkRect;
 
-        [Header("Animation")]
-        [SerializeField] private AnimationCurve visibilityCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [SerializeField] private float visibilitySpeed = 1f;
+        [Header("Animation Flow")]
         [SerializeField] private float delayTime;
+
+
+        [Header("Input Animation")]
+        [SerializeField] private AnimationCurve inputCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        [SerializeField] private float inputAnimSpeed = 1.5f;
+
+        [Header("Virtual Keyboard Animation")]
+        [SerializeField] private AnimationCurve vkCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+        [SerializeField] private float vkAnimSpeed = 1.5f;
 
         private ModalAnimationFlow animFlow;
         private Coroutine animRoutine;
 
-        internal bool IsAnimating {
-            get; private set;
-        }
-
-        private AnimOptions inputAnimOpt = AnimOptions.Left;
-        private AnimOptions vkAnimOpt = AnimOptions.Bottom;
+        internal bool IsAnimating => !animFlow.Completed;
 
         private bool isInitialized = false;
 
@@ -34,24 +36,22 @@ namespace CocaCopa.Modal.Runtime.Animation {
 
         private ModalAnimationFlow CreateFlow() {
             return new ModalAnimationFlow(
-                new ModalAnimationFlow.ModalObject(AnimOptions.Left, inputRect, visibilityCurve, visibilitySpeed),
-                new ModalAnimationFlow.ModalObject(AnimOptions.Bottom, vkRect, visibilityCurve, visibilitySpeed),
+                new ModalAnimationFlow.ModalObject(AnimOptions.Left, inputRect, inputCurve, inputAnimSpeed),
+                new ModalAnimationFlow.ModalObject(AnimOptions.Bottom, vkRect, vkCurve, vkAnimSpeed),
                 new ModalAnimationFlow.FlowOptions(ModalAnimationFlow.AnimateFirst.Input, delayTime)
             );
         }
 
-        internal void SetInputAnimOptions(AnimOptions opt) => inputAnimOpt = opt;
-        internal void SetVkAnimOptions(AnimOptions opt) => vkAnimOpt = opt;
-
-        internal void SetActive(bool active, ModalOptions options) {
-
+        internal void SetActive(bool active, AnimOptions inputOpt, AnimOptions vkOpt) {
+            animFlow.OverrideAnimOptions(inputOpt, vkOpt);
+            SetActive(active);
         }
-        internal void SetActive(bool active) => animRoutine ??= StartCoroutine(TickAnim(active));
+        internal void SetActive(bool active) => animRoutine ??= StartCoroutine(TickAnim(!active));
 
 
-        private System.Collections.IEnumerator TickAnim(bool active) {
+        private System.Collections.IEnumerator TickAnim(bool reverse) {
             do {
-                animFlow.TickSequence(Time.unscaledDeltaTime, !active);
+                animFlow.TickSequence(Time.unscaledDeltaTime, reverse);
                 yield return null;
             } while (!animFlow.Completed);
             animRoutine = null;

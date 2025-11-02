@@ -32,11 +32,13 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private void HandleAddIntent() {
+            if (modalService.IsActive || modalService.IsAnimating) { return; }
             buttonsUI.HideSpendButton();
             _ = HandleButtonPress(addOptions, HandleButton.Add);
         }
 
         private void HandleSpendIntent() {
+            if (modalService.IsActive || modalService.IsAnimating) { return; }
             buttonsUI.HideAddButton();
             _ = HandleButtonPress(spendOptions, HandleButton.Spend);
         }

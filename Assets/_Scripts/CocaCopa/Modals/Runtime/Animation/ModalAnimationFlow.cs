@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace CocaCopa.Modal.Runtime.Animation {
     public class ModalAnimationFlow {
-        private readonly ModalObject inputObj;
-        private readonly ModalObject vkObj;
+        private ModalObject inputObj;
+        private ModalObject vkObj;
         private readonly FlowOptions flowOptions;
 
         private RectPositions inputPositions;
@@ -26,6 +26,7 @@ namespace CocaCopa.Modal.Runtime.Animation {
             this.vkObj = vkObj;
             flowOptions = options;
             delayTimer = flowOptions.delay;
+            Completed = true;
 
             CalcInputPositions();
             CalcVkPositions();
@@ -33,6 +34,11 @@ namespace CocaCopa.Modal.Runtime.Animation {
             SetAnimOrder(flowOptions.animateFirst);
             firstAnimatable.rectTransform.anchoredPosition = firstAnimPositions.hiddenLeft;
             secondAnimatable.rectTransform.anchoredPosition = secondAnimPositions.hiddenLeft;
+        }
+
+        internal void OverrideAnimOptions(AnimOptions inputOpt, AnimOptions vkOpt) {
+            inputObj.animOptions = inputOpt;
+            vkObj.animOptions = vkOpt;
         }
 
         internal void SetAnimOrder(AnimateFirst first) {
@@ -76,33 +82,33 @@ namespace CocaCopa.Modal.Runtime.Animation {
 
         internal void TickSequence(float deltaTime, bool reverse) {
             float limit = reverse ? 0f : 1f;
-            deltaTime *= reverse ? -1 : 1;
-            Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime);
+            int m = reverse ? -1 : 1;
+            Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime * m);
             delayTimer -= deltaTime;
             delayTimer = Mathf.Max(0f, delayTimer);
             if (delayTimer == 0f) {
-                Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime);
+                Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime * m);
             }
 
             Completed = firstAnimPoints == limit && secondAnimPoints == limit;
-            if (Completed) delayTimer = flowOptions.delay;
+            if (Completed) { delayTimer = flowOptions.delay; }
         }
 
         private void Lerp(ModalObject obj, ref float animPoints, RectPositions positions, float dt) {
             animPoints += obj.animSpeed * dt;
             animPoints = Mathf.Clamp01(animPoints);
             float time = obj.animCurve.Evaluate(animPoints);
-            Vector2 targetPos = obj.animOptions.appear switch {
+            Vector2 hiddenPos = obj.animOptions.appear switch {
                 Appear.Left => positions.hiddenLeft,
-                Appear.Right => positions.hiddenLeft,
+                Appear.Right => positions.hiddenRight,
                 Appear.Bottom => positions.hiddenBottom,
                 _ => positions.hiddenLeft
             };
-            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(targetPos, positions.visible, time);
+            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(hiddenPos, positions.visible, time);
         }
 
-        internal readonly struct ModalObject {
-            public readonly AnimOptions animOptions;
+        internal class ModalObject {
+            public AnimOptions animOptions;
             public readonly RectTransform rectTransform;
             public readonly AnimationCurve animCurve;
             public readonly float animSpeed;

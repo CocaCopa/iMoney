@@ -6,5 +6,6 @@ namespace CocaCopa.Modal.Contracts {
         Task<ModalResult> ShowAsync(ModalOptions options, CancellationToken ct);
         void Hide();
         bool IsActive { get; }
+        bool IsAnimating { get; }
     }
 }

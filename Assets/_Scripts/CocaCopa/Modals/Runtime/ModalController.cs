@@ -23,9 +23,8 @@ namespace CocaCopa.Modal.Runtime {
         private TaskCompletionSource<ModalResult> tcs;
         private CancellationTokenRegistration ctr;
 
-        public bool IsActive {
-            get; private set;
-        }
+        public bool IsActive { get; private set; }
+        public bool IsAnimating => modalAnim.IsAnimating;
 
         private void Awake() {
             modalFlow = new ModalFlow(ColorUtility.ToHtmlStringRGBA(caretColor), caretInterval.onDuration, caretInterval.offDuration);
@@ -97,9 +96,7 @@ namespace CocaCopa.Modal.Runtime {
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
 
-            modalAnim.SetInputAnimOptions(options.inputAnimOpt);
-            modalAnim.SetInputAnimOptions(options.vkAnimOpt);
-            modalAnim.SetActive(true);
+            modalAnim.SetActive(true, options.inputAnimOpt, options.vkAnimOpt);
 
             if (ct.CanBeCanceled) {
                 ctr = ct.Register(() => { Complete(ModalResult.Cancel()); });
