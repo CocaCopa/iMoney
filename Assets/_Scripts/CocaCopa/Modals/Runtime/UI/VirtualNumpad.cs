@@ -1,11 +1,9 @@
-using System;
-using CocaCopa.Core.Extensions;
 using CocaCopa.Modal.Runtime.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CocaCopa.Modal.Runtime.UI {
-    internal class VirtualNumpad : MonoBehaviour {
+    internal class VirtualNumpad : VirtualKeyboardBase {
         [Header("Digit Rows")]
         [SerializeField] private Button numpad1;
         [SerializeField] private Button numpad2;
@@ -22,29 +20,19 @@ namespace CocaCopa.Modal.Runtime.UI {
         [SerializeField] private Button numpadDot;
         [SerializeField] private Button numpad0;
 
-        internal event Action<NumpadInput> OnVirtualKeyPressed;
-
-        private void Awake() {
-            AddListeners();
-        }
-
-        private void AddListeners() {
-            numpad1.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit1));
-            numpad2.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit2));
-            numpad3.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit3));
-            numpad4.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit4));
-            numpad5.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit5));
-            numpad6.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit6));
-            numpad7.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit7));
-            numpad8.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit8));
-            numpad9.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit9));
-            numpad0.onClick.AddListener(() => RaiseEvent(NumpadInput.Digit0));
-            numpadDot.onClick.AddListener(() => RaiseEvent(NumpadInput.DecimalPoint));
-            numpadBackspace.onClick.AddListener(() => RaiseEvent(NumpadInput.Backspace));
-        }
-
-        private void RaiseEvent(NumpadInput input) {
-            OnVirtualKeyPressed?.SafeInvoke(input, nameof(OnVirtualKeyPressed));
+        protected override void AddListeners() {
+            numpad1.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit1));
+            numpad2.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit2));
+            numpad3.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit3));
+            numpad4.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit4));
+            numpad5.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit5));
+            numpad6.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit6));
+            numpad7.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit7));
+            numpad8.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit8));
+            numpad9.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit9));
+            numpad0.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Digit0));
+            numpadDot.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.DecimalPoint));
+            numpadBackspace.onClick.AddListener(() => InvokeOnKeyPressed(NumpadInput.Backspace));
         }
     }
 }

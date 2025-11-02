@@ -12,7 +12,7 @@ namespace CocaCopa.Modal.Runtime {
         [Header("References")]
         [SerializeField] private ModalAnimation modalAnim;
         [SerializeField] private ModalUI modalUI;
-        [SerializeField] private VirtualNumpad vNumpad;
+        [SerializeField] private VirtualKeyboardBase vkBase;
 
         [Header("Caret")]
         [SerializeField] private Color caretColor = Color.white;
@@ -41,7 +41,7 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void OnDestroy() {
-            vNumpad.OnVirtualKeyPressed -= Numpad_OnKeyPressed;
+            vkBase.OnVirtualKeyPressed -= Numpad_OnKeyPressed;
             modalUI.OnConfirmIntent -= ModalUI_OnConfirmIntent;
             modalUI.OnCancelIntent -= ModalUI_OnCancelIntent;
 
@@ -53,11 +53,11 @@ namespace CocaCopa.Modal.Runtime {
         private void CheckComponents() {
             if (modalAnim == null) { throw new Exception("[ModalController] ModalAnimation not serialized"); }
             if (modalUI == null) { throw new Exception("[ModalController] ModalUI not serialized"); }
-            if (vNumpad == null) { throw new Exception("[ModalController] VirtualNumpad not serialized"); }
+            if (vkBase == null) { throw new Exception("[ModalController] VirtualNumpad not serialized"); }
         }
 
         private void SubscribeToEvents() {
-            vNumpad.OnVirtualKeyPressed += Numpad_OnKeyPressed;
+            vkBase.OnVirtualKeyPressed += Numpad_OnKeyPressed;
             modalUI.OnConfirmIntent += ModalUI_OnConfirmIntent;
             modalUI.OnCancelIntent += ModalUI_OnCancelIntent;
         }

@@ -17,6 +17,10 @@ namespace CocaCopa.Modal.Runtime.Domain {
             return NumpadRules.ExtractData(state.Text);
         }
 
+        internal KeyboardData Apply(QwertyInput input) {
+            throw new System.NotImplementedException();
+        }
+
         internal void ResetStr() => state = NumpadState.EmptyState(MaxDecimal);
     }
 }
