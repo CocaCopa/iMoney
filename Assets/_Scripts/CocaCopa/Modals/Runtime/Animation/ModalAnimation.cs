@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CocaCopa.Modal.Runtime.Animation {
     internal class ModalAnimation : MonoBehaviour {
         [Header("References")]
-        [SerializeField] private RectTransform modalRect;
+        [SerializeField] private RectTransform inputRect;
         [SerializeField] private RectTransform vkRect;
 
         [Header("Animation")]
@@ -13,6 +13,7 @@ namespace CocaCopa.Modal.Runtime.Animation {
         [SerializeField] private float delayTime;
 
         private ModalAnimationFlow animFlow;
+        private Coroutine animRoutine;
 
         internal bool IsAnimating {
             get; private set;
@@ -33,7 +34,7 @@ namespace CocaCopa.Modal.Runtime.Animation {
 
         private ModalAnimationFlow CreateFlow() {
             return new ModalAnimationFlow(
-                new ModalAnimationFlow.ModalObject(AnimOptions.Left, modalRect, visibilityCurve, visibilitySpeed),
+                new ModalAnimationFlow.ModalObject(AnimOptions.Left, inputRect, visibilityCurve, visibilitySpeed),
                 new ModalAnimationFlow.ModalObject(AnimOptions.Bottom, vkRect, visibilityCurve, visibilitySpeed),
                 new ModalAnimationFlow.FlowOptions(ModalAnimationFlow.AnimateFirst.Input, delayTime)
             );
@@ -41,12 +42,19 @@ namespace CocaCopa.Modal.Runtime.Animation {
 
         internal void SetInputAnimOptions(AnimOptions opt) => inputAnimOpt = opt;
         internal void SetVkAnimOptions(AnimOptions opt) => vkAnimOpt = opt;
-        internal void SetActive(bool active) => StartCoroutine(TickAnim(active));
+
+        internal void SetActive(bool active, ModalOptions options) {
+
+        }
+        internal void SetActive(bool active) => animRoutine ??= StartCoroutine(TickAnim(active));
+
 
         private System.Collections.IEnumerator TickAnim(bool active) {
-            IsAnimating = true;
-            yield return StartCoroutine(animFlow.TickSequence(Time.unscaledDeltaTime, !active));
-            IsAnimating = false;
+            do {
+                animFlow.TickSequence(Time.unscaledDeltaTime, !active);
+                yield return null;
+            } while (!animFlow.Completed);
+            animRoutine = null;
         }
     }
 }

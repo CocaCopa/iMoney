@@ -15,10 +15,17 @@ namespace CocaCopa.Modal.Runtime.Animation {
         private RectPositions firstAnimPositions;
         private RectPositions secondAnimPositions;
 
+        private float firstAnimPoints;
+        private float secondAnimPoints;
+        private float delayTimer;
+
+        internal bool Completed { get; private set; }
+
         internal ModalAnimationFlow(ModalObject inputObj, ModalObject vkObj, FlowOptions options) {
             this.inputObj = inputObj;
             this.vkObj = vkObj;
             flowOptions = options;
+            delayTimer = flowOptions.delay;
 
             CalcInputPositions();
             CalcVkPositions();
@@ -67,22 +74,18 @@ namespace CocaCopa.Modal.Runtime.Animation {
             vkPositions = new RectPositions(vkVisible, vkHiddenLeft, vkHiddenRight, vkHiddenBottom);
         }
 
-        internal System.Collections.IEnumerator TickSequence(float deltaTime, bool reverse) {
+        internal void TickSequence(float deltaTime, bool reverse) {
             float limit = reverse ? 0f : 1f;
-            float m = reverse ? -1 : 1; // Will multiply with dt to reverse the animation if reverse = true
-            float delayTimer = flowOptions.delay;
-            float firstAnimPoints = 0f;
-            float secondAnimPoints = 0f;
-
-            while (firstAnimPoints == limit && secondAnimPoints == limit) {
-                Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime * m);
-                delayTimer -= deltaTime;
-                delayTimer = Mathf.Max(0f, delayTimer);
-                if (delayTimer == 0f) {
-                    Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime);
-                }
-                yield return null;
+            deltaTime *= reverse ? -1 : 1;
+            Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime);
+            delayTimer -= deltaTime;
+            delayTimer = Mathf.Max(0f, delayTimer);
+            if (delayTimer == 0f) {
+                Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime);
             }
+
+            Completed = firstAnimPoints == limit && secondAnimPoints == limit;
+            if (Completed) delayTimer = flowOptions.delay;
         }
 
         private void Lerp(ModalObject obj, ref float animPoints, RectPositions positions, float dt) {

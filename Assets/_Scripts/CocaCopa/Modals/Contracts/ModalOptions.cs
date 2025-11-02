@@ -1,4 +1,5 @@
 namespace CocaCopa.Modal.Contracts {
+    [System.Serializable]
     public readonly struct ModalOptions {
         public readonly CachedInputValue cachedInputValue;
         public readonly AnimOptions inputAnimOpt;
