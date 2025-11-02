@@ -6,37 +6,40 @@ namespace CocaCopa.Modal.Runtime.Animation {
         private readonly ModalObject inputObj;
         private readonly ModalObject vkObj;
         private readonly FlowOptions flowOptions;
-        private readonly AnimateFirst animateFirst;
-        private readonly float delayTime;
-
-        private readonly ModalObject firstAnimatable;
-        private readonly ModalObject secondAnimatable;
-
-        private RectPositions inputPositionsLeft;
-        private RectPositions inputPositionsRight;
-        private RectPositions vkPositionsLeft;
-        private RectPositions vkPositionsRight;
-        private RectPositions vkPositionsBottom;
 
         private RectPositions inputPositions;
         private RectPositions vkPositions;
+
+        private ModalObject firstAnimatable;
+        private ModalObject secondAnimatable;
+        private RectPositions firstAnimPositions;
+        private RectPositions secondAnimPositions;
 
         internal ModalAnimationFlow(ModalObject inputObj, ModalObject vkObj, FlowOptions options) {
             this.inputObj = inputObj;
             this.vkObj = vkObj;
             flowOptions = options;
 
-            (firstAnimatable, secondAnimatable) = GetAnimatables();
             CalcInputPositions();
             CalcVkPositions();
+
+            SetAnimOrder(flowOptions.animateFirst);
+            firstAnimatable.rectTransform.anchoredPosition = firstAnimPositions.hiddenLeft;
+            secondAnimatable.rectTransform.anchoredPosition = secondAnimPositions.hiddenLeft;
         }
 
-        private (ModalObject, ModalObject) GetAnimatables() {
-            if (flowOptions.animateFirst == AnimateFirst.Input) {
-                return (inputObj, vkObj);
+        internal void SetAnimOrder(AnimateFirst first) {
+            if (first == AnimateFirst.Input) {
+                firstAnimatable = inputObj;
+                firstAnimPositions = inputPositions;
+                secondAnimatable = vkObj;
+                secondAnimPositions = vkPositions;
             }
             else {
-                return (vkObj, inputObj);
+                firstAnimatable = vkObj;
+                firstAnimPositions = vkPositions;
+                secondAnimatable = inputObj;
+                secondAnimPositions = inputPositions;
             }
         }
 
@@ -48,8 +51,7 @@ namespace CocaCopa.Modal.Runtime.Animation {
             var modalHiddenLeft = inputVisible + Vector2.left * modalWidth;
             var modalHiddenRight = inputVisible + Vector2.right * modalWidth;
 
-            inputPositionsLeft = new RectPositions(inputVisible, modalHiddenLeft);
-            inputPositionsRight = new RectPositions(inputVisible, modalHiddenRight);
+            inputPositions = new RectPositions(inputVisible, modalHiddenLeft, modalHiddenRight, Vector2.zero);
         }
 
         private void CalcVkPositions() {
@@ -62,26 +64,22 @@ namespace CocaCopa.Modal.Runtime.Animation {
             var vkHiddenLeft = vkVisible + Vector2.left * vkWidth;
             var vkHiddenRight = vkVisible + Vector2.right * vkWidth;
 
-            vkPositionsLeft = new RectPositions(vkVisible, vkHiddenLeft);
-            vkPositionsRight = new RectPositions(vkVisible, vkHiddenRight);
-            vkPositionsBottom = new RectPositions(vkVisible, vkHiddenBottom);
+            vkPositions = new RectPositions(vkVisible, vkHiddenLeft, vkHiddenRight, vkHiddenBottom);
         }
 
-        private System.Collections.IEnumerator TickSequence(float deltaTime, bool reverse) {
+        internal System.Collections.IEnumerator TickSequence(float deltaTime, bool reverse) {
             float limit = reverse ? 0f : 1f;
-            float m = reverse ? -1 : 1;
-            float inputAnimSpeed = m * inputObj.animSpeed;
-            float vkAnimSpeed = m * vkObj.animSpeed;
+            float m = reverse ? -1 : 1; // Will multiply with dt to reverse the animation if reverse = true
             float delayTimer = flowOptions.delay;
             float firstAnimPoints = 0f;
             float secondAnimPoints = 0f;
 
             while (firstAnimPoints == limit && secondAnimPoints == limit) {
-                // Lerp(firstAnimatable, firstAnimPoints, );
+                Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime * m);
                 delayTimer -= deltaTime;
                 delayTimer = Mathf.Max(0f, delayTimer);
                 if (delayTimer == 0f) {
-                    // TODO: Lerp 2nd animatable
+                    Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime);
                 }
                 yield return null;
             }
@@ -91,36 +89,23 @@ namespace CocaCopa.Modal.Runtime.Animation {
             animPoints += obj.animSpeed * dt;
             animPoints = Mathf.Clamp01(animPoints);
             float time = obj.animCurve.Evaluate(animPoints);
-            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(positions.hidden, positions.visible, time);
-        }
-
-        private RectPositions GetInputShowPositions(Appear appear) {
-            return appear switch {
-                Appear.Left => inputPositionsLeft,
-                Appear.Right => inputPositionsRight,
-                Appear.Bottom => throw new System.NotImplementedException(),
-                _ => throw new System.ArgumentOutOfRangeException()
+            Vector2 targetPos = obj.animOptions.appear switch {
+                Appear.Left => positions.hiddenLeft,
+                Appear.Right => positions.hiddenLeft,
+                Appear.Bottom => positions.hiddenBottom,
+                _ => positions.hiddenLeft
             };
+            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(targetPos, positions.visible, time);
         }
-
-        private RectPositions GetVkShowPositions(Appear appear) {
-            return appear switch {
-                Appear.Left => vkPositionsLeft,
-                Appear.Right => vkPositionsRight,
-                Appear.Bottom => vkPositionsBottom,
-                _ => throw new System.ArgumentOutOfRangeException()
-            };
-        }
-
 
         internal readonly struct ModalObject {
-            public readonly ModalOptions modalOptions;
+            public readonly AnimOptions animOptions;
             public readonly RectTransform rectTransform;
             public readonly AnimationCurve animCurve;
             public readonly float animSpeed;
 
-            public ModalObject(ModalOptions modalOptions, RectTransform rectTransform, AnimationCurve animCurve, float animSpeed) {
-                this.modalOptions = modalOptions;
+            public ModalObject(AnimOptions animOptions, RectTransform rectTransform, AnimationCurve animCurve, float animSpeed) {
+                this.animOptions = animOptions;
                 this.rectTransform = rectTransform;
                 this.animCurve = animCurve;
                 this.animSpeed = animSpeed;

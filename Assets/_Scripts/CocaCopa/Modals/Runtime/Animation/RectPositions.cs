@@ -3,10 +3,14 @@ using UnityEngine;
 namespace CocaCopa.Modal.Runtime.Animation {
     internal class RectPositions {
         internal Vector2 visible;
-        internal Vector2 hidden;
-        internal RectPositions(Vector2 visible, Vector2 hidden) {
+        internal Vector2 hiddenLeft;
+        internal Vector2 hiddenRight;
+        internal Vector2 hiddenBottom;
+        internal RectPositions(Vector2 visible, Vector2 hiddenLeft, Vector2 hiddenRight, Vector2 hiddenBottom) {
             this.visible = visible;
-            this.hidden = hidden;
+            this.hiddenLeft = hiddenLeft;
+            this.hiddenRight = hiddenRight;
+            this.hiddenBottom = hiddenBottom;
         }
     }
 }

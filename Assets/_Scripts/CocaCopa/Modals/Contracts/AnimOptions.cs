@@ -1,5 +1,5 @@
 namespace CocaCopa.Modal.Contracts {
-    public readonly struct AnimOptions {
+    public sealed class AnimOptions {
         public readonly Appear appear;
         public readonly Disappear disappear;
         public AnimOptions(Appear appear, Disappear disappear) {
