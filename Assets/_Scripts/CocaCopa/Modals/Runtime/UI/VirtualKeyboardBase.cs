@@ -1,10 +1,11 @@
-using CocaCopa.Modal.Runtime.Internal;
+using System;
 using CocaCopa.Core.Extensions;
+using CocaCopa.Modal.Runtime.Internal;
 using UnityEngine;
 
 namespace CocaCopa.Modal.Runtime.UI {
     internal abstract class VirtualKeyboardBase : MonoBehaviour {
-        internal event System.Action<NumpadInput> OnVirtualKeyPressed;
+        internal event Action<Enum> OnVirtualKeyPressed;
 
         protected virtual void Awake() {
             AddListeners();
@@ -12,6 +13,8 @@ namespace CocaCopa.Modal.Runtime.UI {
 
         protected abstract void AddListeners();
 
-        protected void InvokeOnKeyPressed(NumpadInput input) => OnVirtualKeyPressed?.SafeInvoke(input, nameof(OnVirtualKeyPressed));
+        protected void InvokeOnKeyPressed<T>(T input) where T : Enum {
+            OnVirtualKeyPressed?.SafeInvoke(input, nameof(OnVirtualKeyPressed));
+        }
     }
 }

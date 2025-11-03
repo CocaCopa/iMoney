@@ -1,12 +1,12 @@
 namespace CocaCopa.Modal.Contracts {
     public readonly struct ModalResult {
         public bool Confirmed { get; }
-        public ModalValue Value { get; }
-        private ModalResult(bool confirmed, ModalValue modalValue) {
+        public string Text { get; }
+        private ModalResult(bool confirmed, string text) {
             Confirmed = confirmed;
-            Value = modalValue;
+            Text = text;
         }
-        public static ModalResult Cancel() => new ModalResult(false, new ModalValue());
-        public static ModalResult Confirm(ModalValue value) => new ModalResult(true, value);
+        public static ModalResult Cancel() => new ModalResult(false, string.Empty);
+        public static ModalResult Confirm(string text) => new ModalResult(true, text);
     }
 }

@@ -1,4 +1,3 @@
-using CocaCopa.Modal.Runtime.Domain;
 using CocaCopa.Modal.Runtime.Internal;
 
 namespace CocaCopa.Modal.Runtime.Domain {
@@ -12,12 +11,16 @@ namespace CocaCopa.Modal.Runtime.Domain {
             state = NumpadState.EmptyState(MaxDecimal);
         }
 
-        internal NumpadData Apply(NumpadInput input) {
-            state = NumpadRules.Apply(state, input);
-            return NumpadRules.ExtractData(state.Text);
+        internal string Apply(System.Enum input) {
+            if (input is NumpadInput numpad) {
+                state = NumpadRules.Apply(state, numpad);
+                return state.Text;
+            }
+
+            throw new System.Exception();
         }
 
-        internal KeyboardData Apply(QwertyInput input) {
+        private KeyboardData ApplyQwerty(QwertyInput input) {
             throw new System.NotImplementedException();
         }
 

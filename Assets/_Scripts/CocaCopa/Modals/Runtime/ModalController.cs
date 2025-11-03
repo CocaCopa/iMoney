@@ -70,7 +70,7 @@ namespace CocaCopa.Modal.Runtime {
             }
         }
 
-        private void Numpad_OnKeyPressed(NumpadInput input) {
+        private void Numpad_OnKeyPressed(Enum input) {
             var stateResult = modalFlow.OnVirtualKeyPressed(input);
             if (stateResult.isValid) {
                 modalUI.SetInputFieldStr(stateResult.displayedText);

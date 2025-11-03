@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CocaCopa.Core.Text;
 using CocaCopa.Modal.Contracts;
 using iMoney.BalanceEntry.Runtime.UI;
 

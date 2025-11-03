@@ -2,23 +2,6 @@ using CocaCopa.Modal.Runtime.Internal;
 
 namespace CocaCopa.Modal.Runtime.Domain {
     internal class NumpadRules {
-        internal static NumpadData ExtractData(string text) {
-            if (string.IsNullOrEmpty(text) || text == ".") return new NumpadData(string.Empty, 0, 0);
-            var dot = text.IndexOf('.');
-            if (dot < 0) {
-                return int.TryParse(text, out var vValue)
-                    ? new NumpadData(text, vValue, 0)
-                    : new NumpadData(string.Empty, 0, 0);
-            }
-            var left = text[..dot];
-            var right = dot + 1 < text.Length ? text[(dot + 1)..] : "";
-            var decCount = right.Length;
-            var compact = (left.Length == 0 ? "0" : left) + right;
-            return int.TryParse(compact, out var val)
-                ? new NumpadData(text, val, decCount)
-                : new NumpadData(string.Empty, 0, 0);
-        }
-
         internal static NumpadState Apply(NumpadState currentState, NumpadInput input) {
             return input switch {
                 NumpadInput.DecimalPoint => Input_DecimalInput(currentState),

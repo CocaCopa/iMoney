@@ -10,7 +10,7 @@ namespace CocaCopa.Modal.Runtime {
         private readonly float caretOnDuration;
         private readonly float caretOffDuration;
 
-        private ModalValue inputValue;
+        private string inputValue;
         private string normalTxt;
         private string colorizedTxt;
 
@@ -18,7 +18,7 @@ namespace CocaCopa.Modal.Runtime {
         private float caretTimer;
         private bool caretIsOn;
 
-        internal ModalValue CurrentValue => inputValue;
+        internal string CurrentValue => inputValue;
 
         internal ModalFlow(string htmlStrRGBA, float caretOnDuration, float caretOffDuration) {
             strCtor = new VKStringConstructor();
@@ -30,7 +30,7 @@ namespace CocaCopa.Modal.Runtime {
             caretIsOn = false;
             normalTxt = string.Empty;
             colorizedTxt = string.Empty;
-            inputValue = new ModalValue(0, 0);
+            inputValue = string.Empty;
         }
 
         internal void ResetInput() {
@@ -39,20 +39,18 @@ namespace CocaCopa.Modal.Runtime {
             colorizedTxt = string.Empty;
         }
 
-        internal FlowStateResult OnVirtualKeyPressed(NumpadInput input) {
-            var data = strCtor.Apply(input);
-
-            inputValue = new ModalValue(data.virtualValue, data.DecimalCount);
-            string IFtext = data.virtualString.Length > 0 ? $"{data.virtualString}€" : string.Empty;
+        internal FlowStateResult OnVirtualKeyPressed(System.Enum input) {
+            inputValue = strCtor.Apply(input);
+            string IFtext = inputValue.Length > 0 ? $"{inputValue}€" : string.Empty;
             normalTxt = IFtext;
             colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
 
-            bool validInput = data.virtualString != string.Empty && data.virtualValue != 0;
+            bool validInput = inputValue != string.Empty;
 
             caretIsOn = false;
             caretState = CaretState.ValidateState;
 
-            return new FlowStateResult(colorizedTxt, validInput, inputValue);
+            return new FlowStateResult(colorizedTxt, validInput);
         }
 
         internal CaretUpdateResult TickCaret(float deltaTime) {
@@ -96,12 +94,10 @@ namespace CocaCopa.Modal.Runtime {
         internal readonly struct FlowStateResult {
             public readonly string displayedText;
             public readonly bool isValid;
-            public readonly ModalValue currentValue;
 
-            public FlowStateResult(string displayedText, bool isValid, ModalValue currentValue) {
+            public FlowStateResult(string displayedText, bool isValid) {
                 this.displayedText = displayedText;
                 this.isValid = isValid;
-                this.currentValue = currentValue;
             }
         }
     }

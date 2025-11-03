@@ -1,5 +1,5 @@
 namespace CocaCopa.Modal.Runtime.Internal {
-    public enum QwertyInput {
+    internal enum QwertyInput {
         // Special Keys
         Shift,
         Backspace,

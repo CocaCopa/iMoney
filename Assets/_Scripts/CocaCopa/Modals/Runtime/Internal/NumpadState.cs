@@ -1,9 +1,9 @@
 namespace CocaCopa.Modal.Runtime.Internal {
-    public readonly struct NumpadState {
-        internal string Text { get; }
-        internal int Caret { get; }
-        internal bool OnDecimals { get; }
-        internal int MaxDecimals { get; }
+    internal readonly struct NumpadState {
+        internal readonly string Text { get; }
+        internal readonly int Caret { get; }
+        internal readonly bool OnDecimals { get; }
+        internal readonly int MaxDecimals { get; }
         internal NumpadState(string text, int caret, bool onDecimals, int maxDecimals) {
             Text = text; Caret = caret; OnDecimals = onDecimals; MaxDecimals = maxDecimals;
         }
