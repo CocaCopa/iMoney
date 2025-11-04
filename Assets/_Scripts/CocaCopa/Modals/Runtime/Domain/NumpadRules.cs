@@ -4,13 +4,13 @@ namespace CocaCopa.Modal.Runtime.Domain {
     internal class NumpadRules {
         internal static NumpadState Apply(NumpadState currentState, NumpadInput input) {
             return input switch {
-                NumpadInput.DecimalPoint => Input_DecimalInput(currentState),
+                NumpadInput.DecimalPoint => Input_Decimal(currentState),
                 NumpadInput.Backspace => Input_Backspace(currentState),
                 _ => Input_Digit(currentState, input)
             };
         }
 
-        private static NumpadState Input_DecimalInput(NumpadState s) {
+        private static NumpadState Input_Decimal(NumpadState s) {
             if (s.Caret == s.Text.Length && s.OnDecimals) {
                 return s;
             }

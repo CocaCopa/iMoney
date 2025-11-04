@@ -20,9 +20,9 @@ namespace CocaCopa.Modal.Runtime {
 
         internal string CurrentValue => inputValue;
 
-        internal ModalFlow(string htmlStrRGBA, float caretOnDuration, float caretOffDuration) {
-            strCtor = new VKStringConstructor();
-            vCaret = VirtualCaret.NumpadCaret(htmlStrRGBA);
+        internal ModalFlow(KeyboardType keyboardType, string htmlStrRGBA, float caretOnDuration, float caretOffDuration) {
+            strCtor = new VKStringConstructor(keyboardType);
+            vCaret = VirtualCaret.NumpadCaret(keyboardType, htmlStrRGBA);
 
             this.caretOnDuration = caretOnDuration;
             this.caretOffDuration = caretOffDuration;

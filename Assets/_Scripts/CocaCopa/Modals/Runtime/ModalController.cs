@@ -27,7 +27,8 @@ namespace CocaCopa.Modal.Runtime {
         public bool IsAnimating => modalAnim.IsAnimating;
 
         private void Awake() {
-            modalFlow = new ModalFlow(ColorUtility.ToHtmlStringRGBA(caretColor), caretInterval.onDuration, caretInterval.offDuration);
+            KeyboardType kt = vkBase is VirtualNumpad ? KeyboardType.Numpad : KeyboardType.QWERTY;
+            modalFlow = new ModalFlow(kt, ColorUtility.ToHtmlStringRGBA(caretColor), caretInterval.onDuration, caretInterval.offDuration);
             CheckComponents();
         }
 
@@ -41,7 +42,7 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void OnDestroy() {
-            vkBase.OnVirtualKeyPressed -= Numpad_OnKeyPressed;
+            vkBase.OnVirtualKeyPressed -= VK_OnKeyPressed;
             modalUI.OnConfirmIntent -= ModalUI_OnConfirmIntent;
             modalUI.OnCancelIntent -= ModalUI_OnCancelIntent;
 
@@ -57,7 +58,7 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         private void SubscribeToEvents() {
-            vkBase.OnVirtualKeyPressed += Numpad_OnKeyPressed;
+            vkBase.OnVirtualKeyPressed += VK_OnKeyPressed;
             modalUI.OnConfirmIntent += ModalUI_OnConfirmIntent;
             modalUI.OnCancelIntent += ModalUI_OnCancelIntent;
         }
@@ -70,7 +71,7 @@ namespace CocaCopa.Modal.Runtime {
             }
         }
 
-        private void Numpad_OnKeyPressed(Enum input) {
+        private void VK_OnKeyPressed(Enum input) {
             var stateResult = modalFlow.OnVirtualKeyPressed(input);
             if (stateResult.isValid) {
                 modalUI.SetInputFieldStr(stateResult.displayedText);

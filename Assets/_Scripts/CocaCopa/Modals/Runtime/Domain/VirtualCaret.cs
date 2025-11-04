@@ -1,22 +1,21 @@
+using CocaCopa.Modal.Runtime.Internal;
+
 namespace CocaCopa.Modal.Runtime.Domain {
     internal class VirtualCaret {
-        private enum StringType {
-            DecimalNumpad,
-        }
-
-        private readonly StringType stringType;
+        private readonly KeyboardType keyboardType;
         private readonly string caretColor;
 
-        internal static VirtualCaret NumpadCaret(string caretColor) => new VirtualCaret(StringType.DecimalNumpad, caretColor);
+        internal static VirtualCaret NumpadCaret(KeyboardType keyboardType, string caretColor) => new VirtualCaret(keyboardType, caretColor);
 
-        private VirtualCaret(StringType stringType, string caretColor) {
-            this.stringType = stringType;
+        private VirtualCaret(KeyboardType keyboardType, string caretColor) {
+            this.keyboardType = keyboardType;
             this.caretColor = caretColor;
         }
 
         internal string ApplyCaret(string targetString, int index) {
-            return stringType switch {
-                StringType.DecimalNumpad => ColorizeAtIndex(targetString, index, caretColor),
+            return keyboardType switch {
+                KeyboardType.Numpad => ColorizeAtIndex(targetString, index, caretColor),
+                KeyboardType.QWERTY => targetString,
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
