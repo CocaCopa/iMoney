@@ -1,15 +1,13 @@
 {
-    "name": "CocaCopa.Modal.Runtime",
-    "rootNamespace": "CocaCopa.Modal.Runtime",
+    "name": "CocaCopa.Modal.SPI",
+    "rootNamespace": "CocaCopa.Modal.SPI",
     "references": [
-        "CocaCopa.Modal.Contracts",
-        "CocaCopa.Modal.SPI",
-        "CocaCopa.Core.Math"
+        "CocaCopa.Modal.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],

@@ -1,10 +1,13 @@
 {
-    "name": "CocaCopa.Modal.Runtime",
-    "rootNamespace": "CocaCopa.Modal.Runtime",
+    "name": "iMoney.BalanceEntry.Unity",
+    "rootNamespace": "iMoney.BalanceEntry.Unity",
     "references": [
+        "CocaCopa.Core.Animation",
+        "CocaCopa.Core.Extensions",
+        "iMoney.BalanceEntry.SPI",
+        "iMoney.BalanceEntry.Runtime",
         "CocaCopa.Modal.Contracts",
-        "CocaCopa.Modal.SPI",
-        "CocaCopa.Core.Math"
+        "CocaCopa.Modal.API"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -14,5 +17,5 @@
     "autoReferenced": false,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": true
+    "noEngineReferences": false
 }

@@ -1,6 +1,6 @@
 namespace CocaCopa.Core.Math {
 
-    public class CCMath {
+    public static class CCMath {
         public static float Lerp(float a, float b, float t) {
             t = t < 0f ? 0f : (t > 1f ? 1f : t);
             return a + (b - a) * t;
@@ -20,6 +20,16 @@ namespace CocaCopa.Core.Math {
             if (value < 0) { return 0; }
             if (value > 1) { return 1; }
             return value;
+        }
+
+        public static float Max(float a, float b) {
+            if (a > b) return a;
+            else return b;
+        }
+
+        public static float Min(float a, float b) {
+            if (a < b) return b;
+            else return a;
         }
     }
 }

@@ -1,10 +1,20 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using CocaCopa.Core.Math;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Domain;
-using CocaCopa.Modal.Runtime.Internal;
-using UnityEngine;
+using CocaCopa.Modal.SPI;
 
 namespace CocaCopa.Modal.Runtime {
-    internal class ModalFlow {
+    internal class ModalFlow : IModalService {
+        private TaskCompletionSource<ModalResult> tcs;
+        private CancellationTokenRegistration ctorCtr;
+        private CancellationTokenRegistration showCtr;
+
+        private readonly IModalAnimator modalAnimator;
+        private readonly IModalView modalView;
+        private readonly IVirtualKeyboard vk;
         private readonly VKStringConstructor strCtor;
         private readonly VirtualCaret vCaret;
         private readonly float caretOnDuration;
@@ -20,12 +30,20 @@ namespace CocaCopa.Modal.Runtime {
 
         internal string CurrentValue => inputValue;
 
-        internal ModalFlow(KeyboardType keyboardType, string htmlStrRGBA, float caretOnDuration, float caretOffDuration) {
-            strCtor = new VKStringConstructor(keyboardType);
-            vCaret = VirtualCaret.NumpadCaret(keyboardType, htmlStrRGBA);
+        internal event Action OnResetInput;
 
-            this.caretOnDuration = caretOnDuration;
-            this.caretOffDuration = caretOffDuration;
+        public bool IsActive { get; private set; }
+
+        internal ModalFlow(IModalAnimator modalAnimator, IModalView modalView, IVirtualKeyboard vk, CaretOptions caretOpt, CancellationToken ct) {
+            if (ct.CanBeCanceled) ctorCtr = ct.Register(() => { if (tcs != null) Complete(ModalResult.Cancel()); });
+            this.modalAnimator = modalAnimator;
+            this.modalView = modalView;
+            this.vk = vk;
+            strCtor = new VKStringConstructor(vk.KeyboardType);
+            vCaret = VirtualCaret.NumpadCaret(vk.KeyboardType, caretOpt.htmlStrRGBA);
+
+            caretOnDuration = caretOpt.onDuration;
+            caretOffDuration = caretOpt.offDuration;
             caretState = CaretState.OnTimer;
             caretIsOn = false;
             normalTxt = string.Empty;
@@ -33,16 +51,26 @@ namespace CocaCopa.Modal.Runtime {
             inputValue = string.Empty;
         }
 
+        private void View_OnConfirmIntent() {
+            if (!IsActive) { return; }
+            Complete(ModalResult.Confirm(CurrentValue));
+        }
+
+        private void View_OnCancelIntent() {
+            if (!IsActive) { return; }
+            Complete(ModalResult.Cancel());
+        }
+
         internal void ResetInput() {
             strCtor.ResetStr();
+            modalView.SetInputFieldStr(string.Empty);
             normalTxt = string.Empty;
             colorizedTxt = string.Empty;
         }
 
-        internal FlowStateResult OnVirtualKeyPressed(System.Enum input) {
+        internal void OnVirtualKeyPressed(Enum input) {
             inputValue = strCtor.Apply(input);
-            string IFtext = inputValue.Length > 0 ? $"{inputValue}€" : string.Empty;
-            normalTxt = IFtext;
+            normalTxt = inputValue;
             colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
 
             bool validInput = inputValue != string.Empty;
@@ -50,14 +78,16 @@ namespace CocaCopa.Modal.Runtime {
             caretIsOn = false;
             caretState = CaretState.ValidateState;
 
-            return new FlowStateResult(colorizedTxt, validInput);
+            if (validInput) {
+                modalView.SetInputFieldStr(colorizedTxt);
+            }
         }
 
-        internal CaretUpdateResult TickCaret(float deltaTime) {
+        internal void TickCaret(float deltaTime) {
             switch (caretState) {
                 case CaretState.OnTimer:
                     caretTimer -= deltaTime;
-                    caretTimer = Mathf.Max(0f, caretTimer);
+                    caretTimer = CCMath.Max(0f, caretTimer);
                     if (caretTimer == 0f) {
                         caretState = CaretState.ValidateState;
                     }
@@ -66,15 +96,49 @@ namespace CocaCopa.Modal.Runtime {
                 case CaretState.ValidateState:
                     string textToShow = caretIsOn ? normalTxt : colorizedTxt;
                     float duration = caretIsOn ? caretOnDuration : caretOffDuration;
-
                     caretTimer = duration;
                     caretIsOn = !caretIsOn;
                     caretState = CaretState.OnTimer;
+                    modalView.SetInputFieldStr(textToShow);
+                    break;
+            }
+        }
 
-                    return new CaretUpdateResult(updateText: true, text: textToShow);
+        public Task<ModalResult> ShowAsync(ModalOptions options, CancellationToken ct = default) {
+            if (IsActive) { throw new InvalidOperationException("Modal already active"); }
+            modalView.OnConfirmIntent += View_OnConfirmIntent;
+            modalView.OnCancelIntent += View_OnCancelIntent;
+            vk.OnVirtualKeyPressed += OnVirtualKeyPressed;
+            if (options.cachedInputValue == CachedInputValue.Erase) {
+                ResetInput();
+            }
+            IsActive = true;
+            tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            _ = modalAnimator.PlayShowAsync(options.inputAnimOpt, options.vkAnimOpt);
+
+            if (ct.CanBeCanceled) {
+                showCtr = ct.Register(() => { Complete(ModalResult.Cancel()); });
             }
 
-            return new CaretUpdateResult(updateText: false, text: string.Empty);
+            return tcs.Task;
+        }
+
+        public Task Hide() {
+            if (IsActive) { throw new Exception("Cannot hide modal before result"); }
+            return modalAnimator.PlayHideAsync();
+        }
+
+        private void Complete(ModalResult result) {
+            modalView.OnConfirmIntent -= View_OnConfirmIntent;
+            modalView.OnCancelIntent -= View_OnCancelIntent;
+            vk.OnVirtualKeyPressed -= OnVirtualKeyPressed;
+            IsActive = false;
+            showCtr.Dispose();
+            ctorCtr.Dispose();
+            var tmp_tcs = tcs;
+            tcs = null;
+            tmp_tcs.TrySetResult(result);
         }
 
         #region Class Data
@@ -82,24 +146,16 @@ namespace CocaCopa.Modal.Runtime {
             OnTimer, ValidateState
         };
 
-        internal readonly struct CaretUpdateResult {
-            public readonly bool updateText;
-            public readonly string text;
-            public CaretUpdateResult(bool updateText, string text) {
-                this.updateText = updateText;
-                this.text = text;
+        internal struct CaretOptions {
+            public string htmlStrRGBA;
+            public float onDuration;
+            public float offDuration;
+            public CaretOptions(string htmlStrRGBA, float onDuration, float offDuration) {
+                this.htmlStrRGBA = htmlStrRGBA;
+                this.onDuration = onDuration;
+                this.offDuration = offDuration;
             }
         }
-
-        internal readonly struct FlowStateResult {
-            public readonly string displayedText;
-            public readonly bool isValid;
-
-            public FlowStateResult(string displayedText, bool isValid) {
-                this.displayedText = displayedText;
-                this.isValid = isValid;
-            }
-        }
+        #endregion
     }
-    #endregion
 }

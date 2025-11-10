@@ -1,10 +1,11 @@
 {
-    "name": "CocaCopa.Modal.Runtime",
-    "rootNamespace": "CocaCopa.Modal.Runtime",
+    "name": "iMoney.BalanceEntry.Runtime",
+    "rootNamespace": "iMoney.BalanceEntry.Runtime",
     "references": [
         "CocaCopa.Modal.Contracts",
-        "CocaCopa.Modal.SPI",
-        "CocaCopa.Core.Math"
+        "CocaCopa.Core.Extensions",
+        "CocaCopa.Logger.Runtime",
+        "iMoney.BalanceEntry.SPI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
