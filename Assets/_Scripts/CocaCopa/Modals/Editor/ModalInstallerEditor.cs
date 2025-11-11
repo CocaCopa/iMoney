@@ -14,12 +14,6 @@ namespace CocaCopa.Modal.EditorTools {
             }
         }
 
-        private void OnDisable() {
-            if (!EditorApplication.isPlaying) {
-                if (cg != null) cg.alpha = 0f;
-            }
-        }
-
         private void FindCanvasGroup() {
             var installer = target as ModalInstaller;
             if (installer.transform.GetChild(0).TryGetComponent<CanvasGroup>(out var cg)) {
