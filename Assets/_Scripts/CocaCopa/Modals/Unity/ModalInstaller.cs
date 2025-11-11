@@ -28,13 +28,13 @@ namespace CocaCopa.Modal.Unity {
 
         private void OnValidate() {
             if (modalAnimator == null) { throw new Exception($"[{nameof(ModalInstaller)}] {nameof(modalAnimator)} not serialized"); }
-            if (modalAnimator is not IModalAnimator) { throw new Exception($"[{nameof(ModalInstaller)}] The {nameof(modalAnimator)} assigned does not implement the 'IModalAnimator' interface"); }
+            if (modalAnimator is not IModalAnimator) { throw new Exception($"[{nameof(ModalInstaller)}] The {nameof(modalAnimator)} assigned does not implement the '{nameof(IModalAnimator)}' interface"); }
 
             if (modalView == null) { throw new Exception($"[{nameof(ModalInstaller)}] {nameof(modalView)} not serialized"); }
-            if (modalView is not IModalView) { throw new Exception($"[{nameof(ModalInstaller)}] The {nameof(modalView)} assigned does not implement the 'IModalIntents' interface"); }
+            if (modalView is not IModalView) { throw new Exception($"[{nameof(ModalInstaller)}] The {nameof(modalView)} assigned does not implement the '{nameof(IModalView)}' interface"); }
 
             if (virtualKeyboard == null) { throw new Exception($"[{nameof(ModalInstaller)}] {nameof(virtualKeyboard)} not serialized"); }
-            if (virtualKeyboard is not IVirtualKeyboard) { throw new Exception("[{nameof(ModalInstaller)}] The MonoBehaviour assigned does not implement the 'IVirtualKeyboard' interface"); }
+            if (virtualKeyboard is not IVirtualKeyboard) { throw new Exception($"[{nameof(ModalInstaller)}] The MonoBehaviour assigned does not implement the '{nameof(IVirtualKeyboard)}' interface"); }
         }
 
         private void Awake() {
@@ -44,7 +44,7 @@ namespace CocaCopa.Modal.Unity {
         }
 
         private void Update() {
-            modalFlow.TickCaret(Time.unscaledDeltaTime);
+            if (modalFlow.IsActive) modalFlow.TickCaret(Time.unscaledDeltaTime);
         }
 
         private void OnDestroy() {
