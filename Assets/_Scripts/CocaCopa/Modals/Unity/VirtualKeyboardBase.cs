@@ -18,5 +18,9 @@ namespace CocaCopa.Modal.Unity {
         protected void InvokeOnKeyPressed<T>(T input) where T : Enum {
             OnVirtualKeyPressed?.SafeInvoke(input, nameof(OnVirtualKeyPressed));
         }
+
+        public virtual void EngageShift(bool engage, bool locked) {
+
+        }
     }
 }

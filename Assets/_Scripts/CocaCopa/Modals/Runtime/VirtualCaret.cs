@@ -14,13 +14,13 @@ namespace CocaCopa.Modal.Runtime.Domain {
 
         internal string ApplyCaret(string targetString, int index) {
             return keyboardType switch {
-                KeyboardType.Numpad => ColorizeAtIndex(targetString, index, caretColor),
-                KeyboardType.QWERTY => targetString,
+                KeyboardType.Numpad => ColorizeNumpad(targetString, index, caretColor),
+                KeyboardType.QWERTY => ColorizeQwerty(targetString, index, caretColor),
                 _ => throw new System.ArgumentOutOfRangeException()
             };
         }
 
-        private static string ColorizeAtIndex(string targetString, int index, string color) {
+        private static string ColorizeNumpad(string targetString, int index, string color) {
             if (targetString == string.Empty) { return targetString; }
             if (!color.Contains('#')) { color = $"#{color}"; }
             var dotIdx = targetString.IndexOf('.');
@@ -37,6 +37,13 @@ namespace CocaCopa.Modal.Runtime.Domain {
                 }
             }
             return colorizedStr;
+        }
+
+        private static string ColorizeQwerty(string targetString, int index, string color) {
+            if (targetString == string.Empty) { return targetString; }
+            if (!color.Contains("#")) { color = $"#{color}"; }
+            char lastChar = targetString[^1];
+            return targetString[..^1] + $"<color={color}>{lastChar}</color>";
         }
     }
 }

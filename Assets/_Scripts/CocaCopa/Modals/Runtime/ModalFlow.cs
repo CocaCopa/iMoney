@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CocaCopa.Core.Math;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Domain;
+using CocaCopa.Modal.Runtime.Internal;
 using CocaCopa.Modal.SPI;
 
 namespace CocaCopa.Modal.Runtime {
@@ -69,7 +70,9 @@ namespace CocaCopa.Modal.Runtime {
         }
 
         internal void OnVirtualKeyPressed(Enum input) {
-            inputValue = strCtor.Apply(input);
+            KeyboardState state = strCtor.Apply(input);
+            inputValue = state.text;
+            vk.EngageShift(state.shiftActive, state.shiftLocked);
             normalTxt = inputValue;
             colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
 

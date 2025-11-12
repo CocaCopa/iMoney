@@ -20,15 +20,16 @@ namespace CocaCopa.Modal.Runtime.Domain {
             else qwertyState = QwertyState.EmptyState();
         }
 
-        internal string Apply(System.Enum input) {
+        internal KeyboardState Apply(System.Enum input) {
             if (input is NumpadInput numpad) {
                 numpadState = NumpadRules.Apply(numpadState, numpad);
                 string cr = numpadState.Text.Length > 0 ? "€" : string.Empty;
-                return numpadState.Text + cr;
+                return new KeyboardState(numpadState.Text + cr, false, false);
             }
             else if (input is QwertyInput qwerty) {
                 qwertyState = QwertyRules.Apply(qwertyState, qwerty);
-                return qwertyState.Text;
+                int shiftCounter = qwertyState.ShiftCounter;
+                return new KeyboardState(qwertyState.Text, shiftCounter != 0, shiftCounter == 2);
             }
 
             throw new System.Exception("Could not read the provided input");

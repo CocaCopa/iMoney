@@ -1,105 +1,117 @@
+using System.Collections.Generic;
 using CocaCopa.Modal.Runtime.Internal;
 using CocaCopa.Modal.SPI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CocaCopa.Modal.Unity {
     internal class VirtualQwerty : VirtualKeyboardBase {
-        [Header("Special")]
-        [SerializeField] private Button shift;
-        [SerializeField] private Button backspace;
-        [SerializeField] private Button spacebar;
+        [Header("All keys in order (must match KeyOrder)")]
+        [SerializeField] private Button[] virtualKeys;
 
-        [Header("Row 0")]
-        [SerializeField] private Button n1;
-        [SerializeField] private Button n2;
-        [SerializeField] private Button n3;
-        [SerializeField] private Button n4;
-        [SerializeField] private Button n5;
-        [SerializeField] private Button n6;
-        [SerializeField] private Button n7;
-        [SerializeField] private Button n8;
-        [SerializeField] private Button n9;
-        [SerializeField] private Button n0;
-
-        [Header("Row 1")]
-        [SerializeField] private Button Q;
-        [SerializeField] private Button W;
-        [SerializeField] private Button E;
-        [SerializeField] private Button R;
-        [SerializeField] private Button T;
-        [SerializeField] private Button Y;
-        [SerializeField] private Button U;
-        [SerializeField] private Button I;
-        [SerializeField] private Button O;
-        [SerializeField] private Button P;
-
-        [Header("Row 2")]
-        [SerializeField] private Button A;
-        [SerializeField] private Button S;
-        [SerializeField] private Button D;
-        [SerializeField] private Button F;
-        [SerializeField] private Button G;
-        [SerializeField] private Button H;
-        [SerializeField] private Button J;
-        [SerializeField] private Button K;
-        [SerializeField] private Button L;
-
-        [Header("Row 3")]
-        [SerializeField] private Button Z;
-        [SerializeField] private Button X;
-        [SerializeField] private Button C;
-        [SerializeField] private Button V;
-        [SerializeField] private Button B;
-        [SerializeField] private Button N;
-        [SerializeField] private Button M;
+        [Header("Special: Shift")]
+        [SerializeField] private Sprite engagedShiftSprite;
+        [SerializeField] private Color lockedShiftColor = Color.white;
 
         protected override KeyboardType VKType => KeyboardType.QWERTY;
+        private Sprite defaultShiftSprite;
+        private Color defaultShiftColor;
+
+        private readonly Dictionary<Button, QwertyInput> map = new Dictionary<Button, QwertyInput>();
+        private readonly Dictionary<Button, MonoBehaviour> buttonTexts = new Dictionary<Button, MonoBehaviour>();
+
+        // Expected key order for the serialized array
+        private static readonly QwertyInput[] KeyOrder = {
+            // Specials
+            QwertyInput.Shift, QwertyInput.Backspace, QwertyInput.Spacebar,
+
+            // Row 0 (numbers)
+            QwertyInput.Alpha1, QwertyInput.Alpha2, QwertyInput.Alpha3, QwertyInput.Alpha4, QwertyInput.Alpha5,
+            QwertyInput.Alpha6, QwertyInput.Alpha7, QwertyInput.Alpha8, QwertyInput.Alpha9, QwertyInput.Alpha0,
+
+            // Row 1
+            QwertyInput.Q, QwertyInput.W, QwertyInput.E, QwertyInput.R, QwertyInput.T,
+            QwertyInput.Y, QwertyInput.U, QwertyInput.I, QwertyInput.O, QwertyInput.P,
+
+            // Row 2
+            QwertyInput.A, QwertyInput.S, QwertyInput.D, QwertyInput.F, QwertyInput.G,
+            QwertyInput.H, QwertyInput.J, QwertyInput.K, QwertyInput.L,
+
+            // Row 3
+            QwertyInput.Z, QwertyInput.X, QwertyInput.C, QwertyInput.V,
+            QwertyInput.B, QwertyInput.N, QwertyInput.M,
+        };
+
+        protected override void Awake() {
+            base.Awake();
+            MapCompToVKs();
+            defaultShiftSprite = (buttonTexts[virtualKeys[0]] as Image).sprite;
+            defaultShiftColor = (buttonTexts[virtualKeys[0]] as Image).color;
+        }
+
+        private void MapCompToVKs() {
+            for (int i = 0; i < virtualKeys.Length; i++) {
+                Button btn = virtualKeys[i];
+                TextMeshProUGUI txtComp = btn.GetComponentInChildren<TextMeshProUGUI>();
+                if (txtComp == null) {
+                    Image imgComp = btn.transform.GetChild(0).GetComponent<Image>();
+                    buttonTexts[btn] = imgComp;
+                }
+                else buttonTexts[btn] = txtComp;
+            }
+        }
 
         protected override void AddListeners() {
-            shift.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Shift));
-            backspace.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Backspace));
-            spacebar.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Spacebar));
+            if (virtualKeys == null || virtualKeys.Length == 0) {
+                Debug.LogError($"{nameof(VirtualQwerty)}: No elements assigned.");
+                return;
+            }
+            if (virtualKeys.Length != KeyOrder.Length) {
+                Debug.LogError($"{nameof(VirtualQwerty)}: elements.Length ({virtualKeys.Length}) != KeyOrder.Length ({KeyOrder.Length}). Fix the Inspector order/size.");
+                return;
+            }
 
-            n1.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha1));
-            n2.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha2));
-            n3.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha3));
-            n4.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha4));
-            n5.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha5));
-            n6.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha6));
-            n7.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha7));
-            n8.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha8));
-            n9.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha9));
-            n0.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Alpha0));
+            map.Clear();
 
-            Q.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Q));
-            W.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.W));
-            E.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.E));
-            R.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.R));
-            T.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.T));
-            Y.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Y));
-            U.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.U));
-            I.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.I));
-            O.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.O));
-            P.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.P));
+            for (int i = 0; i < virtualKeys.Length; i++) {
+                var btn = virtualKeys[i];
+                if (btn == null) {
+                    Debug.LogError($"{nameof(VirtualQwerty)}: elements[{i}] is null. Fix your references.");
+                    continue;
+                }
 
-            A.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.A));
-            S.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.S));
-            D.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.D));
-            F.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.F));
-            G.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.G));
-            H.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.H));
-            J.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.J));
-            K.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.K));
-            L.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.L));
+                var key = KeyOrder[i];
+                if (map.ContainsKey(btn)) {
+                    Debug.LogWarning($"{nameof(VirtualQwerty)}: Duplicate Button at index {i} ignored.");
+                    continue;
+                }
 
-            Z.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.Z));
-            X.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.X));
-            C.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.C));
-            V.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.V));
-            B.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.B));
-            N.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.N));
-            M.onClick.AddListener(() => InvokeOnKeyPressed(QwertyInput.M));
+                map.Add(btn, key);
+            }
+
+            foreach (var pair in map) {
+                var button = pair.Key;
+                var input = pair.Value;
+                button.onClick.AddListener(() => InvokeOnKeyPressed(input));
+            }
+        }
+
+        public override void EngageShift(bool engage, bool locked) {
+            MonoBehaviour shiftImg = buttonTexts[virtualKeys[0]];
+            if (shiftImg is Image shift) {
+                shift.sprite = engage ? engagedShiftSprite : defaultShiftSprite;
+                shift.color = locked ? lockedShiftColor : defaultShiftColor;
+            }
+            else Debug.LogError($"{nameof(VirtualQwerty)}: Shift key not found. Please make sure the inspector order is correct.");
+            for (int i = 0; i < buttonTexts.Values.Count; i++) {
+                buttonTexts.TryGetValue(virtualKeys[i], out var textComp);
+                if (textComp is TextMeshProUGUI tmpTxt) {
+                    tmpTxt.SetText(
+                        engage ? tmpTxt.text.ToUpper() : tmpTxt.text.ToLower()
+                    );
+                }
+            }
         }
     }
 }

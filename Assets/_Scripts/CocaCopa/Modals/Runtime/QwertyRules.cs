@@ -32,18 +32,20 @@ namespace CocaCopa.Modal.Runtime.Domain {
 
         private static QwertyState Input_Character(QwertyState s, QwertyInput input) {
             string inputString = input.ToString();
+            int shiftCounter = s.ShiftCounter;
             string newString;
             if (inputString.Contains("Alpha")) {
                 string str = inputString.Replace("Alpha", string.Empty);
                 newString = s.Text + str;
             }
             else if (inputString.Length == 1) {
-                string str = inputString.ToLower();
+                string str = shiftCounter != 0 ? inputString.ToUpper() : inputString.ToLower();
+                if (shiftCounter == 1) shiftCounter = 0;
                 newString = s.Text + str;
             }
             else throw new System.Exception("[QwertyRules] Could not read input");
 
-            return new QwertyState(newString, s.Caret + 1, s.ShiftCounter);
+            return new QwertyState(newString, s.Caret + 1, shiftCounter);
         }
     }
 }

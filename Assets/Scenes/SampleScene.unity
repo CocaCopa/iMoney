@@ -156,10 +156,10 @@ RectTransform:
   - {fileID: 109991574}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -603.49664}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &16117143
 MonoBehaviour:
@@ -2600,10 +2600,10 @@ RectTransform:
   - {fileID: 919161170}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -331.40924}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &178421380
 MonoBehaviour:
@@ -3532,10 +3532,10 @@ RectTransform:
   - {fileID: 203441554}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -1011.62775}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &275761262
 MonoBehaviour:
@@ -5014,10 +5014,10 @@ RectTransform:
   - {fileID: 1665372257}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -739.54034}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &505627440
 MonoBehaviour:
@@ -6127,45 +6127,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ec8b517fdb9bc0498e688ff7be73e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.Modal.Runtime::CocaCopa.Modal.Runtime.UI.VirtualKeyboard
-  shift: {fileID: 3707446512933184495}
-  backspace: {fileID: 3707446512039456769}
-  spacebar: {fileID: 3707446511875493411}
-  n1: {fileID: 1928289024}
-  n2: {fileID: 131253078}
-  n3: {fileID: 1690599334}
-  n4: {fileID: 2067341688}
-  n5: {fileID: 1793099551}
-  n6: {fileID: 765387863}
-  n7: {fileID: 1197072484}
-  n8: {fileID: 703549999}
-  n9: {fileID: 1938406471}
-  n0: {fileID: 1180047460}
-  Q: {fileID: 1346859759}
-  W: {fileID: 1931234270}
-  E: {fileID: 2068012552}
-  R: {fileID: 1300391744}
-  T: {fileID: 2079459030}
-  Y: {fileID: 1560743683}
-  U: {fileID: 2064232417}
-  I: {fileID: 1715230245}
-  O: {fileID: 1988626052}
-  P: {fileID: 672389765}
-  A: {fileID: 1619193726}
-  S: {fileID: 1651615416}
-  D: {fileID: 1969583121}
-  F: {fileID: 865818901}
-  G: {fileID: 1357506519}
-  H: {fileID: 1816330666}
-  J: {fileID: 1845982552}
-  K: {fileID: 922662206}
-  L: {fileID: 849534293}
-  Z: {fileID: 1677798361}
-  X: {fileID: 1996541116}
-  C: {fileID: 915966099}
-  V: {fileID: 1980278800}
-  B: {fileID: 1957173482}
-  N: {fileID: 1485923399}
-  M: {fileID: 1556422743}
+  virtualKeys:
+  - {fileID: 3707446512933184495}
+  - {fileID: 3707446512039456769}
+  - {fileID: 3707446511875493411}
+  - {fileID: 1928289024}
+  - {fileID: 131253078}
+  - {fileID: 1690599334}
+  - {fileID: 2067341688}
+  - {fileID: 1793099551}
+  - {fileID: 765387863}
+  - {fileID: 1197072484}
+  - {fileID: 703549999}
+  - {fileID: 1938406471}
+  - {fileID: 1180047460}
+  - {fileID: 1346859759}
+  - {fileID: 1931234270}
+  - {fileID: 2068012552}
+  - {fileID: 1300391744}
+  - {fileID: 2079459030}
+  - {fileID: 1560743683}
+  - {fileID: 2064232417}
+  - {fileID: 1715230245}
+  - {fileID: 1988626052}
+  - {fileID: 672389765}
+  - {fileID: 1619193726}
+  - {fileID: 1651615416}
+  - {fileID: 1969583121}
+  - {fileID: 865818901}
+  - {fileID: 1357506519}
+  - {fileID: 1816330666}
+  - {fileID: 1845982552}
+  - {fileID: 922662206}
+  - {fileID: 849534293}
+  - {fileID: 1677798361}
+  - {fileID: 1996541116}
+  - {fileID: 915966099}
+  - {fileID: 1980278800}
+  - {fileID: 1957173482}
+  - {fileID: 1485923399}
+  - {fileID: 1556422743}
+  engagedShiftSprite: {fileID: 5674898949993220964, guid: dfc0118bf547df24e849daab76502892, type: 3}
+  lockedShiftColor: {r: 1, g: 0.41960785, b: 0.41960785, a: 1}
 --- !u!1 &612269182
 GameObject:
   m_ObjectHideFlags: 0
@@ -9286,10 +9289,10 @@ RectTransform:
   - {fileID: 1284272884}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -467.45294}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &947660807
 MonoBehaviour:
@@ -9536,10 +9539,10 @@ RectTransform:
   - {fileID: 1950605514}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -59.32185}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &984154589
 MonoBehaviour:
@@ -11312,7 +11315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: iMoney.BalanceFlow.Runtime::iMoney.BalanceFlow.Runtime.BalanceFlowController
   buttonsUI: {fileID: 2083313223}
-  modalAdapter: {fileID: 480278722}
+  modalAdapter: {fileID: 1683063032}
 --- !u!4 &1196867866
 Transform:
   m_ObjectHideFlags: 0
@@ -12741,7 +12744,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383000104}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -13517,10 +13520,10 @@ RectTransform:
   - {fileID: 123102789}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -195.36555}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1511256507
 MonoBehaviour:
@@ -14704,10 +14707,10 @@ RectTransform:
   - {fileID: 1903305794}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -1147.6715}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648685618
 MonoBehaviour:
@@ -15498,8 +15501,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.Modal.Runtime::CocaCopa.Modal.Runtime.ModalController
   modalAnimator: {fileID: 495111891}
-  modalView: {fileID: 321236131}
-  virtualKeyboard: {fileID: 1792450233}
+  modalView: {fileID: 23237454}
+  virtualKeyboard: {fileID: 611199535}
   caretColor: {r: 1, g: 1, b: 1, a: 0.5686275}
   caretInterval:
     onDuration: 0.75
@@ -17625,10 +17628,10 @@ RectTransform:
   - {fileID: 275486149}
   m_Father: {fileID: 1006229177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 449.14365, y: -875.58405}
-  m_SizeDelta: {x: 898.2873, y: 118.6437}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 118.6437}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922129697
 MonoBehaviour:
