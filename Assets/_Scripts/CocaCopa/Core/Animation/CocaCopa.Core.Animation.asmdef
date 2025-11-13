@@ -2,7 +2,7 @@
     "name": "CocaCopa.Core.Animation",
     "rootNamespace": "CocaCopa.Core.Animation",
     "references": [
-        "GUID:c3e5d9df1e95e5349b3e12f5bc12ca95"
+        "CocaCopa.Core.Math"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
