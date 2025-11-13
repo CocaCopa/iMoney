@@ -7,19 +7,18 @@ using iMoney.BalanceEntry.SPI;
 namespace iMoney.BalanceEntry.Runtime {
     internal sealed class BalanceFlow : IDisposable {
         private readonly IBalanceIntent balanceIntent;
-        private readonly IModalService modalService;
+        private readonly IModalService balanceModal;
+        private readonly IModalService categoryModal;
         private readonly CancellationToken ct;
 
-        private readonly static AnimOptions inputAnimAdd = new AnimOptions(Appear.Left, Disappear.Left);
-        private readonly static AnimOptions vkAnimAdd = new AnimOptions(Appear.Bottom, Disappear.Bottom);
-        private readonly static AnimOptions inputAnimSpend = new AnimOptions(Appear.Right, Disappear.Left);
-        private readonly static AnimOptions vkAnimSpend = new AnimOptions(Appear.Bottom, Disappear.Bottom);
-        private readonly ModalOptions addOptions = new ModalOptions(CachedInputValue.Erase, inputAnimAdd, vkAnimAdd);
-        private readonly ModalOptions spendOptions = new ModalOptions(CachedInputValue.Erase, inputAnimSpend, vkAnimSpend);
+        private readonly ModalOptions balanceAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Left, AnimOptions.Bottom);
+        private readonly ModalOptions balanceSpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
+        private readonly ModalOptions categoryAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
 
-        internal BalanceFlow(IBalanceIntent balanceIntent, IModalService modalService, CancellationToken ct) {
+        internal BalanceFlow(IBalanceIntent balanceIntent, IModalService balanceModal, IModalService categoryModal, CancellationToken ct) {
             this.balanceIntent = balanceIntent;
-            this.modalService = modalService;
+            this.balanceModal = balanceModal;
+            this.categoryModal = categoryModal;
             this.ct = ct;
 
             this.balanceIntent.OnAddPressed += HandleAddIntent;
@@ -32,30 +31,33 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private void HandleAddIntent() {
-            if (modalService.IsActive /* || modalService.IsAnimating */) { return; }
+            if (balanceModal.IsActive /* || modalService.IsAnimating */) { return; }
             balanceIntent.HideSpendButton();
-            _ = HandleButtonPress(addOptions, HandleButton.Add);
+            _ = HandleButtonPress(balanceAddOptions, HandleButton.Add);
         }
 
         private void HandleSpendIntent() {
-            if (modalService.IsActive /* || modalService.IsAnimating */) { return; }
+            if (balanceModal.IsActive /* || modalService.IsAnimating */) { return; }
             balanceIntent.HideAddButton();
-            _ = HandleButtonPress(spendOptions, HandleButton.Spend);
+            _ = HandleButtonPress(balanceSpendOptions, HandleButton.Spend);
         }
 
         private async Task HandleButtonPress(ModalOptions options, HandleButton btn) {
             try {
-                ModalResult modalResult = await modalService.ShowAsync(options, ct);
+                ModalResult modalResult = await balanceModal.ShowAsync(options, ct);
 
                 if (modalResult.Confirmed) {
-
+                    _ = balanceModal.Hide();
+                    await Task.Delay(310);
+                    await categoryModal.ShowAsync(categoryAddOptions, ct);
+                    return;
                 }
                 else {
 
                 }
 
                 ct.ThrowIfCancellationRequested();
-                await modalService.Hide();
+                await balanceModal.Hide();
             }
             catch { return; }
 
@@ -64,5 +66,13 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private enum HandleButton { Add, Spend };
+        private struct ModalData {
+            public string balanceAmount;
+            public string categoryName;
+            public ModalData(string balanceAmount, string categoryName) {
+                this.balanceAmount = balanceAmount;
+                this.categoryName = categoryName;
+            }
+        };
     }
 }

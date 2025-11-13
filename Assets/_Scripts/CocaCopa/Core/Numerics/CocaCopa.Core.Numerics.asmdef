@@ -1,9 +1,7 @@
 {
-    "name": "CocaCopa.Core.Math",
-    "rootNamespace": "CocaCopa.Core.Math",
-    "references": [
-        "CocaCopa.Core.Numerics"
-    ],
+    "name": "CocaCopa.Core.Numerics",
+    "rootNamespace": "CocaCopa.Core.Numerics",
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

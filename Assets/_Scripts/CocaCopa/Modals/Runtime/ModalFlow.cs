@@ -31,8 +31,6 @@ namespace CocaCopa.Modal.Runtime {
 
         internal string CurrentValue => inputValue;
 
-        internal event Action OnResetInput;
-
         public bool IsActive { get; private set; }
 
         internal ModalFlow(IModalAnimator modalAnimator, IModalView modalView, IVirtualKeyboard vk, CaretOptions caretOpt, CancellationToken ct) {

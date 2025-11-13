@@ -1,62 +1,114 @@
 using CocaCopa.Core.Math;
 
 namespace CocaCopa.Core.Animation {
+    /// <summary>
+    /// Provides smooth value interpolation between two scalar values using a configurable easing function.
+    /// </summary>
     public sealed class ValueAnimator {
         private readonly IEasing easing;
         private readonly float from;
         private readonly float to;
         private readonly float defaultSpeed;
         private float speed;
+        private float t;
+        private bool paused;
 
-        private float animationPoints;
+        /// <summary>
+        /// Indicates whether the animation has reached its end (progress ≥ 1.0).
+        /// </summary>
+        public bool IsComplete => t >= 1f;
 
         /// <summary>
-        /// Indicates whether the animation has reached or exceeded its target end (normalized progress ≥ 1).
+        /// The current normalized progress of the animation (0.0–1.0).
         /// </summary>
-        public bool IsComplete => animationPoints >= 1f;
-        /// <summary>
-        /// Gets the current normalized progress of the animation, ranging from 0 (start) to 1 (end).
-        /// </summary>
-        public float Progress => animationPoints;
-        /// <summary>
-        /// Overrides the current animation speed with a new value for dynamic control during playback.
-        /// </summary>
-        /// <param name="newSpeed">The new speed value to apply to the animation.</param>
-        public void OverrideSpeed(float newSpeed) => speed = newSpeed;
-        /// <summary>
-        /// Restores the animation speed to its original value specified at initialization.
-        /// </summary>
-        public void ResetSpeedToDefault() => speed = defaultSpeed;
-        public void ResetAnimator() => animationPoints = 0f;
+        public float Progress => t;
 
-        public ValueAnimator(float from, float to, float speed, IEasing easing) {
+        /// <summary>
+        /// Private constructor. Use <see cref="BySpeed"/> or <see cref="ByDuration"/> to create instances.
+        /// </summary>
+        private ValueAnimator(float from, float to, float speed, IEasing easing) {
             this.from = from;
             this.to = to;
-            this.speed = defaultSpeed = speed;
+            this.speed = defaultSpeed = speed; // normalized progress per second
             this.easing = easing;
-            animationPoints = 0f;
+            t = 0f;
+            paused = false;
         }
 
         /// <summary>
-        /// Advance the animation and get the current value.
+        /// Creates a new <see cref="ValueAnimator"/> configured to advance at a constant speed.
         /// </summary>
-        /// <param name="deltaTime">how much time passed since last step</param>
-        /// <returns>The interpolated value between from..to using easing.</returns>
-        public float EvaluateUnclamped(float deltaTime) => Step(deltaTime, true);
+        /// <param name="from">The starting value of the animation.</param>
+        /// <param name="to">The target value of the animation.</param>
+        /// <param name="speed">
+        /// The rate of progress increase per second, where 1.0 equals one full animation per second.
+        /// For example, <c>0.5f</c> completes the animation in 2 seconds.
+        /// </param>
+        /// <param name="easing">The easing function used to shape the interpolation curve.</param>
+        /// <returns>A new <see cref="ValueAnimator"/> instance configured with the specified speed.</returns>
+        public static ValueAnimator BySpeed(float from, float to, float speed, IEasing easing) {
+            return new ValueAnimator(from, to, speed, easing);
+        }
+
         /// <summary>
-        /// Advance the animation and get the current value.
+        /// Creates a new <see cref="ValueAnimator"/> configured to complete over a specific duration,
+        /// instead of using a manual speed value.
         /// </summary>
-        /// <param name="deltaTime">how much time passed since last step</param>
-        /// <returns>The interpolated value between from..to using easing.</returns>
-        public float Evaluate(float deltaTime) => Step(deltaTime, false);
+        /// <param name="from">The starting value of the animation.</param>
+        /// <param name="to">The target value of the animation.</param>
+        /// <param name="durationSeconds">The total duration, in seconds, the animation should take to reach completion.</param>
+        /// <param name="easing">The easing function used to shape the animation curve.</param>
+        /// <returns>
+        /// A new <see cref="ValueAnimator"/> instance whose speed is automatically calculated so that
+        /// progress reaches 1.0 exactly after <paramref name="durationSeconds"/> seconds.
+        /// </returns>
+        public static ValueAnimator ByDuration(float from, float to, float durationSeconds, IEasing easing) {
+            float spd = durationSeconds <= 0f ? 1f : 1f / durationSeconds;
+            return new ValueAnimator(from, to, spd, easing);
+        }
 
-        private float Step(float deltaTime, bool unclamped) {
-            animationPoints += speed * deltaTime;
-            animationPoints = CCMath.Clamp01(animationPoints);
-            float curvedT = easing.Evaluate(animationPoints);
+        public void OverrideSpeed(float newSpeed) => speed = newSpeed;
+        public void ResetSpeedToDefault() => speed = defaultSpeed;
 
-            if (unclamped) { return CCMath.LerpUnclamped(from, to, curvedT); }
-            else { return CCMath.Lerp(from, to, curvedT); }
+        public void ResetAnimator() { t = 0f; paused = false; }
+        public void SetProgress(float normalized) => t = CCMath.Clamp01(normalized);
+
+        public void Pause() => paused = true;
+        public void Resume() => paused = false;
+
+        /// <summary>
+        /// Advances the animation state by the given delta time and returns the current interpolated value.
+        /// The internal progress <c>t</c> is clamped to the [0..1] range, meaning the animation stops once it reaches the end.
+        /// </summary>
+        /// <param name="deltaTime">The elapsed time since the last update, typically <c>Time.deltaTime</c>.</param>
+        /// <returns>
+        /// The interpolated value between <c>from</c> and <c>to</c> according to the easing function,
+        /// with progress clamped between 0 and 1.
+        /// </returns>
+        public float Evaluate(float deltaTime) => Step(deltaTime, clamp: true);
+
+        /// <summary>
+        /// Advances the animation state by the given delta time and returns the current interpolated value.
+        /// Unlike <see cref="Evaluate"/>, the internal progress <c>t</c> is not clamped,
+        /// allowing the animation to overshoot its target if time continues to advance.
+        /// </summary>
+        /// <param name="deltaTime">The elapsed time since the last update, typically <c>Time.deltaTime</c>.</param>
+        /// <returns>
+        /// The interpolated value between <c>from</c> and <c>to</c> according to the easing function,
+        /// with progress unbounded (can exceed 0..1 range).
+        /// </returns>
+        public float EvaluateUnclamped(float deltaTime) => Step(deltaTime, clamp: false);
+
+        private float Step(float deltaTime, bool clamp) {
+            if (!paused && deltaTime > 0f) {
+                t += speed * deltaTime;
+                if (clamp) t = CCMath.Clamp01(t);
+            }
+
+            float curvedT = easing.Evaluate(clamp ? CCMath.Clamp01(t) : t);
+            return clamp
+                ? CCMath.Lerp(from, to, curvedT)
+                : CCMath.LerpUnclamped(from, to, curvedT);
         }
     }
 }

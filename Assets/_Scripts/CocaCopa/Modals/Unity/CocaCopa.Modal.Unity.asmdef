@@ -3,7 +3,7 @@
     "rootNamespace": "CocaCopa.Modal.Unity",
     "references": [
         "Unity.TextMeshPro",
-        "CocaCopa.Core.Extensions",
+        "CocaCopa.Core.Events",
         "CocaCopa.Modal.Runtime",
         "CocaCopa.Modal.Contracts",
         "CocaCopa.Modal.SPI"

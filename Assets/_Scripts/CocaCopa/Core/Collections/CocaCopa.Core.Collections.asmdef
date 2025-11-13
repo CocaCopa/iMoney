@@ -1,6 +1,6 @@
 {
-    "name": "CocaCopa.Core.Extensions",
-    "rootNamespace": "CocaCopa.Core.Extensions",
+    "name": "CocaCopa.Core.Collections",
+    "rootNamespace": "CocaCopa.Core.Collections",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -3,7 +3,7 @@
     "rootNamespace": "iMoney.BalanceEntry.Unity",
     "references": [
         "CocaCopa.Core.Animation",
-        "CocaCopa.Core.Extensions",
+        "CocaCopa.Core.Events",
         "iMoney.BalanceEntry.SPI",
         "iMoney.BalanceEntry.Runtime",
         "CocaCopa.Modal.Contracts",

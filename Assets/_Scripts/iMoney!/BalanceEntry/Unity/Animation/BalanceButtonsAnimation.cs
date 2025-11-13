@@ -29,10 +29,10 @@ namespace iMoney.BalanceEntry.Unity.Animation {
         private void CreateAnimators() {
             float speed = visibilitySpeed;
             IEasing easeCurve = new CurveEasing(visibilityCurve);
-            addMaskAnimIn = new ValueAnimator(0f, addAlpha / 255f, speed, easeCurve);
-            spendMaskAnimIn = new ValueAnimator(0f, spendAlpa / 255f, speed, easeCurve);
-            addMaskAnimOut = new ValueAnimator(addAlpha / 255f, 0f, speed, easeCurve);
-            spendMaskAnimOut = new ValueAnimator(spendAlpa / 255f, 0f, speed, easeCurve);
+            addMaskAnimIn = ValueAnimator.BySpeed(0f, addAlpha / 255f, speed, easeCurve);
+            spendMaskAnimIn = ValueAnimator.BySpeed(0f, spendAlpa / 255f, speed, easeCurve);
+            addMaskAnimOut = ValueAnimator.BySpeed(addAlpha / 255f, 0f, speed, easeCurve);
+            spendMaskAnimOut = ValueAnimator.BySpeed(spendAlpa / 255f, 0f, speed, easeCurve);
         }
 
         internal Coroutine FadeAddMask(FadeMode mode) {

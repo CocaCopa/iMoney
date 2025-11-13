@@ -9,9 +9,11 @@ using UnityEngine;
 namespace iMoney.BalanceEntry.Unity {
     internal class BalanceFlowInstaller : MonoBehaviour {
         [SerializeField] private MonoBehaviour buttonsUI;
-        [SerializeField] private ModalAdapter modalAdapter;
+        [SerializeField] private ModalAdapter balanceModal;
+        [SerializeField] private ModalAdapter categoryModal;
 
-        private IModalService ModalService => modalAdapter.GetService();
+        private IModalService BalanceService => balanceModal.GetService();
+        private IModalService CategoryService => categoryModal.GetService();
 
         private BalanceFlow balanceFlow;
         private IBalanceIntent BalanceIntent => (IBalanceIntent)buttonsUI;
@@ -24,7 +26,7 @@ namespace iMoney.BalanceEntry.Unity {
 
         private void Start() {
             cts = new CancellationTokenSource();
-            balanceFlow = new BalanceFlow(BalanceIntent, ModalService, cts.Token);
+            balanceFlow = new BalanceFlow(BalanceIntent, BalanceService, CategoryService, cts.Token);
         }
 
         private void OnDestroy() {

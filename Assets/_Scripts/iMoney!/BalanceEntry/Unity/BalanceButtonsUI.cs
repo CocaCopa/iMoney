@@ -1,5 +1,5 @@
 using System;
-using CocaCopa.Core.Extensions;
+using CocaCopa.Core.Events;
 using iMoney.BalanceEntry.SPI;
 using iMoney.BalanceEntry.Unity.Animation;
 using UnityEngine;

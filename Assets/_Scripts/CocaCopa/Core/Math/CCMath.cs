@@ -28,8 +28,8 @@ namespace CocaCopa.Core.Math {
         }
 
         public static float Min(float a, float b) {
-            if (a < b) return b;
-            else return a;
+            if (a < b) return a;
+            else return b;
         }
     }
 }
