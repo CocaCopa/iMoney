@@ -1,7 +1,7 @@
 using System;
 
 namespace iMoney.BalanceEntry.SPI {
-    internal interface IBalanceIntent {
+    internal interface IBalanceManagement {
         event Action OnAddPressed;
         event Action OnSpendPressed;
         void HideAddButton();

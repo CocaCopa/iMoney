@@ -3,9 +3,9 @@
     "rootNamespace": "iMoney.BalanceEntry.Runtime",
     "references": [
         "CocaCopa.Modal.Contracts",
-        "CocaCopa.Core.Extensions",
         "CocaCopa.Logger.Runtime",
-        "iMoney.BalanceEntry.SPI"
+        "iMoney.BalanceEntry.SPI",
+        "CocaCopa.Logger.API"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

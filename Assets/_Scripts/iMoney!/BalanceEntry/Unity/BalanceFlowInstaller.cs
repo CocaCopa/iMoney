@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace iMoney.BalanceEntry.Unity {
     internal class BalanceFlowInstaller : MonoBehaviour {
-        [SerializeField] private MonoBehaviour buttonsUI;
+        [SerializeField] private MonoBehaviour balanceManagementUI;
         [SerializeField] private ModalAdapter balanceModal;
         [SerializeField] private ModalAdapter categoryModal;
 
@@ -16,12 +16,12 @@ namespace iMoney.BalanceEntry.Unity {
         private IModalService CategoryService => categoryModal.GetService();
 
         private BalanceFlow balanceFlow;
-        private IBalanceIntent BalanceIntent => (IBalanceIntent)buttonsUI;
+        private IBalanceManagement BalanceIntent => (IBalanceManagement)balanceManagementUI;
         private CancellationTokenSource cts;
 
         private void OnValidate() {
-            if (buttonsUI == null) { throw new ArgumentNullException(nameof(buttonsUI)); }
-            if (buttonsUI is not IBalanceIntent) { throw new Exception($"The assigned script '{nameof(buttonsUI)} does not implement the {nameof(IBalanceIntent)} interface"); }
+            if (balanceManagementUI == null) { throw new ArgumentNullException(nameof(balanceManagementUI)); }
+            if (balanceManagementUI is not IBalanceManagement) { throw new Exception($"The assigned script '{nameof(balanceManagementUI)} does not implement the {nameof(IBalanceManagement)} interface"); }
         }
 
         private void Start() {

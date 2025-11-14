@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace iMoney.BalanceEntry.Unity {
-    internal class BalanceButtonsUI : MonoBehaviour, IBalanceIntent {
+    internal class BalanceManagementUI : MonoBehaviour, IBalanceManagement {
         [SerializeField] private Button addBtn;
         [SerializeField] private Button spendBtn;
         [Space(10)]
