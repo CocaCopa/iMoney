@@ -2,6 +2,7 @@
     "name": "iMoney.BalanceEntry.Unity",
     "rootNamespace": "iMoney.BalanceEntry.Unity",
     "references": [
+        "Unity.TextMeshPro",
         "CocaCopa.Core.Animation",
         "CocaCopa.Core.Events",
         "iMoney.BalanceEntry.SPI",

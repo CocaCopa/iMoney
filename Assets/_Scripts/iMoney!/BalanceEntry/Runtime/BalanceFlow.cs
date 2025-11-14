@@ -35,6 +35,7 @@ namespace iMoney.BalanceEntry.Runtime {
             if (balanceModal.IsActive) { return; }
             balanceManagement.HideSpendButton();
             ModalData data = await GetModalData();
+            balanceManagement.SetNewBalance(0);
             Log.Info($"Add | {data.categoryName}: {data.balanceAmount}");
             balanceManagement.ShowSpendButton();
         }
@@ -54,7 +55,7 @@ namespace iMoney.BalanceEntry.Runtime {
             string category = await ResolveModal(categoryModal, categoryAddOptions, awaitHide: true);
             if (category.Equals(string.Empty)) { return ModalData.Invalid; }
 
-            return ModalData.CreateValid(balance, category);
+            return ModalData.CreateValid(balance[..^1], category);
         }
 
         private async Task<string> ResolveModal(IModalService service, ModalOptions options, bool awaitHide) {

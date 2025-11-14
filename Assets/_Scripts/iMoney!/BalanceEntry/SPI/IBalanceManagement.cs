@@ -8,5 +8,6 @@ namespace iMoney.BalanceEntry.SPI {
         void HideSpendButton();
         void ShowAddButton();
         void ShowSpendButton();
+        void SetNewBalance(float amount);
     }
 }
