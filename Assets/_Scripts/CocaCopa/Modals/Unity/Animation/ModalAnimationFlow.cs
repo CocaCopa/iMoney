@@ -2,22 +2,22 @@ using CocaCopa.Modal.Contracts;
 using UnityEngine;
 
 namespace CocaCopa.Modal.Unity.Animation {
-    public class ModalAnimationFlow {
-        private ModalObject inputObj;
-        private ModalObject vkObj;
+    public sealed class ModalAnimationFlow {
+        private readonly ModalObject inputObj;
+        private readonly ModalObject vkObj;
         private readonly FlowOptions flowOptions;
 
         private RectPositions inputPositions;
         private RectPositions vkPositions;
 
-        private ModalObject firstAnimatable;
-        private ModalObject secondAnimatable;
-        private RectPositions firstAnimPositions;
-        private RectPositions secondAnimPositions;
+        private ModalObject primaryObj;
+        private ModalObject secondaryObj;
+        private RectPositions primaryPositions;
+        private RectPositions secondaryPositions;
 
-        private float firstAnimPoints;
-        private float secondAnimPoints;
-        private float delayTimer;
+        private float primaryProgress;
+        private float secondaryProgress;
+        private float remainingDelay;
 
         internal bool Completed { get; private set; }
 
@@ -25,15 +25,23 @@ namespace CocaCopa.Modal.Unity.Animation {
             this.inputObj = inputObj;
             this.vkObj = vkObj;
             flowOptions = options;
-            delayTimer = flowOptions.delay;
+
+            remainingDelay = flowOptions.delay;
             Completed = true;
 
             CalcInputPositions();
             CalcVkPositions();
 
             SetAnimOrder(flowOptions.animateFirst);
-            firstAnimatable.rectTransform.anchoredPosition = firstAnimPositions.hiddenLeft;
-            secondAnimatable.rectTransform.anchoredPosition = secondAnimPositions.hiddenLeft;
+
+            primaryProgress = 0f;
+            secondaryProgress = 0f;
+
+            primaryObj.rectTransform.anchoredPosition =
+                GetHiddenPosition(primaryObj, primaryPositions, isAppearing: true);
+
+            secondaryObj.rectTransform.anchoredPosition =
+                GetHiddenPosition(secondaryObj, secondaryPositions, isAppearing: true);
         }
 
         internal void OverrideAnimOptions(AnimOptions inputOpt, AnimOptions vkOpt) {
@@ -43,16 +51,18 @@ namespace CocaCopa.Modal.Unity.Animation {
 
         internal void SetAnimOrder(AnimateFirst first) {
             if (first == AnimateFirst.Input) {
-                firstAnimatable = inputObj;
-                firstAnimPositions = inputPositions;
-                secondAnimatable = vkObj;
-                secondAnimPositions = vkPositions;
+                primaryObj = inputObj;
+                primaryPositions = inputPositions;
+
+                secondaryObj = vkObj;
+                secondaryPositions = vkPositions;
             }
             else {
-                firstAnimatable = vkObj;
-                firstAnimPositions = vkPositions;
-                secondAnimatable = inputObj;
-                secondAnimPositions = inputPositions;
+                primaryObj = vkObj;
+                primaryPositions = vkPositions;
+
+                secondaryObj = inputObj;
+                secondaryPositions = inputPositions;
             }
         }
 
@@ -60,58 +70,97 @@ namespace CocaCopa.Modal.Unity.Animation {
             var inputRect = inputObj.rectTransform;
             var modalWidth = inputRect.rect.width;
 
-            var inputVisible = inputRect.anchoredPosition;
-            var modalHiddenLeft = inputVisible + Vector2.left * modalWidth;
-            var modalHiddenRight = inputVisible + Vector2.right * modalWidth;
+            var visible = inputRect.anchoredPosition;
+            var hiddenLeft = visible + Vector2.left * modalWidth;
+            var hiddenRight = visible + Vector2.right * modalWidth;
 
-            inputPositions = new RectPositions(inputVisible, modalHiddenLeft, modalHiddenRight, Vector2.zero);
+            // hiddenBottom is not yet supported yet
+            inputPositions = new RectPositions(visible, hiddenLeft, hiddenRight, Vector2.zero);
         }
 
         private void CalcVkPositions() {
             var vkRect = vkObj.rectTransform;
-            var vkVisible = vkRect.anchoredPosition;
+            var visible = vkRect.anchoredPosition;
 
             var vkHeight = vkRect.rect.height;
             var vkWidth = vkRect.rect.width;
-            var vkHiddenBottom = vkVisible + Vector2.down * vkHeight;
-            var vkHiddenLeft = vkVisible + Vector2.left * vkWidth;
-            var vkHiddenRight = vkVisible + Vector2.right * vkWidth;
 
-            vkPositions = new RectPositions(vkVisible, vkHiddenLeft, vkHiddenRight, vkHiddenBottom);
+            var hiddenBottom = visible + Vector2.down * vkHeight;
+            var hiddenLeft = visible + Vector2.left * vkWidth;
+            var hiddenRight = visible + Vector2.right * vkWidth;
+
+            vkPositions = new RectPositions(visible, hiddenLeft, hiddenRight, hiddenBottom);
         }
 
+        /// <summary>
+        /// Drives the animation sequence.
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        /// <param name="reverse">true  → animate from visible → hidden (progress 1 → 0) | false → animate from hidden → visible (progress 0 → 1)</param>
         internal void TickSequence(float deltaTime, bool reverse) {
-            float limit = reverse ? 0f : 1f;
-            int m = reverse ? -1 : 1;
-            Lerp(firstAnimatable, ref firstAnimPoints, firstAnimPositions, deltaTime * m);
-            delayTimer -= deltaTime;
-            delayTimer = Mathf.Max(0f, delayTimer);
-            if (delayTimer == 0f) {
-                Lerp(secondAnimatable, ref secondAnimPoints, secondAnimPositions, deltaTime * m);
+            if (Completed && deltaTime <= 0f) {
+                return;
             }
 
-            Completed = firstAnimPoints == limit && secondAnimPoints == limit;
-            if (Completed) { delayTimer = flowOptions.delay; }
+            float targetProgress = reverse ? 0f : 1f;
+            float direction = reverse ? -1f : 1f;
+            float signedDelta = deltaTime * direction;
+
+            StepObject(primaryObj, primaryPositions, ref primaryProgress, signedDelta);
+
+            remainingDelay -= deltaTime;
+            remainingDelay = Mathf.Max(0f, remainingDelay);
+
+            if (remainingDelay == 0f) {
+                StepObject(secondaryObj, secondaryPositions, ref secondaryProgress, signedDelta);
+            }
+
+            // Completed once both have reached their respective targets
+            bool primaryDone = Mathf.Approximately(primaryProgress, targetProgress);
+            bool secondaryDone = Mathf.Approximately(secondaryProgress, targetProgress);
+
+            Completed = primaryDone && secondaryDone;
+
+            if (Completed) {
+                primaryProgress = targetProgress;
+                secondaryProgress = targetProgress;
+                remainingDelay = flowOptions.delay;
+            }
         }
 
-        private void Lerp(ModalObject obj, ref float animPoints, RectPositions positions, float dt) {
-            animPoints += obj.animSpeed * dt;
-            animPoints = Mathf.Clamp01(animPoints);
-            float time = obj.animCurve.Evaluate(animPoints);
-            Vector2 hiddenPos = dt > 0 ?
-            obj.animOptions.appear switch {
-                Appear.Left => positions.hiddenLeft,
-                Appear.Right => positions.hiddenRight,
-                Appear.Bottom => positions.hiddenBottom,
-                _ => positions.hiddenLeft
-            } :
-            obj.animOptions.disappear switch {
-                Disappear.Left => positions.hiddenLeft,
-                Disappear.Right => positions.hiddenRight,
-                Disappear.Bottom => positions.hiddenBottom,
-                _ => positions.hiddenLeft
-            };
-            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(hiddenPos, positions.visible, time);
+        private void StepObject(ModalObject obj, RectPositions positions, ref float progress, float signedDelta) {
+            if (obj == null) {
+                return;
+            }
+
+            progress += obj.animSpeed * signedDelta;
+            progress = Mathf.Clamp01(progress);
+
+            float t = obj.animCurve.Evaluate(progress);
+
+            bool isAppearing = signedDelta > 0f;
+            Vector2 hiddenPos = GetHiddenPosition(obj, positions, isAppearing);
+
+            obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(hiddenPos, positions.visible, t);
+        }
+
+        private static Vector2 GetHiddenPosition(ModalObject obj, RectPositions positions, bool isAppearing) {
+            if (isAppearing) {
+                return obj.animOptions.appear switch {
+                    Appear.Left => positions.hiddenLeft,
+                    Appear.Right => positions.hiddenRight,
+                    Appear.Bottom => positions.hiddenBottom,
+                    _ => positions.hiddenLeft
+                };
+            }
+            else {
+                return obj.animOptions.disappear switch {
+                    Disappear.Left => positions.hiddenLeft,
+                    Disappear.Right => positions.hiddenRight,
+                    Disappear.Bottom => positions.hiddenBottom,
+                    _ => positions.hiddenLeft
+                };
+            }
         }
 
         internal class ModalObject {
@@ -133,6 +182,7 @@ namespace CocaCopa.Modal.Unity.Animation {
             public readonly float delay;
 
             public static FlowOptions Default => new FlowOptions(AnimateFirst.Input, 0f);
+
             public FlowOptions(AnimateFirst animateFirst, float delay) {
                 this.animateFirst = animateFirst;
                 this.delay = delay;
@@ -140,7 +190,8 @@ namespace CocaCopa.Modal.Unity.Animation {
         }
 
         internal enum AnimateFirst {
-            Input, VirtualKeyBoard
+            Input,
+            VirtualKeyBoard
         }
     }
 }
