@@ -8,9 +8,24 @@ using UnityEngine;
 
 namespace iMoney.BalanceEntry.Unity {
     internal class BalanceFlowInstaller : MonoBehaviour {
+        [Header("References")]
         [SerializeField] private MonoBehaviour balanceManagementUI;
         [SerializeField] private ModalAdapter balanceModal;
         [SerializeField] private ModalAdapter categoryModal;
+
+        [Header("General")]
+        [Tooltip("Delay in milliseconds in which the modal will appear")]
+        [SerializeField, Range(0, 500)] private int balanceDelay = 0;
+        [Tooltip("Delay in milliseconds in which the modal will appear")]
+        [SerializeField, Range(0, 500)] private int categoryDelay = 280;
+
+        [Header("Add Config")]
+        [SerializeField] private ModalOptions balanceAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Left, AnimOptions.Bottom);
+        [SerializeField] private ModalOptions categoryAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
+
+        [Header("Spend Config")]
+        [SerializeField] private ModalOptions balanceSpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
+        [SerializeField] private ModalOptions categorySpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
 
         private IModalService BalanceService => balanceModal.GetService();
         private IModalService CategoryService => categoryModal.GetService();
@@ -26,7 +41,9 @@ namespace iMoney.BalanceEntry.Unity {
 
         private void Start() {
             cts = new CancellationTokenSource();
-            balanceFlow = new BalanceFlow(BalanceIntent, BalanceService, CategoryService, cts.Token);
+            var balanceConfig = new BalanceFlow.Config(BalanceService, balanceAddOptions, balanceSpendOptions, balanceDelay);
+            var categoryConfig = new BalanceFlow.Config(CategoryService, categoryAddOptions, categorySpendOptions, categoryDelay);
+            balanceFlow = new BalanceFlow(BalanceIntent, balanceConfig, categoryConfig, cts.Token);
         }
 
         private void OnDestroy() {

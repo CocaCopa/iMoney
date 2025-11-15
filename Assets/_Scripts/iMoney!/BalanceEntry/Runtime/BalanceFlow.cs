@@ -8,18 +8,14 @@ using iMoney.BalanceEntry.SPI;
 namespace iMoney.BalanceEntry.Runtime {
     internal sealed class BalanceFlow : IDisposable {
         private readonly IBalanceManagement balanceManagement;
-        private readonly IModalService balanceModal;
-        private readonly IModalService categoryModal;
         private readonly CancellationToken ct;
+        private readonly Config balanceConfig;
+        private readonly Config categoryConfig;
 
-        private readonly ModalOptions balanceAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Left, AnimOptions.Bottom);
-        private readonly ModalOptions balanceSpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
-        private readonly ModalOptions categoryAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
-
-        internal BalanceFlow(IBalanceManagement balanceManagement, IModalService balanceModal, IModalService categoryModal, CancellationToken ct) {
+        internal BalanceFlow(IBalanceManagement balanceManagement, Config balanceConfig, Config categoryConfig, CancellationToken ct) {
             this.balanceManagement = balanceManagement;
-            this.balanceModal = balanceModal;
-            this.categoryModal = categoryModal;
+            this.balanceConfig = balanceConfig;
+            this.categoryConfig = categoryConfig;
             this.ct = ct;
 
             this.balanceManagement.OnAddPressed += HandleAddIntent;
@@ -32,27 +28,34 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private async void HandleAddIntent() {
-            if (balanceModal.IsActive) { return; }
+            if (balanceConfig.ModalService.IsActive || categoryConfig.ModalService.IsActive) {
+                return;
+            }
             balanceManagement.HideSpendButton();
-            ModalData data = await GetModalData();
-            balanceManagement.SetNewBalance(0);
-            Log.Info($"Add | {data.categoryName}: {data.balanceAmount}");
+            ModalData data = await GetModalData(addOptions: true);
+            balanceManagement.SetNewBalance(data.BalanceAmount);
+            Log.Info($"Add | {data.CategoryName}: {data.BalanceAmount}");
             balanceManagement.ShowSpendButton();
         }
 
         private async void HandleSpendIntent() {
-            if (balanceModal.IsActive) { return; }
+            if (balanceConfig.ModalService.IsActive || categoryConfig.ModalService.IsActive) {
+                return;
+            }
             balanceManagement.HideAddButton();
-            ModalData data = await GetModalData();
-            Log.Info($"Spend | {data.categoryName}: {data.balanceAmount}");
+            ModalData data = await GetModalData(addOptions: false);
+            Log.Info($"Spend | {data.CategoryName}: {data.BalanceAmount}");
             balanceManagement.ShowAddButton();
         }
 
-        private async Task<ModalData> GetModalData() {
-            string balance = await ResolveModal(balanceModal, balanceAddOptions, awaitHide: false);
+        private async Task<ModalData> GetModalData(bool addOptions) {
+            await Task.Delay(balanceConfig.AppearDelay);
+            var balanceOptions = addOptions ? balanceConfig.AddOptions : balanceConfig.SpendOptions;
+            string balance = await ResolveModal(balanceConfig.ModalService, balanceOptions, awaitHide: false);
             if (balance.Equals(string.Empty)) { return ModalData.Invalid; }
-            await Task.Delay(280);
-            string category = await ResolveModal(categoryModal, categoryAddOptions, awaitHide: true);
+            await Task.Delay(categoryConfig.AppearDelay);
+            var categoryOptions = addOptions ? categoryConfig.AddOptions : categoryConfig.SpendOptions;
+            string category = await ResolveModal(categoryConfig.ModalService, categoryOptions, awaitHide: true);
             if (category.Equals(string.Empty)) { return ModalData.Invalid; }
 
             return ModalData.CreateValid(balance[..^1], category);
@@ -75,16 +78,29 @@ namespace iMoney.BalanceEntry.Runtime {
         }
 
         private readonly struct ModalData {
-            public readonly bool isValid;
-            public readonly string balanceAmount;
-            public readonly string categoryName;
+            public readonly bool IsValid;
+            public readonly string BalanceAmount;
+            public readonly string CategoryName;
             public static ModalData Invalid => new ModalData(false, string.Empty, string.Empty);
             public static ModalData CreateValid(string balanceAmount, string categoryName) => new ModalData(true, balanceAmount, categoryName);
             private ModalData(bool isValid, string balanceAmount, string categoryName) {
-                this.isValid = isValid;
-                this.balanceAmount = balanceAmount;
-                this.categoryName = categoryName;
+                IsValid = isValid;
+                BalanceAmount = balanceAmount;
+                CategoryName = categoryName;
             }
         };
+
+        internal readonly struct Config {
+            public readonly IModalService ModalService;
+            public readonly ModalOptions AddOptions;
+            public readonly ModalOptions SpendOptions;
+            public readonly int AppearDelay;
+            public Config(IModalService modalService, ModalOptions addOptions, ModalOptions spendOptions, int appearDelay = 0) {
+                ModalService = modalService;
+                AddOptions = addOptions;
+                SpendOptions = spendOptions;
+                AppearDelay = appearDelay;
+            }
+        }
     }
 }

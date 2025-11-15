@@ -36,7 +36,7 @@ namespace iMoney.BalanceEntry.Unity {
         public void ShowAddButton() => buttonsAnim.FadeAddMask(FadeMode.Out);
         public void HideSpendButton() => buttonsAnim.FadeSpendMask(FadeMode.In);
         public void ShowSpendButton() => buttonsAnim.FadeSpendMask(FadeMode.Out);
-        public void SetNewBalance(float amount) {
+        public void SetNewBalance(string amount) {
             StartCoroutine(scrambleAnim.ScrambleText(4, () => {
                 balanceTxt.SetText($"{amount}€");
             }));

@@ -1,7 +1,8 @@
 namespace CocaCopa.Modal.Contracts {
+    [System.Serializable]
     public sealed class AnimOptions {
-        public readonly Appear appear;
-        public readonly Disappear disappear;
+        public Appear appear;
+        public Disappear disappear;
         public AnimOptions(Appear appear, Disappear disappear) {
             this.appear = appear;
             this.disappear = disappear;

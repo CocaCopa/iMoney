@@ -98,10 +98,17 @@ namespace CocaCopa.Modal.Unity.Animation {
             animPoints += obj.animSpeed * dt;
             animPoints = Mathf.Clamp01(animPoints);
             float time = obj.animCurve.Evaluate(animPoints);
-            Vector2 hiddenPos = obj.animOptions.appear switch {
+            Vector2 hiddenPos = dt > 0 ?
+            obj.animOptions.appear switch {
                 Appear.Left => positions.hiddenLeft,
                 Appear.Right => positions.hiddenRight,
                 Appear.Bottom => positions.hiddenBottom,
+                _ => positions.hiddenLeft
+            } :
+            obj.animOptions.disappear switch {
+                Disappear.Left => positions.hiddenLeft,
+                Disappear.Right => positions.hiddenRight,
+                Disappear.Bottom => positions.hiddenBottom,
                 _ => positions.hiddenLeft
             };
             obj.rectTransform.anchoredPosition = Vector2.LerpUnclamped(hiddenPos, positions.visible, time);
