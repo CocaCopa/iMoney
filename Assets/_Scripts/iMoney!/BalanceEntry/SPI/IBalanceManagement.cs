@@ -9,5 +9,6 @@ namespace iMoney.BalanceEntry.SPI {
         void ShowAddButton();
         void ShowSpendButton();
         void SetNewBalance(string amount);
+        string GetBalanceText();
     }
 }

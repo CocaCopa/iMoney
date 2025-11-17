@@ -20,6 +20,16 @@ namespace iMoney.BalanceEntry.Unity {
 
         private void Awake() {
             AddListeners();
+            FixBalanceFormat();
+        }
+
+        private void FixBalanceFormat() {
+            string currTxt = balanceTxt.text;
+            if (!currTxt.Contains(".")) {
+                if (currTxt.Contains("€")) currTxt = currTxt[..^1];
+                string newTxt = $"{currTxt}.00€";
+                balanceTxt.SetText(newTxt);
+            }
         }
 
         private void OnDestroy() {
@@ -41,7 +51,6 @@ namespace iMoney.BalanceEntry.Unity {
                 balanceTxt.SetText($"{amount}€");
             }));
         }
-
-
+        public string GetBalanceText() => balanceTxt.text;
     }
 }

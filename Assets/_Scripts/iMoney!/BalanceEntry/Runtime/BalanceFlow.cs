@@ -1,6 +1,8 @@
 using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using CocaCopa.Core.Numerics;
 using CocaCopa.Logger.API;
 using CocaCopa.Modal.Contracts;
 using iMoney.BalanceEntry.SPI;
@@ -33,8 +35,8 @@ namespace iMoney.BalanceEntry.Runtime {
             }
             balanceManagement.HideSpendButton();
             ModalData data = await GetModalData(addOptions: true);
-            balanceManagement.SetNewBalance(data.BalanceAmount);
-            Log.Info($"Add | {data.CategoryName}: {data.BalanceAmount}");
+            string newBalance = BalanceCalculator.Add(balanceManagement.GetBalanceText(), data.BalanceAmount);
+            balanceManagement.SetNewBalance(newBalance);
             balanceManagement.ShowSpendButton();
         }
 
@@ -44,7 +46,8 @@ namespace iMoney.BalanceEntry.Runtime {
             }
             balanceManagement.HideAddButton();
             ModalData data = await GetModalData(addOptions: false);
-            Log.Info($"Spend | {data.CategoryName}: {data.BalanceAmount}");
+            string newBalance = BalanceCalculator.Subtract(balanceManagement.GetBalanceText(), data.BalanceAmount);
+            balanceManagement.SetNewBalance(newBalance);
             balanceManagement.ShowAddButton();
         }
 
@@ -58,7 +61,7 @@ namespace iMoney.BalanceEntry.Runtime {
             string category = await ResolveModal(categoryConfig.ModalService, categoryOptions, awaitHide: true);
             if (category.Equals(string.Empty)) { return ModalData.Invalid; }
 
-            return ModalData.CreateValid(balance[..^1], category);
+            return ModalData.CreateValid(balance, category);
         }
 
         private async Task<string> ResolveModal(IModalService service, ModalOptions options, bool awaitHide) {

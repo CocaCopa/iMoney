@@ -24,17 +24,13 @@ namespace CocaCopa.Modal.Unity {
             cancelButton.onClick.AddListener(OnCancelClicked);
         }
 
-        private void OnConfirmClicked() {
-            OnConfirmIntent?.SafeInvoke(nameof(OnConfirmIntent));
+        private void OnConfirmClicked() => OnConfirmIntent?.SafeInvoke(nameof(OnConfirmIntent));
+        private void OnCancelClicked() => OnCancelIntent?.SafeInvoke(nameof(OnCancelIntent));
+        public void EnableConfirm(bool enabled, bool interactable) {
+            confirmButton.enabled = enabled;
+            confirmButton.interactable = interactable;
         }
-
-        private void OnCancelClicked() {
-            OnCancelIntent?.SafeInvoke(nameof(OnCancelIntent));
-        }
-
-        public void SetInputFieldStr(string txt, bool allowConfirm = true) {
-            confirmButton.interactable = allowConfirm;
-            inputField.text = txt;
-        }
+        public void SetInputFieldStr(string txt) => inputField.text = txt;
+        public string GetInputFieldStr() => inputField.text;
     }
 }

@@ -24,7 +24,7 @@ namespace CocaCopa.Modal.Runtime.Domain {
             if (input is NumpadInput numpad) {
                 numpadState = NumpadRules.Apply(numpadState, numpad);
                 string cr = numpadState.Text.Length > 0 ? "€" : string.Empty;
-                return new KeyboardState(numpadState.Text + cr, false, false);
+                return new KeyboardState(numpadState.Text + cr, shiftActive: false, shiftLocked: false);
             }
             else if (input is QwertyInput qwerty) {
                 qwertyState = QwertyRules.Apply(qwertyState, qwerty);
@@ -32,7 +32,7 @@ namespace CocaCopa.Modal.Runtime.Domain {
                 return new KeyboardState(qwertyState.Text, shiftCounter != 0, shiftCounter == 2);
             }
 
-            throw new System.Exception("Could not read the provided input");
+            throw new System.Exception("[VKStringConstructor] Could not read the provided input");
         }
 
         internal void ResetStr() {

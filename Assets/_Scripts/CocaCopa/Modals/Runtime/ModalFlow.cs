@@ -13,9 +13,10 @@ namespace CocaCopa.Modal.Runtime {
         private CancellationTokenRegistration ctorCtr;
         private CancellationTokenRegistration showCtr;
 
-        private readonly IModalAnimator modalAnimator;
+        private readonly ConfirmOptions confirmOpt;
         private readonly IModalView modalView;
         private readonly IVirtualKeyboard vk;
+        private readonly IModalAnimator modalAnimator;
         private readonly VKStringConstructor strCtor;
         private readonly VirtualCaret vCaret;
         private readonly float caretOnDuration;
@@ -33,16 +34,17 @@ namespace CocaCopa.Modal.Runtime {
 
         public bool IsActive { get; private set; }
 
-        internal ModalFlow(IModalAnimator modalAnimator, IModalView modalView, IVirtualKeyboard vk, CaretOptions caretOpt, CancellationToken ct) {
+        internal ModalFlow(Layout layout, CaretOptions caretOpt, ConfirmOptions confirmOpt, CancellationToken ct) {
             if (ct.CanBeCanceled) ctorCtr = ct.Register(() => { if (tcs != null) Complete(ModalResult.Cancel()); });
-            this.modalAnimator = modalAnimator;
-            this.modalView = modalView;
-            this.vk = vk;
+            modalAnimator = layout.ModalAnimator;
+            modalView = layout.ModalView;
+            vk = layout.VirtualKeyboard;
+            this.confirmOpt = confirmOpt;
             strCtor = new VKStringConstructor(vk.KeyboardType);
-            vCaret = VirtualCaret.NumpadCaret(vk.KeyboardType, caretOpt.htmlStrRGBA);
+            vCaret = VirtualCaret.NumpadCaret(vk.KeyboardType, caretOpt.HtmlStrRGBA);
 
-            caretOnDuration = caretOpt.onDuration;
-            caretOffDuration = caretOpt.offDuration;
+            caretOnDuration = caretOpt.OnDuration;
+            caretOffDuration = caretOpt.OffDuration;
             caretState = CaretState.OnTimer;
             caretIsOn = false;
             normalTxt = string.Empty;
@@ -74,14 +76,15 @@ namespace CocaCopa.Modal.Runtime {
             normalTxt = inputValue;
             colorizedTxt = vCaret.ApplyCaret(normalTxt, strCtor.CaretIndex);
 
-            bool validInput = inputValue != string.Empty;
-
             caretIsOn = false;
             caretState = CaretState.ValidateState;
 
-            if (validInput) {
-                modalView.SetInputFieldStr(colorizedTxt);
+            modalView.SetInputFieldStr(colorizedTxt);
+
+            if (normalTxt.Equals(string.Empty) || (normalTxt.Length == 5 && normalTxt.Contains("0.00"))) {
+                modalView.EnableConfirm(true, false);
             }
+            else { modalView.EnableConfirm(true, true); }
         }
 
         internal void TickCaret(float deltaTime) {
@@ -115,7 +118,9 @@ namespace CocaCopa.Modal.Runtime {
             }
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-
+            if (modalView.GetInputFieldStr().Equals(string.Empty)) {
+                modalView.EnableConfirm(true, false);
+            }
             _ = modalAnimator.PlayShowAsync(options.inputAnimOpt, options.vkAnimOpt);
 
             if (ct.CanBeCanceled) {
@@ -147,14 +152,34 @@ namespace CocaCopa.Modal.Runtime {
             OnTimer, ValidateState
         };
 
-        internal struct CaretOptions {
-            public string htmlStrRGBA;
-            public float onDuration;
-            public float offDuration;
+        internal readonly struct CaretOptions {
+            public readonly string HtmlStrRGBA;
+            public readonly float OnDuration;
+            public readonly float OffDuration;
             public CaretOptions(string htmlStrRGBA, float onDuration, float offDuration) {
-                this.htmlStrRGBA = htmlStrRGBA;
-                this.onDuration = onDuration;
-                this.offDuration = offDuration;
+                HtmlStrRGBA = htmlStrRGBA;
+                OnDuration = onDuration;
+                OffDuration = offDuration;
+            }
+        }
+
+        internal readonly struct Layout {
+            public readonly IModalView ModalView;
+            public readonly IVirtualKeyboard VirtualKeyboard;
+            public readonly IModalAnimator ModalAnimator;
+            public Layout(IModalView modalView, IVirtualKeyboard virtualKeyboard, IModalAnimator modalAnimator) {
+                ModalView = modalView;
+                VirtualKeyboard = virtualKeyboard;
+                ModalAnimator = modalAnimator;
+            }
+        }
+
+        internal readonly struct ConfirmOptions {
+            public readonly bool AllowEmptyString;
+            public readonly string[] InvalidStrings;
+            public ConfirmOptions(bool allowEmptyString, params string[] invalidStrings) {
+                AllowEmptyString = allowEmptyString;
+                InvalidStrings = invalidStrings;
             }
         }
         #endregion
