@@ -36,7 +36,7 @@ namespace iMoney.BalanceEntry.Runtime {
             balanceManagement.HideSpendButton();
             ModalData data = await GetModalData(addOptions: true);
             string newBalance = BalanceCalculator.Add(balanceManagement.GetBalanceText(), data.BalanceAmount);
-            balanceManagement.SetNewBalance(newBalance);
+            if (data.IsValid) { balanceManagement.SetNewBalance(newBalance); }
             balanceManagement.ShowSpendButton();
         }
 
@@ -47,7 +47,7 @@ namespace iMoney.BalanceEntry.Runtime {
             balanceManagement.HideAddButton();
             ModalData data = await GetModalData(addOptions: false);
             string newBalance = BalanceCalculator.Subtract(balanceManagement.GetBalanceText(), data.BalanceAmount);
-            balanceManagement.SetNewBalance(newBalance);
+            if (data.IsValid) { balanceManagement.SetNewBalance(newBalance); }
             balanceManagement.ShowAddButton();
         }
 
