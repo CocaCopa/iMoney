@@ -11,8 +11,8 @@ namespace CocaCopa.SaveSystem.Runtime {
     /// <para>Internal and only visible to friend assemblies via InternalsVisibleTo.</para>
     /// </summary>
     internal sealed class DefaultSaveStorage : ISaveStorage {
-        private readonly JsonFileStorage _fileStorage;
-        private readonly string _rootDirectory;
+        private readonly JsonFileStorage fileStorage;
+        private readonly string rootDirectory;
 
         /// <param name="rootDirectory">
         /// Optional root directory that filePath will be relative to.
@@ -31,28 +31,28 @@ namespace CocaCopa.SaveSystem.Runtime {
                 encryption = new AesEncryptionTransform(passphrase, salt);
             }
 
-            _fileStorage = new JsonFileStorage(jsonSerializer, encryption);
-            _rootDirectory = string.IsNullOrWhiteSpace(rootDirectory) ? null : rootDirectory;
+            fileStorage = new JsonFileStorage(jsonSerializer, encryption);
+            this.rootDirectory = string.IsNullOrWhiteSpace(rootDirectory) ? null : rootDirectory;
         }
 
         public void Save<T>(T data, string filePath) {
             string resolved = ResolvePath(filePath);
-            _fileStorage.Save(data, resolved);
+            fileStorage.Save(data, resolved);
         }
 
         public bool Load<T>(string filePath, out T result) {
             string resolved = ResolvePath(filePath);
-            return _fileStorage.Load(resolved, out result);
+            return fileStorage.Load(resolved, out result);
         }
 
         private string ResolvePath(string filePath) {
-            if (string.IsNullOrWhiteSpace(_rootDirectory))
+            if (string.IsNullOrWhiteSpace(rootDirectory))
                 return filePath;
 
             if (Path.IsPathRooted(filePath))
                 return filePath;
 
-            return Path.Combine(_rootDirectory, filePath);
+            return Path.Combine(rootDirectory, filePath);
         }
     }
 }

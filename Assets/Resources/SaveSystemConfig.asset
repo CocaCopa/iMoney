@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SaveSystemConfig
   m_EditorClassIdentifier: CocaCopa.SaveSystem.Unity::CocaCopa.SaveSystem.Unity.SaveSystemConfig
   initPhase: 3
-  usePersistentDataPath: 1
+  saveDestination: 0
+  customPath: 
   prettyPrintJson: 0
   useEncryption: 1
   passphrase: iMoney!
