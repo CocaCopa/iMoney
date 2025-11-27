@@ -5,6 +5,6 @@ namespace CocaCopa.SaveSystem.API {
     /// </summary>
     public interface ISaveStorage {
         void Save<T>(T data, string filePath);
-        bool Load<T>(string filePath, out T result);
+        bool TryLoad<T>(string filePath, out T result);
     }
 }

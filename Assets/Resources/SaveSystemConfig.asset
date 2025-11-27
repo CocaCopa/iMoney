@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SaveSystemConfig
   m_EditorClassIdentifier: CocaCopa.SaveSystem.Unity::CocaCopa.SaveSystem.Unity.SaveSystemConfig
   initPhase: 3
-  saveDestination: 0
+  saveDestination: 1
   customPath: 
   prettyPrintJson: 0
   useEncryption: 1

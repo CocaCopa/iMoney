@@ -40,7 +40,7 @@ namespace CocaCopa.SaveSystem.Runtime {
             fileStorage.Save(data, resolved);
         }
 
-        public bool Load<T>(string filePath, out T result) {
+        public bool TryLoad<T>(string filePath, out T result) {
             string resolved = ResolvePath(filePath);
             return fileStorage.Load(resolved, out result);
         }

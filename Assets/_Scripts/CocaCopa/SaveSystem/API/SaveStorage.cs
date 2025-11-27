@@ -32,7 +32,7 @@ namespace CocaCopa.SaveSystem.API {
 
         public static bool Load<T>(string filePath, out T result) {
             EnsureInitialized();
-            return implementation.Load(filePath, out result);
+            return implementation.TryLoad(filePath, out result);
         }
 
         private static void EnsureInitialized() {
