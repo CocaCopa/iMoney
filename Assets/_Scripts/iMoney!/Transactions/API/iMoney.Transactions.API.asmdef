@@ -1,0 +1,18 @@
+{
+    "name": "iMoney.Transactions.API",
+    "rootNamespace": "iMoney.Transactions.API",
+    "references": [
+        "iMoney.Transactions.Contracts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

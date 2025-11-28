@@ -1,0 +1,19 @@
+{
+    "name": "iMoney.App.Runtime",
+    "rootNamespace": "iMoney.App",
+    "references": [
+        "CocaCopa.Core.Numerics",
+        "CocaCopa.Logger.Runtime",
+        "CocaCopa.Logger.API",
+        "CocaCopa.Modal.Contracts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

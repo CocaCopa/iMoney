@@ -1,0 +1,21 @@
+{
+    "name": "iMoney.App.Unity",
+    "rootNamespace": "iMoney.App",
+    "references": [
+        "Unity.TextMeshPro",
+        "CocaCopa.Core.Animation",
+        "CocaCopa.Core.Events",
+        "CocaCopa.Modal.Contracts",
+        "CocaCopa.Modal.API",
+        "iMoney.App.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

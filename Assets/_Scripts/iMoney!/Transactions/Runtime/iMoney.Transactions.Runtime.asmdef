@@ -1,0 +1,19 @@
+{
+    "name": "iMoney.Transactions.Runtime",
+    "rootNamespace": "iMoney.Transactions.Runtime",
+    "references": [
+        "CocaCopa.SaveSystem.API",
+        "iMoney.Transactions.Contracts"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

@@ -15,7 +15,7 @@ MonoBehaviour:
   initPhase: 3
   saveDestination: 1
   customPath: 
-  prettyPrintJson: 0
-  useEncryption: 1
+  prettyPrintJson: 1
+  useEncryption: 0
   passphrase: iMoney!
   saltHex: 0011223344556677
