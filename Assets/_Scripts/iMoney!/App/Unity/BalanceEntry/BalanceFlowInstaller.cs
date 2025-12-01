@@ -35,7 +35,7 @@ namespace iMoney.App.BalanceEntry.Unity {
 
         private void OnValidate() {
             if (balanceManagementUI == null) { throw new ArgumentNullException(nameof(balanceManagementUI)); }
-            if (balanceManagementUI is not IBalanceManagement) { throw new Exception($"The assigned script '{nameof(balanceManagementUI)} does not implement the {nameof(IBalanceManagement)} interface"); }
+            if (balanceManagementUI is not IBalanceManagement) { throw new Exception($"The assigned script '{nameof(balanceManagementUI)}' does not implement the '{nameof(IBalanceManagement)}' interface"); }
         }
 
         private void Start() {

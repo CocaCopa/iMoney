@@ -5,15 +5,12 @@ namespace iMoney.App.BalanceEntry.Runtime {
     internal class BalanceCalculator {
         private enum Operation { Add, Subtract };
 
-        public static string Add(string current, string amount) => Sum(current, amount, Operation.Add);
-        public static string Subtract(string current, string amount) => Sum(current, amount, Operation.Subtract);
+        public static string Add(string current, string amountToAdd) => Sum(current, amountToAdd, Operation.Add);
+        public static string Subtract(string current, string amountToSubtract) => Sum(current, amountToSubtract, Operation.Subtract);
 
         private static string Sum(string num1, string num2, Operation op) {
-            if (num1.Contains("€")) num1 = num1.Replace("€", "");
-            if (num2.Contains("€")) num2 = num2.Replace("€", "");
-
-            ScaledInt scaledNum1 = ScaledIntParser.TryParseScaledInt(num1, '.');
-            ScaledInt scaledNum2 = ScaledIntParser.TryParseScaledInt(num2, '.');
+            ScaledInt scaledNum1 = ParseAmount(num1);
+            ScaledInt scaledNum2 = ParseAmount(num2);
 
             if (scaledNum1.Success && scaledNum2.Success) {
                 float sum = op == Operation.Add
@@ -28,6 +25,22 @@ namespace iMoney.App.BalanceEntry.Runtime {
             }
 
             return string.Empty;
+        }
+
+        public static ScaledInt ParseAmount(string amount) {
+            if (amount.Contains("€")) { amount = amount.Replace("€", ""); }
+            return ScaledIntParser.TryParseScaledInt(amount, '.');
+        }
+
+        public static bool TryParseAmount(string amount, out int amountInt, out int amountScale) {
+            amountInt = amountScale = 0;
+            ScaledInt scaledAmount = ParseAmount(amount);
+            if (scaledAmount.Success) {
+                amountInt = scaledAmount.Value;
+                amountScale = scaledAmount.Scale;
+                return true;
+            }
+            return false;
         }
     }
 }

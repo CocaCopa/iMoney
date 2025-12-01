@@ -24,17 +24,27 @@ namespace iMoney.Transactions.Contracts {
         /// </summary>
         public string Category;
 
+        public static Transaction Create(long timestamp, TransactionAmount amount, string type, string category) {
+            string id = Guid.NewGuid().ToString("N");
+            return new Transaction(id, timestamp, amount, type, category);
+        }
+
+        public static Transaction Default() {
+            return new Transaction(
+                id: "-1",
+                timestamp: 0,
+                amount: new TransactionAmount(),
+                type: "N/A",
+                category: "NA"
+            );
+        }
+
         private Transaction(string id, long timestamp, TransactionAmount amount, string type, string category) {
-            ID = "1";
+            ID = id;
             Timestamp = timestamp;
             Amount = amount;
             Type = type;
             Category = category;
-        }
-
-        public static Transaction Create(long timestamp, TransactionAmount amount, string type, string category) {
-            string id = Guid.NewGuid().ToString("N");
-            return new Transaction(id, timestamp, amount, type, category);
         }
     }
 

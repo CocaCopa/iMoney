@@ -5,7 +5,9 @@
         "CocaCopa.Core.Numerics",
         "CocaCopa.Logger.Runtime",
         "CocaCopa.Logger.API",
-        "CocaCopa.Modal.Contracts"
+        "CocaCopa.Modal.Contracts",
+        "iMoney.Transactions.API",
+        "iMoney.Transactions.Contracts"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

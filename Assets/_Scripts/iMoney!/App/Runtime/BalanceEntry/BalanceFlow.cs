@@ -1,7 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CocaCopa.Core.Numerics;
+using CocaCopa.Logger.API;
 using CocaCopa.Modal.Contracts;
+using iMoney.Transactions.API;
+using iMoney.Transactions.Contracts;
 
 namespace iMoney.App.BalanceEntry.Runtime {
     internal sealed class BalanceFlow : IDisposable {
@@ -25,34 +29,68 @@ namespace iMoney.App.BalanceEntry.Runtime {
             balanceManagement.OnSpendPressed -= HandleSpendIntent;
         }
 
-        private async void HandleAddIntent() {
+        private void HandleAddIntent() => _ = HandleIntentAsync(isAdd: true);
+        private void HandleSpendIntent() => _ = HandleIntentAsync(isAdd: false);
+
+        private async Task HandleIntentAsync(bool isAdd) {
             if (balanceConfig.ModalService.IsActive || categoryConfig.ModalService.IsActive) {
                 return;
             }
-            balanceManagement.HideSpendButton();
-            ModalData data = await GetModalData(addOptions: true);
-            string newBalance = BalanceCalculator.Add(balanceManagement.GetBalanceText(), data.BalanceAmount);
-            if (data.IsValid) { balanceManagement.SetNewBalance(newBalance); }
-            balanceManagement.ShowSpendButton();
+
+            ToggleButtons(isAdd, hide: true);
+            try {
+                ModalData data = await GetModalData(addOptions: isAdd);
+                if (!data.IsValid) return;
+
+                string type = isAdd ? "Add" : "Spend";
+                Transaction tr = CreateTransaction(data.BalanceAmount, type, data.CategoryName);
+
+                if (tr.Equals(Transaction.Default())) {
+                    // TODO: Notification + fallback
+                    Log.Error("[BalanceFlow] Could not create transaction");
+                    return;
+                }
+
+                TransactionsManager.AddEntry(tr);
+
+                string currentBalance = balanceManagement.GetBalanceText();
+                string newBalance = isAdd
+                    ? BalanceCalculator.Add(currentBalance, data.BalanceAmount)
+                    : BalanceCalculator.Subtract(currentBalance, data.BalanceAmount);
+
+                balanceManagement.SetNewBalance(newBalance);
+            }
+            finally {
+                ToggleButtons(isAdd, hide: false);
+            }
         }
 
-        private async void HandleSpendIntent() {
-            if (balanceConfig.ModalService.IsActive || categoryConfig.ModalService.IsActive) {
-                return;
+        private void ToggleButtons(bool isAdd, bool hide) {
+            if (isAdd) {
+                if (hide) balanceManagement.HideSpendButton();
+                else balanceManagement.ShowSpendButton();
             }
-            balanceManagement.HideAddButton();
-            ModalData data = await GetModalData(addOptions: false);
-            string newBalance = BalanceCalculator.Subtract(balanceManagement.GetBalanceText(), data.BalanceAmount);
-            if (data.IsValid) { balanceManagement.SetNewBalance(newBalance); }
-            balanceManagement.ShowAddButton();
+            else {
+                if (hide) balanceManagement.HideAddButton();
+                else balanceManagement.ShowAddButton();
+            }
+        }
+
+        private static Transaction CreateTransaction(string amount, string type, string category) {
+            if (BalanceCalculator.TryParseAmount(amount, out int value, out int scale)) {
+                TransactionAmount trAmount = new TransactionAmount(value, scale);
+                Transaction newTr = Transaction.Create(DateTime.Now.Ticks, trAmount, type, category);
+                return newTr;
+            }
+            else return Transaction.Default();
         }
 
         private async Task<ModalData> GetModalData(bool addOptions) {
-            await Task.Delay(balanceConfig.AppearDelay);
+            await Task.Delay(balanceConfig.AppearDelay, ct);
             var balanceOptions = addOptions ? balanceConfig.AddOptions : balanceConfig.SpendOptions;
             string balance = await ResolveModal(balanceConfig.ModalService, balanceOptions, awaitHide: false);
             if (balance.Equals(string.Empty)) { return ModalData.Invalid; }
-            await Task.Delay(categoryConfig.AppearDelay);
+            await Task.Delay(categoryConfig.AppearDelay, ct);
             var categoryOptions = addOptions ? categoryConfig.AddOptions : categoryConfig.SpendOptions;
             string category = await ResolveModal(categoryConfig.ModalService, categoryOptions, awaitHide: true);
             if (category.Equals(string.Empty)) { return ModalData.Invalid; }
