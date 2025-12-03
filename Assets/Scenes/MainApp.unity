@@ -4912,6 +4912,7 @@ MonoBehaviour:
     onDuration: 0.75
     offDuration: 0.4
   allowEmpty: 0
+  minWidth: 0
   invalidStrings: []
 --- !u!114 &480278722
 MonoBehaviour:
@@ -12893,7 +12894,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1383000104}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -15663,6 +15664,7 @@ MonoBehaviour:
     onDuration: 0.75
     offDuration: 0.4
   allowEmpty: 0
+  minWidth: 2
   invalidStrings: []
 --- !u!114 &1683063032
 MonoBehaviour:

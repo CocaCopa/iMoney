@@ -1,4 +1,5 @@
 using System;
+using System.Text.RegularExpressions;
 using CocaCopa.Core.Events;
 using CocaCopa.Modal.SPI;
 using TMPro;
@@ -31,6 +32,6 @@ namespace CocaCopa.Modal.Unity {
             confirmButton.interactable = interactable;
         }
         public void SetInputFieldStr(string txt) => inputField.text = txt;
-        public string GetInputFieldStr() => inputField.text;
+        public string GetInputFieldStr() => Regex.Replace(inputField.text, "<.*?>", string.Empty);
     }
 }

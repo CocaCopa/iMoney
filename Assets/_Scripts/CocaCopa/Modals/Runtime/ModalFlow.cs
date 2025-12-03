@@ -80,11 +80,27 @@ namespace CocaCopa.Modal.Runtime {
             caretState = CaretState.ValidateState;
 
             modalView.SetInputFieldStr(colorizedTxt);
+            modalView.EnableConfirm(enabled: true, interactable: AllowedStrValue());
+        }
 
-            if (normalTxt.Equals(string.Empty) || (normalTxt.Length == 5 && normalTxt.Contains("0.00"))) {
-                modalView.EnableConfirm(true, false);
+        private bool AllowedStrValue() {
+            string currentInput = modalView.GetInputFieldStr();
+
+            if (currentInput.Equals(string.Empty)) {
+                return confirmOpt.AllowEmptyString;
             }
-            else { modalView.EnableConfirm(true, true); }
+            if (currentInput.Length < confirmOpt.MinWidth) {
+                return false;
+            }
+            if (confirmOpt.InvalidStrings != null && confirmOpt.InvalidStrings.Length > 0) {
+                for (int i = 0; i < confirmOpt.InvalidStrings.Length; i++) {
+                    string invStr = confirmOpt.InvalidStrings[i];
+                    if (currentInput.Equals(invStr)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         internal void TickCaret(float deltaTime) {
@@ -118,8 +134,8 @@ namespace CocaCopa.Modal.Runtime {
             }
             IsActive = true;
             tcs = new TaskCompletionSource<ModalResult>(TaskCreationOptions.RunContinuationsAsynchronously);
-            if (modalView.GetInputFieldStr().Equals(string.Empty)) {
-                modalView.EnableConfirm(true, false);
+            if (!confirmOpt.AllowEmptyString && modalView.GetInputFieldStr().Equals(string.Empty)) {
+                modalView.EnableConfirm(enabled: true, interactable: false);
             }
 
             modalAnimator.PlayShow(options.inputAnimOpt, options.vkAnimOpt);
@@ -180,9 +196,11 @@ namespace CocaCopa.Modal.Runtime {
 
         internal readonly struct ConfirmOptions {
             public readonly bool AllowEmptyString;
+            public readonly int MinWidth;
             public readonly string[] InvalidStrings;
-            public ConfirmOptions(bool allowEmptyString, params string[] invalidStrings) {
+            public ConfirmOptions(bool allowEmptyString, int minWidth, params string[] invalidStrings) {
                 AllowEmptyString = allowEmptyString;
+                MinWidth = minWidth;
                 InvalidStrings = invalidStrings;
             }
         }

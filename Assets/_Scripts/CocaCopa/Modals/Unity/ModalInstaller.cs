@@ -21,6 +21,7 @@ namespace CocaCopa.Modal.Unity {
 
         [Header("Invalid Input")]
         [SerializeField] private bool allowEmpty;
+        [SerializeField, Min(0)] private int minWidth;
         [SerializeField] private string[] invalidStrings;
 
         private ModalFlow modalFlow;
@@ -48,7 +49,7 @@ namespace CocaCopa.Modal.Unity {
             lifetimeCts = new CancellationTokenSource();
             var caretOptions = new ModalFlow.CaretOptions(ColorUtility.ToHtmlStringRGBA(caretColor), caretInterval.onDuration, caretInterval.offDuration);
             var modalLayout = new ModalFlow.Layout(ModalView, VirtualKeyboard, ModalAnimator);
-            var confirmOptions = new ModalFlow.ConfirmOptions(allowEmpty, invalidStrings);
+            var confirmOptions = new ModalFlow.ConfirmOptions(allowEmpty, minWidth, invalidStrings);
             modalFlow = new ModalFlow(modalLayout, caretOptions, confirmOptions, lifetimeCts.Token);
         }
 
