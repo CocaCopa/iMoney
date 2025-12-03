@@ -1,4 +1,4 @@
-using CocaCopa.Core.Math;
+using CocaCopa.Core.MathUtilities;
 
 namespace CocaCopa.Core.Animation {
     /// <summary>

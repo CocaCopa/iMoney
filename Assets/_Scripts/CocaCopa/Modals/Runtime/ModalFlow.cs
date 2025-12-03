@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CocaCopa.Core.Math;
+using CocaCopa.Core.MathUtilities;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Domain;
 using CocaCopa.Modal.Runtime.Internal;
@@ -121,7 +121,8 @@ namespace CocaCopa.Modal.Runtime {
             if (modalView.GetInputFieldStr().Equals(string.Empty)) {
                 modalView.EnableConfirm(true, false);
             }
-            _ = modalAnimator.PlayShowAsync(options.inputAnimOpt, options.vkAnimOpt);
+
+            modalAnimator.PlayShow(options.inputAnimOpt, options.vkAnimOpt);
 
             if (ct.CanBeCanceled) {
                 showCtr = ct.Register(() => { Complete(ModalResult.Cancel()); });
@@ -130,9 +131,12 @@ namespace CocaCopa.Modal.Runtime {
             return tcs.Task;
         }
 
-        public Task Hide() {
+        public async Task Hide() {
             if (IsActive) { throw new Exception("Cannot hide modal before result"); }
-            return modalAnimator.PlayHideAsync();
+            modalAnimator.PlayHide();
+            while (modalAnimator.IsVisible) {
+                await Task.Yield();
+            }
         }
 
         private void Complete(ModalResult result) {

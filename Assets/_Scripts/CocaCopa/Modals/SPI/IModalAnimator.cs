@@ -3,10 +3,10 @@ using CocaCopa.Modal.Contracts;
 
 namespace CocaCopa.Modal.SPI {
     internal interface IModalAnimator {
-        Task PlayShowAsync(AnimOptions input, AnimOptions vk);
-        Task PlayHideAsync(AnimOptions input, AnimOptions vk);
-        Task PlayShowAsync();
-        Task PlayHideAsync();
+        void PlayShow(ModalAnimOptions input, ModalAnimOptions vk);
+        void PlayHide(ModalAnimOptions input, ModalAnimOptions vk);
+        void PlayShow();
+        void PlayHide();
         bool IsVisible { get; }
     }
 }

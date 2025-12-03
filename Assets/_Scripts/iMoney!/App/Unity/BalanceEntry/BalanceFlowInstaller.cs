@@ -19,12 +19,12 @@ namespace iMoney.App.BalanceEntry.Unity {
         [SerializeField, Range(0, 500)] private int categoryDelay = 280;
 
         [Header("Add Config")]
-        [SerializeField] private ModalOptions balanceAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Left, AnimOptions.Bottom);
-        [SerializeField] private ModalOptions categoryAddOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
+        [SerializeField] private ModalOptions balanceAddOptions = new ModalOptions(CachedInputValue.Erase, ModalAnimOptions.Left, ModalAnimOptions.Bottom);
+        [SerializeField] private ModalOptions categoryAddOptions = new ModalOptions(CachedInputValue.Erase, ModalAnimOptions.Right, ModalAnimOptions.Bottom);
 
         [Header("Spend Config")]
-        [SerializeField] private ModalOptions balanceSpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
-        [SerializeField] private ModalOptions categorySpendOptions = new ModalOptions(CachedInputValue.Erase, AnimOptions.Right, AnimOptions.Bottom);
+        [SerializeField] private ModalOptions balanceSpendOptions = new ModalOptions(CachedInputValue.Erase, ModalAnimOptions.Right, ModalAnimOptions.Bottom);
+        [SerializeField] private ModalOptions categorySpendOptions = new ModalOptions(CachedInputValue.Erase, ModalAnimOptions.Right, ModalAnimOptions.Bottom);
 
         private IModalService BalanceService => balanceModal.GetService();
         private IModalService CategoryService => categoryModal.GetService();

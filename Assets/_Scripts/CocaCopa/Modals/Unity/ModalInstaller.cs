@@ -3,14 +3,17 @@ using System.Threading;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime;
 using CocaCopa.Modal.SPI;
+using CocaCopa.Unity.Animation.Panel;
 using UnityEngine;
 
 namespace CocaCopa.Modal.Unity {
     internal class ModalInstaller : MonoBehaviour {
         [Header("References")]
         [SerializeField] private MonoBehaviour modalAnimator;
-        [SerializeField] private MonoBehaviour modalView;
-        [SerializeField] private MonoBehaviour virtualKeyboard;
+        [SerializeField] private PanelAnimator inputAnimator;
+        [SerializeField] private PanelAnimator vkAnimator;
+        [SerializeField] private ModalView modalView;
+        [SerializeField] private VirtualKeyboardBase virtualKeyboard;
 
         [Header("Caret")]
         [SerializeField] private Color caretColor = Color.white;

@@ -1,67 +1,99 @@
+using System.Collections;
 using System.Threading.Tasks;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.SPI;
+using CocaCopa.Unity.Animation.Panel;
 using UnityEngine;
 
 namespace CocaCopa.Modal.Unity.Animation {
     [RequireComponent(typeof(CanvasGroup))]
     internal class ModalAnimation : MonoBehaviour, IModalAnimator {
         [Header("References")]
-        [SerializeField] private RectTransform inputRect;
-        [SerializeField] private RectTransform vkRect;
+        [SerializeField] private PanelAnimator inputAnimator;
+        [SerializeField] private PanelAnimator vkAnimator;
 
-        [Header("Animation Flow")]
+        [Header("General")]
+        [SerializeField] private AnimateFirst animateFirst;
         [SerializeField] private float delayTime;
 
-
-        [Header("Input Animation")]
-        [SerializeField] private AnimationCurve inputCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [SerializeField] private float inputAnimSpeed = 1.5f;
-
-        [Header("Virtual Keyboard Animation")]
-        [SerializeField] private AnimationCurve vkCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-        [SerializeField] private float vkAnimSpeed = 1.5f;
-
-        private ModalAnimationFlow animFlow;
+        private PanelAnimator primaryObj;
+        private PanelAnimator secondaryObj;
 
         public bool IsVisible { get; private set; }
 
         private void Awake() {
             var cg = GetComponent<CanvasGroup>();
             cg.alpha = 1f;
+            SetAnimOrder(animateFirst);
         }
 
         private void Start() {
             Canvas.ForceUpdateCanvases();
-            animFlow = CreateFlow();
-            gameObject.SetActive(true);
         }
 
-        private ModalAnimationFlow CreateFlow() {
-            return new ModalAnimationFlow(
-                new ModalAnimationFlow.ModalObject(AnimOptions.Left, inputRect, inputCurve, inputAnimSpeed),
-                new ModalAnimationFlow.ModalObject(AnimOptions.Bottom, vkRect, vkCurve, vkAnimSpeed),
-                new ModalAnimationFlow.FlowOptions(ModalAnimationFlow.AnimateFirst.Input, delayTime)
-            );
+        private void SetAnimOrder(AnimateFirst first) {
+            if (first == AnimateFirst.Input) {
+                primaryObj = inputAnimator;
+                secondaryObj = vkAnimator;
+            }
+            else {
+                primaryObj = vkAnimator;
+                secondaryObj = inputAnimator;
+            }
         }
 
-        public async Task PlayShowAsync() => await TickAnim(reverse: false);
-        public async Task PlayShowAsync(AnimOptions input, AnimOptions vk) {
-            animFlow.OverrideAnimOptions(input, vk);
-            await TickAnim(reverse: false);
+        public void PlayShow(ModalAnimOptions input, ModalAnimOptions vk) {
+            inputAnimator.OverrideAnimOptions(MapOptions(input));
+            vkAnimator.OverrideAnimOptions(MapOptions(vk));
+            PlayShow();
         }
 
-        public async Task PlayHideAsync() => await TickAnim(reverse: true);
-        public async Task PlayHideAsync(AnimOptions input, AnimOptions vk) {
-            animFlow.OverrideAnimOptions(input, vk);
-            await TickAnim(reverse: true);
+        public void PlayHide(ModalAnimOptions input, ModalAnimOptions vk) {
+            inputAnimator.OverrideAnimOptions(MapOptions(input));
+            vkAnimator.OverrideAnimOptions(MapOptions(vk));
+            PlayHide();
         }
 
-        private async Task TickAnim(bool reverse) {
-            do {
-                animFlow.TickSequence(Time.unscaledDeltaTime, reverse);
-                await Task.Yield();
-            } while (!animFlow.Completed);
+        public void PlayShow() => StartCoroutine(TickSequence(reverse: false));
+        public void PlayHide() => StartCoroutine(TickSequence(reverse: true));
+
+        private IEnumerator TickSequence(bool reverse) {
+            IsVisible = reverse;
+            if (reverse) { primaryObj.Hide(); }
+            else { primaryObj.Show(); }
+
+            yield return new WaitForSecondsRealtime(delayTime);
+
+            if (reverse) { secondaryObj.Hide(); }
+            else { secondaryObj.Show(); }
+
+            while (primaryObj.IsAnimating || secondaryObj.IsAnimating) {
+                yield return null;
+            }
+            IsVisible = !reverse;
+        }
+
+        private AnimOptions MapOptions(ModalAnimOptions opt) {
+            UIAppear appear = opt.appear switch {
+                Appear.Top => UIAppear.Top,
+                Appear.Bottom => UIAppear.Bottom,
+                Appear.Left => UIAppear.Left,
+                Appear.Right => UIAppear.Right,
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
+            UIDisappear disappear = opt.disappear switch {
+                Disappear.Top => UIDisappear.Top,
+                Disappear.Bottom => UIDisappear.Bottom,
+                Disappear.Left => UIDisappear.Left,
+                Disappear.Right => UIDisappear.Right,
+                _ => throw new System.ArgumentOutOfRangeException()
+            };
+            return new AnimOptions(appear, disappear);
+        }
+
+        private enum AnimateFirst {
+            Input,
+            VirtualKeyBoard
         }
     }
 }

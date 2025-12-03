@@ -4,6 +4,7 @@
     "references": [
         "Unity.TextMeshPro",
         "CocaCopa.Core.Events",
+        "CocaCopa.Unity.Animation",
         "CocaCopa.Modal.Runtime",
         "CocaCopa.Modal.Contracts",
         "CocaCopa.Modal.SPI"

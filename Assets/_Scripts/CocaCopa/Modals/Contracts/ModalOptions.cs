@@ -2,9 +2,9 @@ namespace CocaCopa.Modal.Contracts {
     [System.Serializable]
     public struct ModalOptions {
         public CachedInputValue cachedInputValue;
-        public AnimOptions inputAnimOpt;
-        public AnimOptions vkAnimOpt;
-        public ModalOptions(CachedInputValue cachedInputValue, AnimOptions inputAnimOpt, AnimOptions vkAnimOpt) {
+        public ModalAnimOptions inputAnimOpt;
+        public ModalAnimOptions vkAnimOpt;
+        public ModalOptions(CachedInputValue cachedInputValue, ModalAnimOptions inputAnimOpt, ModalAnimOptions vkAnimOpt) {
             this.cachedInputValue = cachedInputValue;
             this.inputAnimOpt = inputAnimOpt;
             this.vkAnimOpt = vkAnimOpt;

@@ -321,6 +321,7 @@ GameObject:
   m_Component:
   - component: {fileID: 23237453}
   - component: {fileID: 23237454}
+  - component: {fileID: 23237455}
   m_Layer: 5
   m_Name: Input
   m_TagString: Untagged
@@ -364,6 +365,61 @@ MonoBehaviour:
   inputField: {fileID: 562778823}
   confirmButton: {fileID: 876586587}
   cancelButton: {fileID: 1062065179}
+--- !u!114 &23237455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23237452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5b914042e84714ba5c3ddb04a67d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CocaCopa.Unity.Animation::CocaCopa.Unity.Animation.Panel.PanelAnimator
+  startHidden: 1
+  animOptions:
+    appear: 2
+    disappear: 2
+  hideOffsets:
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4469731
+      value: 0.94857544
+      inSlope: 1.4986066
+      outSlope: 1.4986066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 1.5
 --- !u!1001 &31421770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3814,6 +3870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 321236130}
   - component: {fileID: 321236131}
+  - component: {fileID: 321236132}
   m_Layer: 5
   m_Name: Input
   m_TagString: Untagged
@@ -3857,6 +3914,61 @@ MonoBehaviour:
   inputField: {fileID: 551428901}
   confirmButton: {fileID: 723951335}
   cancelButton: {fileID: 111719884}
+--- !u!114 &321236132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321236129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5b914042e84714ba5c3ddb04a67d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CocaCopa.Unity.Animation::CocaCopa.Unity.Animation.Panel.PanelAnimator
+  startHidden: 1
+  animOptions:
+    appear: 2
+    disappear: 2
+  hideOffsets:
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4469731
+      value: 0.94857544
+      inSlope: 1.4986066
+      outSlope: 1.4986066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 1.5
 --- !u!1 &341590913
 GameObject:
   m_ObjectHideFlags: 0
@@ -4791,6 +4903,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.Modal.Runtime::CocaCopa.Modal.Runtime.ModalController
   modalAnimator: {fileID: 1383000106}
+  inputAnimator: {fileID: 321236132}
+  vkAnimator: {fileID: 1792450234}
   modalView: {fileID: 321236131}
   virtualKeyboard: {fileID: 1792450233}
   caretColor: {r: 1, g: 1, b: 1, a: 0.5686275}
@@ -4938,77 +5052,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469daf5d75ac7c2419234a5a7f3ddbc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModalAnimation
-  inputRect: {fileID: 23237453}
-  vkRect: {fileID: 611199534}
+  inputAnimator: {fileID: 23237455}
+  vkAnimator: {fileID: 611199536}
+  animateFirst: 0
   delayTime: 0.15
-  inputCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.4469731
-      value: 0.94857544
-      inSlope: 1.4986066
-      outSlope: 1.4986066
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  inputAnimSpeed: 1.5
-  vkCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.4469731
-      value: 0.94857544
-      inSlope: 1.4986066
-      outSlope: 1.4986066
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  vkAnimSpeed: 1.5
 --- !u!225 &495111892
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5017,7 +5064,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495111889}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -6159,6 +6206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 611199534}
   - component: {fileID: 611199535}
+  - component: {fileID: 611199536}
   m_Layer: 5
   m_Name: VirtualKeyboard
   m_TagString: Untagged
@@ -6241,6 +6289,61 @@ MonoBehaviour:
   - {fileID: 1556422743}
   engagedShiftSprite: {fileID: 5674898949993220964, guid: dfc0118bf547df24e849daab76502892, type: 3}
   lockedShiftColor: {r: 1, g: 0.41960785, b: 0.41960785, a: 1}
+--- !u!114 &611199536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611199533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5b914042e84714ba5c3ddb04a67d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CocaCopa.Unity.Animation::CocaCopa.Unity.Animation.Panel.PanelAnimator
+  startHidden: 1
+  animOptions:
+    appear: 2
+    disappear: 2
+  hideOffsets:
+    top: 0
+    bottom: 50
+    left: 0
+    right: 0
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4469731
+      value: 0.94857544
+      inSlope: 1.4986066
+      outSlope: 1.4986066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 1.5
 --- !u!1 &612269182
 GameObject:
   m_ObjectHideFlags: 0
@@ -11399,34 +11502,34 @@ MonoBehaviour:
     cachedInputValue: 0
     inputAnimOpt:
       appear: 0
-      disappear: 0
+      disappear: 2
     vkAnimOpt:
-      appear: 2
+      appear: 1
       disappear: 2
   categoryAddOptions:
     cachedInputValue: 0
     inputAnimOpt:
-      appear: 1
-      disappear: 0
-    vkAnimOpt:
-      appear: 2
+      appear: 0
       disappear: 2
+    vkAnimOpt:
+      appear: 3
+      disappear: 1
   balanceSpendOptions:
     cachedInputValue: 0
     inputAnimOpt:
-      appear: 1
-      disappear: 1
+      appear: 0
+      disappear: 3
     vkAnimOpt:
-      appear: 2
-      disappear: 2
+      appear: 1
+      disappear: 3
   categorySpendOptions:
     cachedInputValue: 0
     inputAnimOpt:
       appear: 0
-      disappear: 1
+      disappear: 3
     vkAnimOpt:
       appear: 2
-      disappear: 2
+      disappear: 1
 --- !u!4 &1196867866
 Transform:
   m_ObjectHideFlags: 0
@@ -12752,77 +12855,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469daf5d75ac7c2419234a5a7f3ddbc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModalAnimation
-  inputRect: {fileID: 321236130}
-  vkRect: {fileID: 1792450232}
+  inputAnimator: {fileID: 321236132}
+  vkAnimator: {fileID: 1792450234}
+  animateFirst: 0
   delayTime: 0.15
-  inputCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.4469731
-      value: 0.94857544
-      inSlope: 1.4986066
-      outSlope: 1.4986066
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  inputAnimSpeed: 1.5
-  vkCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.4469731
-      value: 0.94857544
-      inSlope: 1.4986066
-      outSlope: 1.4986066
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  vkAnimSpeed: 1.5
 --- !u!114 &1383000107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15618,6 +15654,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: CocaCopa.Modal.Runtime::CocaCopa.Modal.Runtime.ModalController
   modalAnimator: {fileID: 495111891}
+  inputAnimator: {fileID: 23237455}
+  vkAnimator: {fileID: 611199536}
   modalView: {fileID: 23237454}
   virtualKeyboard: {fileID: 611199535}
   caretColor: {r: 1, g: 1, b: 1, a: 0.5686275}
@@ -15649,7 +15687,7 @@ GameObject:
   - component: {fileID: 1685798463}
   - component: {fileID: 1685798462}
   m_Layer: 0
-  m_Name: WeekRowUI
+  m_Name: TEMP_Tester
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16475,6 +16513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1792450232}
   - component: {fileID: 1792450233}
+  - component: {fileID: 1792450234}
   m_Layer: 5
   m_Name: VirtualNumpad
   m_TagString: Untagged
@@ -16527,6 +16566,61 @@ MonoBehaviour:
   numpadBackspace: {fileID: 3707446511320561091}
   numpadDot: {fileID: 1341304963}
   numpad0: {fileID: 1892471618}
+--- !u!114 &1792450234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1792450231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d5b914042e84714ba5c3ddb04a67d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CocaCopa.Unity.Animation::CocaCopa.Unity.Animation.Panel.PanelAnimator
+  startHidden: 1
+  animOptions:
+    appear: 2
+    disappear: 2
+  hideOffsets:
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+  moveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4469731
+      value: 0.94857544
+      inSlope: 1.4986066
+      outSlope: 1.4986066
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveSpeed: 1.5
 --- !u!1001 &1793099549
 PrefabInstance:
   m_ObjectHideFlags: 0
