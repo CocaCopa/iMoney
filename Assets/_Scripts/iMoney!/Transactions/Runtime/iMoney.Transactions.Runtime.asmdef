@@ -2,6 +2,8 @@
     "name": "iMoney.Transactions.Runtime",
     "rootNamespace": "iMoney.Transactions.Runtime",
     "references": [
+        "CocaCopa.Core",
+        "CocaCopa.Logger.API",
         "CocaCopa.SaveSystem.API",
         "iMoney.Transactions.Contracts"
     ],
