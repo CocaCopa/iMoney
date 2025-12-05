@@ -1,6 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
-using CocaCopa.Core.Events;
+using CocaCopa.Core;
 using CocaCopa.Modal.SPI;
 using TMPro;
 using UnityEngine;

@@ -1,7 +1,7 @@
 using System;
 
-namespace CocaCopa.Core.MathUtilities {
-    public static class CCMath {
+namespace CocaCopa.Core {
+    public static class MathUtils {
 
         /// <summary>
         /// Linearly interpolates between <paramref name="a"/> and <paramref name="b"/> by <paramref name="t"/>, 

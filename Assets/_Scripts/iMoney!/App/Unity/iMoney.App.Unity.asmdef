@@ -3,8 +3,7 @@
     "rootNamespace": "iMoney.App",
     "references": [
         "Unity.TextMeshPro",
-        "CocaCopa.Core.Animation",
-        "CocaCopa.Core.Events",
+        "CocaCopa.Core",
         "CocaCopa.Modal.Contracts",
         "CocaCopa.Modal.API",
         "iMoney.App.Runtime"

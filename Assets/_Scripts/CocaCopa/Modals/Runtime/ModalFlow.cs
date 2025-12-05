@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CocaCopa.Core.MathUtilities;
+using CocaCopa.Core;
 using CocaCopa.Modal.Contracts;
 using CocaCopa.Modal.Runtime.Domain;
 using CocaCopa.Modal.Runtime.Internal;
@@ -107,7 +107,7 @@ namespace CocaCopa.Modal.Runtime {
             switch (caretState) {
                 case CaretState.OnTimer:
                     caretTimer -= deltaTime;
-                    caretTimer = CCMath.Max(0f, caretTimer);
+                    caretTimer = MathUtils.Max(0f, caretTimer);
                     if (caretTimer == 0f) {
                         caretState = CaretState.ValidateState;
                     }

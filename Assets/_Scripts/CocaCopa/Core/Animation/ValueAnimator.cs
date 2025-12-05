@@ -1,5 +1,3 @@
-using CocaCopa.Core.MathUtilities;
-
 namespace CocaCopa.Core.Animation {
     /// <summary>
     /// Provides smooth value interpolation between two scalar values using a configurable easing function.
@@ -71,7 +69,7 @@ namespace CocaCopa.Core.Animation {
         public void ResetSpeedToDefault() => speed = defaultSpeed;
 
         public void ResetAnimator() { t = 0f; paused = false; }
-        public void SetProgress(float normalized) => t = CCMath.Clamp01(normalized);
+        public void SetProgress(float normalized) => t = MathUtils.Clamp01(normalized);
 
         public void Pause() => paused = true;
         public void Resume() => paused = false;
@@ -102,13 +100,13 @@ namespace CocaCopa.Core.Animation {
         private float Step(float deltaTime, bool clamp) {
             if (!paused && deltaTime > 0f) {
                 t += speed * deltaTime;
-                if (clamp) t = CCMath.Clamp01(t);
+                if (clamp) t = MathUtils.Clamp01(t);
             }
 
-            float curvedT = easing.Evaluate(clamp ? CCMath.Clamp01(t) : t);
+            float curvedT = easing.Evaluate(clamp ? MathUtils.Clamp01(t) : t);
             return clamp
-                ? CCMath.Lerp(from, to, curvedT)
-                : CCMath.LerpUnclamped(from, to, curvedT);
+                ? MathUtils.Lerp(from, to, curvedT)
+                : MathUtils.LerpUnclamped(from, to, curvedT);
         }
     }
 }

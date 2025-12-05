@@ -2,9 +2,9 @@
     "name": "CocaCopa.Modal.Runtime",
     "rootNamespace": "CocaCopa.Modal.Runtime",
     "references": [
+        "CocaCopa.Core",
         "CocaCopa.Modal.Contracts",
-        "CocaCopa.Modal.SPI",
-        "CocaCopa.Core.Math"
+        "CocaCopa.Modal.SPI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

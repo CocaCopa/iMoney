@@ -2,7 +2,7 @@
     "name": "CocaCopa.Unity.Animation",
     "rootNamespace": "CocaCopa.Unity.Animation",
     "references": [
-        "CocaCopa.Core.Animation"
+        "CocaCopa.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

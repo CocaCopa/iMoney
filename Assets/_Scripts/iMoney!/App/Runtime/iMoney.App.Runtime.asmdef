@@ -2,7 +2,7 @@
     "name": "iMoney.App.Runtime",
     "rootNamespace": "iMoney.App",
     "references": [
-        "CocaCopa.Core.Numerics",
+        "CocaCopa.Core",
         "CocaCopa.Logger.Runtime",
         "CocaCopa.Logger.API",
         "CocaCopa.Modal.Contracts",

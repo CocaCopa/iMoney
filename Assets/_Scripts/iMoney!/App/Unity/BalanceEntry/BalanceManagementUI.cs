@@ -1,5 +1,5 @@
 using System;
-using CocaCopa.Core.Events;
+using CocaCopa.Core;
 using iMoney.App.BalanceEntry.Animation;
 using iMoney.App.BalanceEntry.Runtime;
 using TMPro;

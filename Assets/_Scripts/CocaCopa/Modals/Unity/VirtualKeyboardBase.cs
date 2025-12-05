@@ -1,5 +1,5 @@
 using System;
-using CocaCopa.Core.Events;
+using CocaCopa.Core;
 using CocaCopa.Modal.SPI;
 using UnityEngine;
 
