@@ -65,7 +65,15 @@ namespace iMoney.Transactions.Runtime {
             }
         }
 
+        /// <summary>
+        /// Gets the daily transactions
+        /// </summary>
+        /// <returns>Today's transactions</returns>
         public List<Transaction> GetDailyTransactions() => dailyTransactions;
+        /// <summary>
+        /// Gets the current week transactions
+        /// </summary>
+        /// <returns>This week's transactions</returns>
         public Dictionary<string, List<Transaction>> GetCurrentWeekTransactions() => weekTransactions;
 
         public void AddEntry(Transaction transaction) {
