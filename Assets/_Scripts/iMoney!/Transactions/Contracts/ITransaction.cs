@@ -5,5 +5,6 @@ namespace iMoney.Transactions.Contracts {
         void AddEntry(Transaction transaction);
         void RemoveEntry(string id);
         List<Transaction> GetDailyTransactions();
+        Dictionary<string, List<Transaction>> GetCurrentWeekTransactions();
     }
 }

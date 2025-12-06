@@ -13,5 +13,6 @@ namespace iMoney.Transactions.API {
         public static void AddEntry(Transaction transaction) => impl?.AddEntry(transaction);
         public static void RemoveEntry(string id) => impl?.RemoveEntry(id);
         public static List<Transaction> GetDailyTransactions() => impl?.GetDailyTransactions();
+        public static Dictionary<string, List<Transaction>> GetCurrentWeekTransactions() => impl?.GetCurrentWeekTransactions();
     }
 }
