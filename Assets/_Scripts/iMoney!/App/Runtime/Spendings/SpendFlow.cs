@@ -6,10 +6,12 @@ namespace iMoney.App.Spendings.Runtime {
         private readonly IContentPresenter dailyPresenter;
         private readonly IContentPresenter weeklyPresenter;
 
-        public SpendFlow(IContentPresenter dailyPresenter, IContentPresenter weeklyPresenter) {
+        internal SpendFlow(IContentPresenter dailyPresenter, IContentPresenter weeklyPresenter) {
             this.dailyPresenter = dailyPresenter;
             this.weeklyPresenter = weeklyPresenter;
+        }
 
+        internal void Initialize() {
             ManageDailySpendings();
         }
 
@@ -18,10 +20,18 @@ namespace iMoney.App.Spendings.Runtime {
             for (int i = 0; i < entries.Count; i++) {
                 Transaction entry = entries[i];
                 string category = entry.Category;
-                string amount = (entry.Amount.Value / (float)entry.Amount.Multiplier).ToString("0.00");
-                bool useDarkColor = i % 2 != 0;
-                dailyPresenter.AddSpendRow(useDarkColor, category, amount, entry.Type);
+                decimal amount = entry.Amount.Value / (decimal)entry.Amount.Multiplier;
+                TransactionType trType = MapTransactionType(entry.Type);
+                dailyPresenter.AddTransactionRow(category, amount, trType);
             }
+        }
+
+        private TransactionType MapTransactionType(string type) {
+            return type switch {
+                "Add" => TransactionType.Add,
+                "Spend" => TransactionType.Spend,
+                _ => throw new System.ArgumentOutOfRangeException(nameof(type), type, null)
+            };
         }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace iMoney.App.Spendings.Unity {
-    public class SpendRow : MonoBehaviour {
+    public class TransactionRowUI : MonoBehaviour {
         [Header("References")]
         [SerializeField] private TextMeshProUGUI titleTxt;
         [SerializeField] private TextMeshProUGUI amountTxt;
@@ -31,9 +31,9 @@ namespace iMoney.App.Spendings.Unity {
             }
         }
 
-        public void SetData(string title, string amount) {
+        public void SetData(string title, decimal amount) {
             titleTxt.text = title;
-            amountTxt.text = amount;
+            amountTxt.text = amount.ToString("0.00") + "€";
         }
     }
 }

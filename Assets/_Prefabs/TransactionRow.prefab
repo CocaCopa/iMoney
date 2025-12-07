@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 129782562456630947}
   - component: {fileID: -473675702134254836}
   m_Layer: 5
-  m_Name: SpendRow
+  m_Name: TransactionRow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

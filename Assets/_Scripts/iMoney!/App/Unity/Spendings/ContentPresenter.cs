@@ -7,7 +7,13 @@ namespace iMoney.App.Spendings.Unity {
         [SerializeField] private GameObject spendRowPrefab;
         [SerializeField] private Transform contentHolder;
 
+        [Header("General")]
+        [SerializeField] private RowColor firstRowColor = RowColor.Light;
+
+        private RowColor currentRowColor;
+
         private void Awake() {
+            currentRowColor = firstRowColor;
             DestroyPlaceholders();
         }
 
@@ -18,14 +24,28 @@ namespace iMoney.App.Spendings.Unity {
             }
         }
 
-        public void AddSpendRow(bool useDarkColor, string title, string amount, string type) {
+        public void AddTransactionRow(string title, decimal amount, TransactionType trType) {
             var rowObj = Instantiate(spendRowPrefab, contentHolder);
-            if (rowObj.TryGetComponent<SpendRow>(out var row)) {
-                row.UseDarkColor(useDarkColor);
-                row.SetRowType(type == "Spend" ? SpendRow.Type.Spend : SpendRow.Type.Add);
-                row.SetData(title, amount + "€");
+            if (rowObj.TryGetComponent<TransactionRowUI>(out var row)) {
+                row.UseDarkColor(currentRowColor == RowColor.Dark);
+                currentRowColor = currentRowColor == RowColor.Dark ? RowColor.Light : RowColor.Dark;
+                row.SetRowType(MapType(trType));
+                row.SetData(title, amount);
             }
-            else { Debug.LogError("Could not find SpendRow component"); }
+            else { Debug.LogError($"{nameof(ContentPresenter)} Could not find {nameof(TransactionRowUI)} component"); }
         }
+
+        private TransactionRowUI.Type MapType(TransactionType trType) {
+            return trType switch {
+                TransactionType.Add => TransactionRowUI.Type.Add,
+                TransactionType.Spend => TransactionRowUI.Type.Spend,
+                _ => throw new System.ArgumentOutOfRangeException(nameof(trType), trType, null)
+            };
+        }
+
+        private enum RowColor {
+            Dark,
+            Light
+        };
     }
 }

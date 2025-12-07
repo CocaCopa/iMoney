@@ -11,8 +11,12 @@ namespace iMoney.App.Spendings.Unity {
 
         private SpendFlow spendFlow;
 
-        private void Start() {
+        private void Awake() {
             spendFlow = new SpendFlow(DailyPresenter, WeeklyPresenter);
+        }
+
+        private void Start() {
+            spendFlow.Initialize();
         }
     }
 }
