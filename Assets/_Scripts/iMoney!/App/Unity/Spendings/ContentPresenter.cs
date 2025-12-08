@@ -4,7 +4,7 @@ using UnityEngine;
 namespace iMoney.App.Spendings.Unity {
     public class ContentPresenter : MonoBehaviour, IContentPresenter {
         [Header("References")]
-        [SerializeField] private GameObject spendRowPrefab;
+        [SerializeField] private GameObject transactionRowPrefab;
         [SerializeField] private Transform contentHolder;
 
         [Header("General")]
@@ -25,7 +25,7 @@ namespace iMoney.App.Spendings.Unity {
         }
 
         public void AddTransactionRow(string title, decimal amount, TransactionType trType) {
-            var rowObj = Instantiate(spendRowPrefab, contentHolder);
+            var rowObj = Instantiate(transactionRowPrefab, contentHolder);
             if (rowObj.TryGetComponent<TransactionRowUI>(out var row)) {
                 row.UseDarkColor(currentRowColor == RowColor.Dark);
                 currentRowColor = currentRowColor == RowColor.Dark ? RowColor.Light : RowColor.Dark;
@@ -39,6 +39,7 @@ namespace iMoney.App.Spendings.Unity {
             return trType switch {
                 TransactionType.Add => TransactionRowUI.Type.Add,
                 TransactionType.Spend => TransactionRowUI.Type.Spend,
+                TransactionType.Neutral => TransactionRowUI.Type.Neutral,
                 _ => throw new System.ArgumentOutOfRangeException(nameof(trType), trType, null)
             };
         }

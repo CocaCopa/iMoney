@@ -17,8 +17,9 @@ namespace iMoney.App.Spendings.Unity {
         [Header("Type Colors")]
         [SerializeField] private Color addColor = Color.white;
         [SerializeField] private Color spendColor = Color.white;
+        [SerializeField] private Color neutralColor = Color.white;
 
-        public enum Type { Add, Spend };
+        public enum Type { Add, Spend, Neutral };
 
         public void UseDarkColor(bool useDarkColor) {
             backgroundImg.color = useDarkColor ? darkColor : lightColor;
@@ -28,6 +29,7 @@ namespace iMoney.App.Spendings.Unity {
             switch (type) {
                 case Type.Add: typeImg.color = addColor; break;
                 case Type.Spend: typeImg.color = spendColor; break;
+                case Type.Neutral: typeImg.color = neutralColor; break;
             }
         }
 

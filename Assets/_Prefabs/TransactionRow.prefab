@@ -181,6 +181,7 @@ MonoBehaviour:
   lightColor: {r: 0.47058827, g: 0.34509805, b: 0.6509804, a: 1}
   addColor: {r: 0.27450982, g: 0.909804, b: 0.54901963, a: 1}
   spendColor: {r: 1, g: 0.41960788, b: 0.41960788, a: 1}
+  neutralColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1 &1268659288805347859
 GameObject:
   m_ObjectHideFlags: 0
